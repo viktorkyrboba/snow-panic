@@ -685,6 +685,7 @@
   .mdots i.on { background:#fff; width:26px; border-radius:6px; }
   @media (min-width:1000px) { .mcards { justify-content:safe center; padding:16px 20px 18px; } .mcard { flex-basis:min(236px, calc((100vw - 104px) / 5)); } .mdots { display:none; } .mbtns .btn { font-size:16px; } }
   @media (max-height:560px) { .mart { height:96px; } .mart .big { font-size:44px; } .cal { transform:translate(-62%,-56%) rotate(-6deg) scale(.7); } .c-endless .inf { font-size:60px; } .msub { min-height:0; font-size:12px; } .mbody { padding:6px 12px 10px; } .mbody > b { font-size:20px; } .mbtns .btn { padding:7px 10px; font-size:16px; } .c-adv .peaks i { border-bottom-width:60px !important; bottom:20px; } .mtitle { font-size:24px; } .mcards { padding-top:8px; padding-bottom:10px; } }
+  .uplock { background:#eef3f8; border:2px dashed #9fb7cf; border-radius:14px; padding:12px; font-weight:800; color:#4a6a90; text-align:center; }
 </style>
 </head>
 <body>
@@ -3607,6 +3608,7 @@ class Sfx {
 
 const STRINGS = {
   ru: {
+    buyToUpgrade: 'Купи этот транспорт, чтобы прокачивать его',
     playBig: '▶ ИГРАТЬ', chooseRun: 'Выбери заезд', adventure: 'Приключение', todayTag: 'НОВАЯ', play: 'Играть', onlineSub: 'Гонка с живыми игроками — или позови друга', findRival: 'Найти соперника', withFriend: 'С другом',
     raceBots: 'Гонка с ботами', chooseRival: 'Выбрать соперника', botsSub: '3 соперника · побед: {n}', endlessSub: 'Как далеко уедешь?', newTrackIn: 'Новая трасса через {t}', advSub: 'Уровень {n} · {m} · ⭐ {s}/{t}',
 
@@ -3716,6 +3718,7 @@ const STRINGS = {
     rivalFinished: '{name} финишировал!', firstWin: 'Бонус за первую победу!', vs: 'против', raceLbl: 'Гонка · {d}', winReward: 'за победу', pisteEasy: 'лёгкий', pisteMid: 'средний', pisteHard: 'сложный',
   },
   en: {
+    buyToUpgrade: 'Buy this ride to upgrade it',
     playBig: '▶ PLAY', chooseRun: 'Choose your run', adventure: 'Adventure', todayTag: 'NEW TODAY', play: 'Play', onlineSub: 'Race real riders right now — or invite a friend', findRival: 'Find a rival', withFriend: 'With a friend',
     raceBots: 'Race the bots', chooseRival: 'Choose a rival', botsSub: '3 rivals · wins: {n}', endlessSub: 'How far can you go?', newTrackIn: 'New track in {t}', advSub: 'Level {n} · {m} · ⭐ {s}/{t}',
 
@@ -3878,6 +3881,9 @@ const Meta = {
     if (!s.levels || typeof s.levels !== 'object' || Array.isArray(s.levels)) s.levels = {};
     if (!Array.isArray(s.story)) s.story = [];
     s.race = Object.assign({ easy: 0, medium: 0, hard: 0 }, s.race || {});
+    // Раньше улучшения были общими: переносим их на каждый купленный транспорт.
+    if (!s.ups || typeof s.ups !== 'object') { s.ups = {}; for (const id of s.owned) s.ups[id] = Object.assign({}, s.up); }
+    s.up = this.upOf(s, s.ride);
     s.dstreak = Object.assign(this.defaults().dstreak, s.dstreak || {});
     s.dbest = Object.assign(this.defaults().dbest, s.dbest || {});
     if (!Array.isArray(s.crewBlocked)) s.crewBlocked = [];
@@ -3920,15 +3926,20 @@ const Meta = {
   buyRide(save, id) {
     const r = RIDES[id];
     if (!r || save.owned.includes(id) || save.coins < r.price) return false;
-    save.coins -= r.price; save.owned.push(id); save.ride = id;
+    save.coins -= r.price; save.owned.push(id); save.ride = id; save.ups = save.ups || {}; save.ups[id] = save.ups[id] || { speed: 0, handling: 0, armor: 0 }; save.up = save.ups[id];
     return true;
   },
-  buyUpgrade(save, key) {
-    const lvl = save.up[key] || 0;
+  // Улучшения у каждого транспорта свои и только у купленного.
+  upOf(save, id) { return (save.ups && save.ups[id]) || { speed: 0, handling: 0, armor: 0 }; },
+  buyUpgrade(save, key, id = save.ride) {
+    if (!save.owned.includes(id)) return false;
+    const up = (save.ups[id] = Object.assign({ speed: 0, handling: 0, armor: 0 }, save.ups[id] || {}));
+    const lvl = up[key] || 0;
     if (lvl >= UPGRADES[key].max) return false;
     const cost = upgradeCost(key, lvl);
     if (save.coins < cost) return false;
-    save.coins -= cost; save.up[key] = lvl + 1;
+    save.coins -= cost; up[key] = lvl + 1;
+    if (id === save.ride) save.up = up;
     return true;
   },
 
@@ -4466,6 +4477,8 @@ const AD_POLICY = {
 const SAVE_KEY = 'bs_save';
 const BUILD_CFG = (typeof BUILD !== 'undefined' && BUILD) || { target: 'web', sdk: null, ads: false };
 
+const PLAY_PRODUCTS = ['coins_s', 'coins_m', 'coins_l'];   // те же id создаются в Play Console → Монетизация → Товары
+
 const Platform = {
   name: BUILD_CFG.target,
   sessionStart: performance.now() / 1000,
@@ -4490,6 +4503,7 @@ const Platform = {
     if (BUILD_CFG.sdk === 'yandex') await this._initYandex().then((l) => { if (l) lang = l; }).catch((e) => console.warn('Yandex SDK', e));
     this.adsEnabled = !!BUILD_CFG.ads && !!(this.cg || this.ysdk);
     if (this.ysdk) await this._initPayments().catch(() => {});
+    if (BUILD_CFG.sdk === 'capacitor') await this._initPlay().catch((e) => console.warn('Play Billing', e));
     // Игра на английском везде; только на Яндекс Играх язык берётся у площадки (там русскоязычная аудитория).
     if (BUILD_CFG.target !== 'yandex') lang = 'en';
     return { lang };
@@ -4525,8 +4539,20 @@ const Platform = {
     this.iap = await this.ysdk.getPayments({ signed: false });
     this.catalog = await this.iap.getCatalog();
   },
+  // Android-приложение: Google Play Billing через плагин Capacitor @capgo/native-purchases.
+  async _initPlay() {
+    const C = window.Capacitor;
+    if (!C || !C.isNativePlatform || !C.isNativePlatform()) return;
+    const NP = C.registerPlugin('NativePurchases');
+    const sup = await NP.isBillingSupported();
+    if (!sup || !sup.isBillingSupported) return;
+    const { products } = await NP.getProducts({ productIdentifiers: PLAY_PRODUCTS, productType: 'inapp' });
+    this.play = NP;
+    this.catalog = (products || []).map((p) => ({ id: p.identifier || p.productIdentifier, title: p.title, price: p.priceString, priceValue: p.priceString }));
+    this.iap = { play: true };
+  },
   get iapAvailable() { return !!(this.iap && this.catalog && this.catalog.length); },
-  get iapProvider() { return this.ysdk ? 'Yandex Games' : ''; },
+  get iapProvider() { return this.ysdk ? 'Yandex Games' : this.play ? 'Google Play' : ''; },
   // Товар каталога: цена и значок валюты площадки (требование Яндекса 1.13.2 — брать из SDK).
   product(id) {
     const p = (this.catalog || []).find((x) => x.id === id); if (!p) return null;
@@ -4536,6 +4562,15 @@ const Platform = {
   // Купить и сразу «потребить» (монеты — расходуемая покупка). credit(id) начисляет товар до потребления.
   async buy(id, credit) {
     if (!this.iap) return false;
+    if (this.play) {
+      try {
+        // isConsumable: плагин сам «потребляет» покупку после выдачи — монеты можно купить снова.
+        const tr = await this.play.purchaseProduct({ productIdentifier: id, productType: 'inapp', isConsumable: true });
+        if (!tr) return false;
+        credit(tr.productIdentifier || id);
+        return true;
+      } catch (e) { return false; }
+    }
     try {
       const pur = await this.iap.purchase({ id });
       credit(pur.productID || id);
@@ -4547,6 +4582,19 @@ const Platform = {
   async restorePurchases(credit) {
     if (!this.iap) return 0;
     let n = 0;
+    if (this.play) {
+      // Оплачено, но не выдано (приложение закрылось во время покупки): выдать и потребить.
+      try {
+        const { purchases } = await this.play.getPurchases({ productType: 'inapp' });
+        for (const p of purchases || []) {
+          const done = p.purchaseState === 'PURCHASED' || p.purchaseState === 1 || p.purchaseState === '1';
+          if (!done || !p.purchaseToken || !PLAY_PRODUCTS.includes(p.productIdentifier)) continue;
+          await this.play.consumePurchase({ purchaseToken: p.purchaseToken });
+          credit(p.productIdentifier); n++;
+        }
+      } catch (e) { /* нет незавершённых */ }
+      return n;
+    }
     try { for (const pur of await this.iap.getPurchases()) { credit(pur.productID); await this.iap.consumePurchase(pur.purchaseToken); n++; } } catch (e) { /* ignore */ }
     return n;
   },
@@ -4626,7 +4674,9 @@ const Platform = {
     return Share.fromUrl(location, key);
   },
   // Можно ли в этой сборке давать ссылки на внешние сайты (Яндекс и CrazyGames запрещают ссылки на другие площадки).
-  get externalLinks() { return !BUILD_CFG.sdk && BUILD_CFG.target !== 'crazygames'; },
+  get externalLinks() { return !['crazygames', 'yandex'].includes(BUILD_CFG.sdk) && BUILD_CFG.target !== 'crazygames'; },
+  // Нативное окно «поделиться» в Android-приложении (в WebView нет navigator.share).
+  get nativeShare() { const C = window.Capacitor; return C && C.isNativePlatform && C.isNativePlatform() ? (this._share || (this._share = C.registerPlugin('Share'))) : null; },
   // Ссылка, по которой друг откроет игру с этим вызовом. '' — ссылку дать нельзя (только картинка).
   async shareLink(g, key = 'g') {
     try {
@@ -4707,7 +4757,7 @@ const Platform = {
   const persist = () => Platform.save(save);
 
   let world = null;
-  const player = new Player(renderer, save.ride, save.up);
+  const player = new Player(renderer, save.ride, Meta.upOf(save, save.ride));
   input.isAirborne = () => state === 'play' && !player.grounded;
   input.canDoubleJump = () => player.power.spring > 0 && !player.doubleUsed;
   const aval = new Avalanche();
@@ -4973,7 +5023,7 @@ const Platform = {
       race = raceKey === 'online' ? { key: 'online', online: true, side: opts.online.side, cfg: { name: opts.online.opp.nick, reward: 150, boulders: false, world: 0.42 } }
         : raceKey ? { key: raceKey, cfg: RACE.diff[raceKey] } : null;
       daily = opts.daily ? { key: opts.daily, lv: Daily.level(opts.daily) } : null;
-      player.setRide(rideId, save.up);
+      player.setRide(rideId, Meta.upOf(save, rideId));
       // На Трассе дня и уровнях лавина и камни тоже «по зерну» — у всех одинаково, гонка с призраком честная.
       const fixed = daily ? daily.lv : level;
       aval.rnd = fixed ? makeRng(fixed.seed ^ 0x5bd1e995) : Math.random;
@@ -5344,7 +5394,7 @@ const Platform = {
   // Из заезда — сначала вернуть фон меню.
   function toMenuThen(fn) {
     if (state === 'menu') { fn(); return; }
-    fadeThrough(() => { if (online && !(screen === 'onlineScr')) leaveOnline(); if (state === 'prep') refundPrep(); $('prep').classList.remove('on'); state = 'menu'; level = null; race = null; daily = null; ghostRun = null; recorder = null; ghostRider.stop(); player.setRide(save.ride, save.up); newWorld(null, true); fn(); });
+    fadeThrough(() => { if (online && !(screen === 'onlineScr')) leaveOnline(); if (state === 'prep') refundPrep(); $('prep').classList.remove('on'); state = 'menu'; level = null; race = null; daily = null; ghostRun = null; recorder = null; ghostRider.stop(); player.setRide(save.ride, Meta.upOf(save, save.ride)); newWorld(null, true); fn(); });
   }
   function openMap() { sfx.unlock(); toMenuThen(() => { show('mapScr'); renderMap(); }); }
   $('btnMap').onclick = () => { sfx.click(); openMap(); };
@@ -5479,10 +5529,10 @@ const Platform = {
   }
   function renderGarage() {
     const id = RIDE_IDS[gIdx], r = RIDES[id], owned = save.owned.includes(id);
-    player.setRide(id, save.up);
+    player.setRide(id, Meta.upOf(save, id));
     $('gName').textContent = rideName(id);
     $('gDesc').textContent = T('desc_' + id);
-    const up = save.up;
+    const up = Meta.upOf(save, id);
     const extra = { speed: Math.round(up.speed * 0.4), handling: Math.round(up.handling * 0.4), tricks: 0, armor: up.armor };
     $('gBars').innerHTML = ['speed', 'handling', 'tricks', 'armor']
       .map((k) => `<span>${T('st_' + k)}</span>${pips(r.bars[k], 7, extra[k])}`).join('');
@@ -5497,6 +5547,9 @@ const Platform = {
       if (save.coins < r.price) main.classList.add('ghost');
     }
     $('gTry').style.display = owned ? 'none' : 'flex';
+    // Прокачка — только для купленного транспорта.
+    $('gUps').classList.toggle('locked', !owned);
+    if (!owned) { $('gUps').innerHTML = `<div class="uplock">🔒 ${T('buyToUpgrade')}</div>`; refreshMeta(); return; }
     $('gUps').innerHTML = Object.keys(UPGRADES).map((k) => {
       const lvl = up[k] || 0, max = UPGRADES[k].max;
       const btn = lvl >= max ? `<button class="btn small" disabled>${T('max')}</button>`
@@ -5505,7 +5558,7 @@ const Platform = {
     }).join('');
     $('gUps').querySelectorAll('[data-up]').forEach((b) => {
       b.onclick = () => {
-        if (Meta.buyUpgrade(save, b.dataset.up)) { sfx.coin(); persist(); refreshMeta(); renderGarage(); }
+        if (Meta.buyUpgrade(save, b.dataset.up, id)) { sfx.coin(); persist(); refreshMeta(); renderGarage(); }
         else toast(T('notEnough'));
       };
     });
@@ -5516,7 +5569,7 @@ const Platform = {
   $('gNext').onclick = () => { sfx.click(); gIdx = (gIdx + 1) % RIDE_IDS.length; renderGarage(); };
   $('gMain').onclick = () => {
     const id = RIDE_IDS[gIdx];
-    if (save.owned.includes(id)) { save.ride = id; sfx.click(); }
+    if (save.owned.includes(id)) { save.ride = id; save.up = Meta.upOf(save, id); sfx.click(); }
     else if (Meta.buyRide(save, id)) { sfx.coin(); popup(rideName(id), 'gain'); }
     else { toast(T('notEnough')); return; }
     persist(); renderGarage();
@@ -5526,7 +5579,7 @@ const Platform = {
     if (!(await rewarded())) return;
     tryRide = id; startRun(level ? level.id : null);
   };
-  $('gBack').onclick = () => { sfx.click(); player.setRide(save.ride, save.up); show('menu'); };
+  $('gBack').onclick = () => { sfx.click(); player.setRide(save.ride, Meta.upOf(save, save.ride)); show('menu'); };
 
   // --- Задания ---
   function renderMissions() {
@@ -5784,7 +5837,7 @@ const Platform = {
     img.dataset.url = URL.createObjectURL(blob); img.src = img.dataset.url;
     $('shLink').textContent = link;
     $('shCopy').style.display = link ? '' : 'none';
-    const cap = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share;
+    const cap = Platform.nativeShare;
     $('shGo').style.display = navigator.share || cap ? '' : 'none';
     show('shareScr');
   }
@@ -5794,7 +5847,7 @@ const Platform = {
     const d = shareData; if (!d) return;
     const msg = d.link ? `${d.text} ${d.link}` : d.text;
     try {
-      const cap = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share;
+      const cap = Platform.nativeShare;
       if (navigator.canShare && navigator.canShare({ files: [d.file] })) await navigator.share({ files: [d.file], text: msg });
       else if (navigator.share) await navigator.share({ text: d.text, url: d.link || undefined });
       else if (cap) await cap.share({ title: 'Snow Panic', text: d.text, url: d.link || undefined });
@@ -5932,7 +5985,8 @@ const Platform = {
     const code = $('onCodeBig').textContent, link = await Platform.shareLink(code, 'room');
     const text = `${T('joinRace')} ${code}`;
     try {
-      if (navigator.share) await navigator.share({ text, url: link || undefined });
+      if (Platform.nativeShare) await Platform.nativeShare.share({ title: 'Snow Panic', text, url: link || undefined });
+      else if (navigator.share) await navigator.share({ text, url: link || undefined });
       else { await navigator.clipboard.writeText(link ? `${text} ${link}` : text); toast(T('linkCopied')); }
     } catch (e) { /* отмена */ }
   };
@@ -6064,10 +6118,10 @@ const Platform = {
         const r = RIDES[id], owned = save.owned.includes(id), sel = save.ride === id, armed = buyArm === id;
         const price = owned ? (sel ? `✓ ${T('equipped')}` : T('equip')) : armed ? `${T('buy')}?` : `<span class="cbal"><i></i>${r.price}</span>`;
         list.appendChild(shopCard((owned ? 'owned' : '') + (sel ? ' sel' : '') + (!owned && save.coins < r.price ? ' poor' : ''), RIDE_ICON[id], rideName(id), T('desc_' + id), price, () => {
-          if (owned) { save.ride = id; player.setRide(id, save.up); persist(); sfx.click(); renderShop(); refreshMeta(); return; }
+          if (owned) { save.ride = id; save.up = Meta.upOf(save, id); player.setRide(id, Meta.upOf(save, id)); persist(); sfx.click(); renderShop(); refreshMeta(); return; }
           if (save.coins < r.price) { toast(T('notEnough')); if (Platform.iapAvailable || Platform.rewardedAvailable) { shopTab = 'coins'; renderShop(); } return; }
           if (buyArm !== id) { buyArm = id; sfx.click(); renderShop(); return; }
-          if (Meta.buyRide(save, id)) { buyArm = null; persist(); sfx.coin(); sfx.trick(); player.setRide(id, save.up); popup(`${T('bought')} ${rideName(id)}`, 'gain'); renderShop(); refreshMeta(); }
+          if (Meta.buyRide(save, id)) { buyArm = null; persist(); sfx.coin(); sfx.trick(); player.setRide(id, Meta.upOf(save, id)); popup(`${T('bought')} ${rideName(id)}`, 'gain'); renderShop(); refreshMeta(); }
         }));
       }
       return;
@@ -6435,7 +6489,7 @@ const Platform = {
     save = Meta.normalize(Platform.load());   // облачное сохранение могло прийти при init
     sfx.setMuted(!!save.muted);
     sfx.music.setOn(!save.musicOff);
-    player.setRide(save.ride, save.up);
+    player.setRide(save.ride, Meta.upOf(save, save.ride));
     setLang(env.lang);
     applyTexts();
     document.body.classList.toggle('noads', !Platform.rewardedAvailable);
