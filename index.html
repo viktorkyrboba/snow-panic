@@ -551,6 +551,28 @@
   body.clip { background:#000; }
   body.clip #clipFrame { position:fixed; inset:0; pointer-events:none; z-index:1; }
   #btnClip.on { background:#ff4d4d; color:#fff; }
+
+  /* ===== v10: онлайн-гонка ===== */
+  .onl { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:8px 0 2px; }
+  .onl .btn { margin:4px 0; font-size:17px; }
+  .onl .btn.friendb { background:#7b6cf6; border-color:var(--ink); box-shadow:0 4px 0 var(--ink); }
+  .orbot { font-weight:800; font-size:13px; opacity:.7; margin:6px 0 2px; }
+  .orbot:empty { display:none; }
+  #onlineScr .card { max-width:440px; max-height:calc(100% - 20px); overflow:auto; }
+  .ordiv { font-weight:800; opacity:.65; font-size:13px; margin:10px 0 4px; }
+  .joinrow { display:flex; gap:8px; justify-content:center; align-items:center; }
+  .joinrow input { width:130px; font:inherit; font-family:var(--disp); font-size:26px; text-align:center; letter-spacing:4px; text-transform:uppercase; padding:6px 8px; border:3px solid var(--ink); border-radius:12px; color:var(--ink); }
+  .joinrow .btn { margin:0; min-width:0; padding:10px 18px; font-size:20px; }
+  .bigcode { font-family:var(--disp); font-size:54px; letter-spacing:8px; background:var(--gold); border:3px solid var(--ink); border-radius:16px; box-shadow:0 5px 0 var(--ink); display:inline-block; padding:2px 18px 2px 26px; margin:6px 0 10px; }
+  .bigcode:empty { display:none; }
+  .dots { display:flex; gap:7px; justify-content:center; margin:6px 0; }
+  .dots i { width:10px; height:10px; border-radius:50%; background:#7b6cf6; animation:dotUp 1s ease-in-out infinite; }
+  .dots i:nth-child(2) { animation-delay:.15s; } .dots i:nth-child(3) { animation-delay:.3s; }
+  @keyframes dotUp { 50% { transform:translateY(-8px); opacity:.5; } }
+  .onstatus { font-weight:800; margin:4px 0 8px; }
+  .onrep { display:none; gap:14px; justify-content:center; }
+  .onrep.on { display:flex; }
+  .onrep .link { font-size:12px; color:#7a8aa0; }
 </style>
 </head>
 <body>
@@ -647,6 +669,8 @@
   <div class="card" style="--band:var(--lift)">
     <h2 data-t="raceTitle"></h2>
     <div class="rsub" data-t="raceSub"></div>
+    <div class="onl" id="onlineRow"><button class="btn green slim" id="btnQuick">🌐 <span data-t="onlineRace"></span></button><button class="btn slim friendb" id="btnFriend">👫 <span data-t="raceFriend"></span></button></div>
+    <div class="orbot" id="orBot" data-t="orBot"></div>
     <div class="rlist" id="raceList"></div>
     <button class="btn ghost" id="raceBack" data-t="back"></button>
   </div>
@@ -663,6 +687,7 @@
       <div class="stat"><b id="reCoins"></b><span data-t="coins"></span></div>
     </div>
     <div id="reNote"></div>
+    <div class="onrep" id="reOnline"><button class="link" id="reReport" data-t="reportName"></button><button class="link" id="reBlock" data-t="block"></button></div>
     <button class="btn green" id="reAgain" data-t="rematch"></button>
     <button class="btn ghost shareb" id="reShare">📤 <span data-t="shareResult"></span></button>
     <div class="row2"><button class="btn ghost" id="reDiff" data-t="difficulty"></button><button class="btn ghost" id="reMenu" data-t="menu"></button></div>
@@ -750,6 +775,30 @@
     <button class="btn green" id="shGo">📤 <span data-t="share"></span></button>
     <div class="row2"><button class="btn ghost" id="shSave" data-t="saveImage"></button><button class="btn ghost" id="shCopy" data-t="copyLink"></button></div>
     <button class="btn ghost slimback" id="shBack" data-t="back"></button>
+  </div>
+</div>
+
+<div class="screen" id="onlineScr">
+  <div class="card" style="--band:#7b6cf6">
+    <h2 id="onTitle"></h2>
+    <div id="onNick">
+      <label class="fld"><span data-t="nickname"></span><input id="onNickIn" maxlength="14" autocomplete="off" spellcheck="false"></label>
+      <div class="rules" id="onRules"></div>
+      <label class="chk"><input type="checkbox" id="onAgree"><span data-t="agreeRules"></span></label>
+    </div>
+    <div id="onFriend">
+      <button class="btn green" id="onCreate" data-t="createRoom"></button>
+      <div class="ordiv" data-t="orJoin"></div>
+      <div class="joinrow"><input id="onCode" maxlength="4" autocomplete="off" spellcheck="false" placeholder="ABCD"><button class="btn" id="onJoin" data-t="joinRoom"></button></div>
+    </div>
+    <div id="onWait">
+      <div class="bigcode" id="onCodeBig"></div>
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="onstatus" id="onStatus"></div>
+      <button class="btn" id="onShare">📤 <span data-t="shareRoom"></span></button>
+    </div>
+    <div class="crerr" id="onErr"></div>
+    <button class="btn ghost" id="onBack" data-t="cancel"></button>
   </div>
 </div>
 
@@ -3305,6 +3354,12 @@ class Sfx {
 
 const STRINGS = {
   ru: {
+    onlineRace: 'Онлайн-гонка', raceFriend: 'С другом', orBot: 'или гонка с ботом:', online: 'Онлайн', createRoom: 'Создать комнату', orJoin: 'или войди в комнату друга',
+    joinRoom: 'Войти', shareRoom: 'Отправить ссылку', cancel: 'Отмена', waitingFriend: 'Отправь код или ссылку другу', searching: 'Ищем соперника… {s} с',
+    noRivals: 'Сейчас никого нет — гонка с ботом {name}!', roomFull: 'Комната уже занята', oppLeft: '{name} вышел из гонки', wantsRematch: '{name} хочет реванш!',
+    waitingRematch: 'Ждём {name}…', leave: 'Выйти', badRoom: 'Код комнаты: 4 буквы', onlineOff: 'Онлайн сейчас недоступен', joining: 'Подключаемся…',
+    joinRace: 'Давай гонку в Snow Panic! Комната', vsOnline: 'Онлайн-гонка', getReady: '{name} здесь — приготовься!',
+
     dailyRun: 'Трасса дня', todayBest: 'Лучшее сегодня', streak: 'Дней подряд', shareResult: 'Поделиться', share: 'Поделиться', saveImage: 'Сохранить', copyLink: 'Ссылка',
     dailyOf: 'Трасса дня · {d}', dailyHint: 'Сегодня у всех одна трасса', finishedIn: 'финиш', caughtAt: 'догнала лавина', streakN: '🔥 {n}',
     ghostHint: 'Обгони призрака на той же трассе!', raceGhost: 'Гонка с призраком 👻', later: 'Потом',
@@ -3400,6 +3455,12 @@ const STRINGS = {
     rivalFinished: '{name} финишировал!', firstWin: 'Бонус за первую победу!', vs: 'против', raceLbl: 'Гонка · {d}', winReward: 'за победу', pisteEasy: 'лёгкий', pisteMid: 'средний', pisteHard: 'сложный',
   },
   en: {
+    onlineRace: 'Online race', raceFriend: 'Race a friend', orBot: 'or race a bot:', online: 'Online', createRoom: 'Create a room', orJoin: "or join a friend's room",
+    joinRoom: 'Join', shareRoom: 'Share link', cancel: 'Cancel', waitingFriend: 'Send the code or link to a friend', searching: 'Looking for a rival… {s} s',
+    noRivals: 'Nobody online right now — racing {name}!', roomFull: 'This room is already full', oppLeft: '{name} left the race', wantsRematch: '{name} wants a rematch!',
+    waitingRematch: 'Waiting for {name}…', leave: 'Leave', badRoom: 'Room code: 4 letters', onlineOff: 'Online is not available right now', joining: 'Joining…',
+    joinRace: 'Join my Snow Panic race! Room', vsOnline: 'Online race', getReady: '{name} joined — get ready!',
+
     dailyRun: 'Daily Run', todayBest: 'Today best', streak: 'Day streak', shareResult: 'Share result', share: 'Share', saveImage: 'Save image', copyLink: 'Copy link',
     dailyOf: 'Daily Run · {d}', dailyHint: 'Same track for everyone today', finishedIn: 'finished', caughtAt: 'caught by the avalanche', streakN: '🔥 {n}',
     ghostHint: 'Race their ghost on the same track. Beat the time!', raceGhost: 'Race the ghost 👻', later: 'Later',
@@ -3931,18 +3992,191 @@ class CrewClient {
 // ---------- Share links ----------
 const Share = {
   // Ghost challenge parameter from the address (web, itch, Play app links) — platforms pass it via SDKs instead.
-  fromUrl(loc = location) {
+  fromUrl(loc = location, key = 'g') {
     try {
-      const q = new URLSearchParams(loc.search).get('g');
+      const q = new URLSearchParams(loc.search).get(key);
       if (q) return q;
-      const m = /[#&]g=([A-Za-z0-9_-]+)/.exec(loc.hash || ''); return m ? m[1] : null;
+      const m = new RegExp(`[#&]${key}=([A-Za-z0-9_-]+)`).exec(loc.hash || ''); return m ? m[1] : null;
     } catch (e) { return null; }
   },
-  withParam(base, g) { if (!base) return ''; const u = base.split('#')[0]; return u + (u.includes('?') ? '&' : '?') + 'g=' + g; },
+  withParam(base, g, key = 'g') { if (!base) return ''; const u = base.split('#')[0]; return u + (u.includes('?') ? '&' : '?') + key + '=' + g; },
   fmt(t) { const m = Math.floor(t / 60), s = Math.floor(t % 60); return `${m}:${String(s).padStart(2, '0')}`; },
   // Text on the card / in the message.
   headline(r) { return r.finished ? `I escaped the avalanche in ${Share.fmt(r.time)}` : `The avalanche caught me at ${Math.floor(r.dist)} m`; },
 };
+
+// --- net.js ---
+// Online races over Supabase Realtime (Phoenix channels over a WebSocket): friend rooms by code / link and quick match.
+// Players only exchange their own positions; the track is built from a shared seed, so the world is the same for both.
+// No DOM here — the WebSocket class is injected, so this runs in node tests with a fake socket.
+
+const NET = { hz: 10, heartbeat: 25000, lobby: 'snowpanic-lobby-v1', quickWait: 20, codeChars: 'ABCDEFGHJKMNPQRSTUVWXYZ23456789' };
+
+class RealtimeClient {
+  constructor(url, key, WS = (typeof WebSocket !== 'undefined' ? WebSocket : null)) {
+    this.url = url.replace(/^http/, 'ws').replace(/\/$/, '') + `/realtime/v1/websocket?apikey=${encodeURIComponent(key)}&vsn=1.0.0`;
+    this.WS = WS; this.ws = null; this.ref = 0; this.queue = []; this.channels = new Map(); this.hb = null; this.open = false;
+  }
+  connect() {
+    if (this.ws) return;
+    const ws = (this.ws = new this.WS(this.url));
+    ws.onopen = () => { this.open = true; for (const m of this.queue.splice(0)) ws.send(m); };
+    ws.onmessage = (e) => { let m; try { m = JSON.parse(e.data); } catch (err) { return; } const ch = this.channels.get(m.topic); if (ch) ch._msg(m); };
+    ws.onclose = () => { this.open = false; this.ws = null; clearInterval(this.hb); this.hb = null; for (const ch of this.channels.values()) ch._closed(); };
+    ws.onerror = () => {};
+    this.hb = setInterval(() => this._send({ topic: 'phoenix', event: 'heartbeat', payload: {}, ref: String(++this.ref) }), NET.heartbeat);
+  }
+  _send(obj) { const s = JSON.stringify(obj); if (this.open && this.ws) this.ws.send(s); else this.queue.push(s); }
+  channel(name, key) { this.connect(); const ch = new RtChannel(this, 'realtime:' + name, key); this.channels.set(ch.topic, ch); return ch; }
+  close() { for (const ch of [...this.channels.values()]) ch.leave(); if (this.ws) try { this.ws.close(); } catch (e) { /* ignore */ } }
+}
+
+class RtChannel {
+  constructor(rt, topic, key) { this.rt = rt; this.topic = topic; this.key = key; this.handlers = {}; this.presence = {}; this.joinRef = null; this.onPresence = null; this.onClose = null; }
+  join() {
+    this.joinRef = String(++this.rt.ref);
+    return new Promise((res, rej) => {
+      this._joinWait = { res, rej };
+      this.rt._send({ topic: this.topic, event: 'phx_join', ref: this.joinRef, join_ref: this.joinRef,
+        payload: { config: { broadcast: { self: false, ack: false }, presence: { key: this.key }, private: false } } });
+      setTimeout(() => { if (this._joinWait) { this._joinWait = null; rej(new Error('join timeout')); } }, 8000);
+    });
+  }
+  on(event, cb) { this.handlers[event] = cb; return this; }
+  send(event, payload) { this.rt._send({ topic: this.topic, event: 'broadcast', ref: String(++this.rt.ref), join_ref: this.joinRef, payload: { type: 'broadcast', event, payload } }); }
+  track(meta) { this.rt._send({ topic: this.topic, event: 'presence', ref: String(++this.rt.ref), join_ref: this.joinRef, payload: { type: 'presence', event: 'track', payload: meta } }); }
+  leave() { this.rt._send({ topic: this.topic, event: 'phx_leave', ref: String(++this.rt.ref), join_ref: this.joinRef, payload: {} }); this.rt.channels.delete(this.topic); this.handlers = {}; this.onPresence = null; }
+  // Players in the channel: { key: meta } (the newest meta of each key).
+  get members() { const out = {}; for (const k in this.presence) { const m = this.presence[k]; if (m.length) out[k] = m[m.length - 1]; } return out; }
+  _msg(m) {
+    if (m.event === 'phx_reply' && m.ref === this.joinRef && this._joinWait) {
+      const w = this._joinWait; this._joinWait = null;
+      if (m.payload && m.payload.status === 'ok') w.res(); else w.rej(new Error('join refused'));
+    } else if (m.event === 'broadcast') {
+      const p = m.payload || {}, h = this.handlers[p.event]; if (h) h(p.payload || {});
+    } else if (m.event === 'presence_state') {
+      this.presence = {}; for (const k in m.payload) this.presence[k] = (m.payload[k].metas || []).slice();
+      this.onPresence && this.onPresence(this.members);
+    } else if (m.event === 'presence_diff') {
+      const { joins = {}, leaves = {} } = m.payload || {};
+      for (const k in leaves) {
+        const gone = new Set((leaves[k].metas || []).map((x) => x.phx_ref));
+        this.presence[k] = (this.presence[k] || []).filter((x) => !gone.has(x.phx_ref));
+        if (!this.presence[k].length) delete this.presence[k];
+      }
+      for (const k in joins) this.presence[k] = (this.presence[k] || []).concat(joins[k].metas || []);
+      this.onPresence && this.onPresence(this.members);
+    } else if (m.event === 'phx_close' || m.event === 'phx_error') this._closed();
+  }
+  _closed() { this.onClose && this.onClose(); }
+}
+
+// Pure helpers (tested in node).
+const Match = {
+  code(rnd = Math.random) { let s = ''; for (let i = 0; i < 4; i++) s += NET.codeChars[Math.floor(rnd() * NET.codeChars.length)]; return s; },
+  cleanCode(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '').replace(/[OIL01]/g, '').slice(0, 4); },
+  // Two players in a room: the earlier arrival hosts (ties by id). Extra players are told the room is full.
+  roles(members, me) {
+    const list = Object.entries(members).map(([id, m]) => ({ id, ...m })).sort((a, b) => (a.t - b.t) || (a.id < b.id ? -1 : 1));
+    const i = list.findIndex((x) => x.id === me);
+    return { list, full: i >= 2, host: i === 0, opp: i === 0 ? list[1] : i === 1 ? list[0] : null };
+  },
+  // Lobby: everyone sorts the waiting players the same way and pairs neighbours, so both sides pick the same room.
+  pairs(members, blocked = []) {
+    const list = Object.entries(members).map(([id, m]) => ({ id, ...m })).sort((a, b) => (a.t - b.t) || (a.id < b.id ? -1 : 1));
+    const out = [];
+    for (let i = 0; i + 1 < list.length; i += 2) out.push([list[i], list[i + 1]]);
+    return out.filter(([a, b]) => !blocked.includes(a.oid) && !blocked.includes(b.oid));
+  },
+  roomFor(a, b) { return 'q' + [a, b].sort().join('').replace(/[^a-z0-9]/gi, '').slice(0, 24); },
+};
+
+// The other player on the track: same interface as Rival (x, y, s, finished, finishT, update, syncBody).
+class RemoteRider {
+  constructor(body) { this.body = body; this.buf = []; this.reset(); }
+  reset(world, side = 1) {
+    this.buf = []; this.finished = false; this.finishT = 0; this.left = false; this.crashed = false; this.t = 0;
+    this.s = 2; this.x = world ? world.center(2) + side * RACE.laneOffset : 0; this.y = world ? world.height(this.x, 2) : 0;
+    this.v = 0; this.vx = 0; this.air = 0; this.ride = this.ride || 'sled';
+  }
+  // Snapshot from the network: { s, x (offset from track centre), h (height above ground), v, vx, cr (crashed) }.
+  push(p, now) { this.buf.push({ ...p, at: now }); if (this.buf.length > 30) this.buf.shift(); }
+  // Draw ~120 ms in the past so there are two snapshots to interpolate between.
+  update(dt, world, player, running, now = performance.now()) {
+    this.t += dt;
+    if (!world || !this.buf.length) return;
+    const tt = now - 120, b = this.buf;
+    let a = b[0], c = b[b.length - 1];
+    for (let i = b.length - 1; i > 0; i--) if (b[i - 1].at <= tt) { a = b[i - 1]; c = b[i]; break; }
+    const k = c.at > a.at ? clamp((tt - a.at) / (c.at - a.at), 0, 1.5) : 1;
+    const s = a.s + (c.s - a.s) * k, u = a.x + (c.x - a.x) * k, h = Math.max(0, a.h + (c.h - a.h) * k);
+    this.s = s; this.x = world.center(s) + u; this.y = world.height(this.x, s) + h;
+    this.v = c.v || 0; this.vx = c.vx || 0; this.air = h; this.crashed = !!c.cr;
+  }
+  syncBody(dt) {
+    const p = this.body; if (!p) return;
+    p.x = this.x; p.s = this.s; p.y = this.y; p.v = this.v; p.vx = this.vx; p.grounded = this.air < 0.08;
+    p.pitch = p.grounded ? 0 : -Math.min(0.4, this.air * 0.08); p.airPitch = 0;
+    p.bank = damp(p.bank || 0, -this.vx * 0.03, 6, dt);
+    p.roll = this.crashed ? Math.sin(this.t * 20) * 0.3 : 0;
+    p.alive = true; p.invuln = this.crashed ? 1 : 0; p.avalancheGap = 99; p.power.boost = 0;
+    p._animate(dt, clamp(this.vx / 6, -1, 1));
+  }
+}
+
+// One online session: a friend room or quick match. Hooks: status(text key, vars), start({seed, zone, side, opp}),
+// pos(p), fin(t), left(), rematch(), full().
+class OnlineSession {
+  constructor(rt, me, hooks) { this.rt = rt; this.me = me; this.h = hooks; this.room = null; this.lobby = null; this.code = null; this.started = false; this.ready = {}; this.blocked = me.blocked || []; }
+  async joinRoom(code) {
+    this.code = code;
+    const ch = (this.room = this.rt.channel('snowpanic-room-' + code, this.me.id));
+    ch.on('start', (p) => this._start(p, false));
+    ch.on('pos', (p) => this.h.pos && this.h.pos(p));
+    ch.on('fin', (p) => this.h.fin && this.h.fin(p.t));
+    ch.on('rematch', () => { this.ready.opp = true; this._maybeRematch(); this.h.rematch && this.h.rematch(); });
+    ch.onPresence = (mem) => this._roomPresence(mem);
+    ch.onClose = () => this.h.left && this.h.left();
+    await ch.join();
+    ch.track({ nick: this.me.nick, ride: this.me.ride, oid: this.me.oid, t: Date.now() });
+  }
+  _roomPresence(mem) {
+    const r = Match.roles(mem, this.me.id);
+    if (r.full) { this.h.full && this.h.full(); this.leave(); return; }
+    if (r.opp && this.blocked.includes(r.opp.oid)) { this.leave(); this.h.blockedMatch && this.h.blockedMatch(); return; }
+    if (this.opp && !r.opp) { this.opp = null; this.h.left && this.h.left(); return; }
+    if (!r.opp) return;
+    this.opp = r.opp; this.host = r.host;
+    if (!this.started && this.host) this._hostStart();
+  }
+  _hostStart() {
+    const p = { seed: (Math.random() * 1e9) | 0, zone: [0, 1, 3, 2, 4][Math.floor(Math.random() * 5)], host: this.me.id };
+    this.room.send('start', p); this._start(p, true);
+  }
+  _start(p, mine) {
+    this.started = true; this.ready = {};
+    const side = p.host === this.me.id ? -1 : 1;
+    this.h.start && this.h.start({ seed: p.seed, zone: p.zone, side, opp: this.opp || { nick: 'Rider', ride: 'sled' }, mine });
+  }
+  sendPos(p) { if (this.room) this.room.send('pos', p); }
+  sendFin(t) { if (this.room) this.room.send('fin', { t }); }
+  rematch() { this.ready.me = true; if (this.room) this.room.send('rematch', {}); this._maybeRematch(); }
+  _maybeRematch() { if (this.ready.me && this.ready.opp && this.host) this._hostStart(); }
+  // Quick match: wait in the lobby until paired, then both join the same room.
+  async quick() {
+    const ch = (this.lobby = this.rt.channel(NET.lobby, this.me.id));
+    ch.onPresence = (mem) => {
+      const pair = Match.pairs(mem, this.blocked).find(([a, b]) => a.id === this.me.id || b.id === this.me.id);
+      if (!pair || this.code) return;
+      const code = Match.roomFor(pair[0].id, pair[1].id);
+      this.lobby.leave(); this.lobby = null;
+      this.joinRoom(code).catch(() => this.h.error && this.h.error());
+    };
+    await ch.join();
+    ch.track({ nick: this.me.nick, oid: this.me.oid, t: Date.now() });
+  }
+  leave() { if (this.lobby) this.lobby.leave(); if (this.room) this.room.leave(); this.lobby = null; this.room = null; }
+}
 
 // --- platform.js ---
 // Слой площадки. Игра вызывает только эти методы; что под ними — решает сборка (BUILD, см. build.js):
@@ -4075,28 +4309,33 @@ const Platform = {
 
   // --- Ссылки-вызовы (призрак) ---
   // Параметр вызова, с которым открыли игру: Яндекс передаёт его как ?payload=, CrazyGames — через invite-ссылку, веб — ?g=.
-  challengeParam() {
+  // key 'g' — призрак, 'room' — комната онлайн-гонки. На Яндексе payload один: комната пишется как 'room-ABCD'.
+  challengeParam(key = 'g') {
     try {
-      if (this.ysdk) return (this.ysdk.environment && this.ysdk.environment.payload) || null;
-      if (this.cg) return this.cg.game.getInviteParam('g') || null;
+      if (this.ysdk) {
+        const p = (this.ysdk.environment && this.ysdk.environment.payload) || '';
+        if (key === 'room') return p.startsWith('room-') ? p.slice(5) : null;
+        return p && !p.startsWith('room-') ? p : null;
+      }
+      if (this.cg) return this.cg.game.getInviteParam(key) || null;
     } catch (e) { /* ignore */ }
-    return Share.fromUrl();
+    return Share.fromUrl(location, key);
   },
   // Можно ли в этой сборке давать ссылки на внешние сайты (Яндекс и CrazyGames запрещают ссылки на другие площадки).
   get externalLinks() { return !BUILD_CFG.sdk && BUILD_CFG.target !== 'crazygames'; },
   // Ссылка, по которой друг откроет игру с этим вызовом. '' — ссылку дать нельзя (только картинка).
-  async shareLink(g) {
+  async shareLink(g, key = 'g') {
     try {
       if (this.ysdk) {
         const env = this.ysdk.environment, tld = (env.i18n && env.i18n.tld) || 'ru';
-        return `https://yandex.${tld}/games/app/${env.app.id}` + (g ? `?payload=${g}` : '');
+        return `https://yandex.${tld}/games/app/${env.app.id}` + (g ? `?payload=${key === 'room' ? 'room-' : ''}${g}` : '');
       }
-      if (this.cg) return g ? await this.cg.game.inviteLink({ g }) : '';
+      if (this.cg) return g ? await this.cg.game.inviteLink({ [key]: g }) : '';
     } catch (e) { return ''; }
     if (!this.externalLinks) return '';
-    if (BUILD_CFG.shareBase) return g ? Share.withParam(BUILD_CFG.shareBase, g) : BUILD_CFG.shareBase;
+    if (BUILD_CFG.shareBase) return g ? Share.withParam(BUILD_CFG.shareBase, g, key) : BUILD_CFG.shareBase;
     // Своя страница (GitHub Pages и т.п.): ссылка на неё же. На itch.io игра в iframe чужого домена — без shareBase ссылки нет.
-    if (/^https?:$/.test(location.protocol) && !/itch\.zone$|itch\.io$/.test(location.hostname)) return g ? Share.withParam(location.origin + location.pathname, g) : location.origin + location.pathname;
+    if (/^https?:$/.test(location.protocol) && !/itch\.zone$|itch\.io$/.test(location.hostname)) return g ? Share.withParam(location.origin + location.pathname, g, key) : location.origin + location.pathname;
     return '';
   },
   // Адрес игры без вызова — для подписи на карточке.
@@ -4109,6 +4348,10 @@ const Platform = {
       if (!id) { id = crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx'.replace(/x/g, () => ((Math.random() * 16) | 0).toString(16)); localStorage.setItem('bs_dev', id); }
       return id;
     } catch (e) { return '00000000-0000-4000-8000-000000000000'; }
+  },
+  // Публичный случайный id игрока для жалоб/блокировки в онлайне (не связан с id устройства).
+  publicId() {
+    try { let id = localStorage.getItem('bs_oid'); if (!id) { id = Math.random().toString(36).slice(2, 12); localStorage.setItem('bs_oid', id); } return id; } catch (e) { return 'anon'; }
   },
   // Призраки лучших заездов — отдельно от сохранения (в облако площадки не отправляются, объём не раздувают).
   loadGhosts() { try { return JSON.parse(localStorage.getItem('bs_ghosts') || '{}'); } catch (e) { return {}; } },
@@ -4172,7 +4415,9 @@ const Platform = {
   const boulders = new BoulderSystem();
   // Соперник в гонке: своё «тело» (модель и анимация как у игрока), управляет им Rival.
   const rivalBody = new Player(renderer, 'sled');
-  const rival = new Rival(rivalBody);
+  const botRival = new Rival(rivalBody);
+  const remote = new RemoteRider(rivalBody);   // соперник в онлайн-гонке
+  let rival = botRival;
   let race = null;          // { key, cfg } — текущая гонка, иначе null
   // Трасса дня, призраки, группы, режим клипа (см. social.js).
   const ghostBody = new Player(renderer, 'tube');
@@ -4245,7 +4490,7 @@ const Platform = {
     const t = $('toast'); t.textContent = text; t.style.display = 'block';
     clearTimeout(toastT); toastT = setTimeout(() => { t.style.display = 'none'; }, 1800);
   }
-  const SCREENS = ['menu', 'garage', 'missionsScr', 'daily', 'over', 'pause', 'mapScr', 'story', 'win', 'raceScr', 'raceEnd', 'dailyEnd', 'challenge', 'shareScr', 'crewScr'];
+  const SCREENS = ['menu', 'garage', 'missionsScr', 'daily', 'over', 'pause', 'mapScr', 'story', 'win', 'raceScr', 'raceEnd', 'dailyEnd', 'challenge', 'shareScr', 'crewScr', 'onlineScr'];
   // Экраны появляются и исчезают плавно (CSS: .show — вход, .leaving — выход).
   function show(id) {
     screen = id;
@@ -4402,7 +4647,8 @@ const Platform = {
     tryRide = null;
     fadeThrough(() => {
       level = lvId === null || lvId === undefined ? null : Levels.info(lvId);
-      race = raceKey ? { key: raceKey, cfg: RACE.diff[raceKey] } : null;
+      race = raceKey === 'online' ? { key: 'online', online: true, side: opts.online.side, cfg: { name: opts.online.opp.nick, reward: 150, boulders: false, world: 0.42 } }
+        : raceKey ? { key: raceKey, cfg: RACE.diff[raceKey] } : null;
       daily = opts.daily ? { key: opts.daily, lv: Daily.level(opts.daily) } : null;
       player.setRide(rideId, save.up);
       // На Трассе дня и уровнях лавина и камни тоже «по зерну» — у всех одинаково, гонка с призраком честная.
@@ -4411,10 +4657,15 @@ const Platform = {
       boulders.rnd = fixed ? makeRng(fixed.seed ^ 0x2545f491) : Math.random;
       if (race) {
         // Трасса гонки: случайная гора, финиш на RACE.len; игрок левее, соперник правее центра.
-        const zone = RACE_ZONES[Math.floor(Math.random() * RACE_ZONES.length)];
-        newWorld({ seed: (Math.random() * 1e9) | 0, zone, diff: race.cfg.world, len: RACE.len, vBonus: 0, intensity: 0.1 });
-        player.x = world.center(player.s) - RACE.laneOffset; player.y = world.height(player.x, player.s); cam.x = player.x;
-        rival.reset(world, raceKey, rideId);
+        const on = race.online ? opts.online : null;
+        const zone = on ? on.zone : RACE_ZONES[Math.floor(Math.random() * RACE_ZONES.length)];
+        if (on) { aval.rnd = makeRng(on.seed ^ 0x5bd1e995); }
+        newWorld({ seed: on ? on.seed : (Math.random() * 1e9) | 0, zone, diff: race.cfg.world, len: RACE.len, vBonus: 0, intensity: 0.1 });
+        // Онлайн: хозяин комнаты слева, гость справа (у обоих одинаково); с ботом — игрок слева.
+        const side = on ? on.side : -1;
+        player.x = world.center(player.s) + side * RACE.laneOffset; player.y = world.height(player.x, player.s); cam.x = player.x;
+        if (on) { rival = remote; remote.ride = RIDES[on.opp.ride] ? on.opp.ride : 'sled'; remote.reset(world, -side); }
+        else { rival = botRival; rival.reset(world, raceKey, rideId); }
         rivalBody.setRide(rival.ride, {});
         rival.syncBody(0);
         aval.surges = false; aval.s = -80;
@@ -4486,6 +4737,8 @@ const Platform = {
       b.onclick = () => startRace(k);
       list.appendChild(b);
     });
+    $('onlineRow').style.display = crew.enabled ? '' : 'none';
+    $('orBot').textContent = crew.enabled ? T('orBot') : '';
     toMenuThen(() => show('raceScr'));
   }
   $('btnRace').onclick = openRace;
@@ -4507,7 +4760,8 @@ const Platform = {
     aval.stop(); boulders.enabled = false;
     $('powers').innerHTML = ''; powersKey = '';
     Platform.gameplayStop();
-    const win = !rival.finished;
+    if (race.online && online) online.sendFin(runTime);
+    const win = race.online ? (!rival.finished || runTime <= rival.finishT) : !rival.finished;
     if (win) { sfx.trick(); sfx.coin(); for (let i = 0; i < 4; i++) emit(player.x + (i - 1.5) * 4, player.y + 5, -(player.s + 3), 20, 9, 6); }
     popup(T('finish'), 'zone');
     bankRun();
@@ -4533,12 +4787,22 @@ const Platform = {
     $('reRivalName').textContent = c.name;
     $('reCoins').textContent = `+${run.earned + r.reward}`;
     lastResult = { finished: r.win, time: r.time, dist: RACE.len, sub: `Race · ${T(race.key)} · vs ${c.name}`, race: r.win ? 'won' : 'lost' };
+    $('reOnline').classList.toggle('on', !!race.online);
+    $('reDiff').textContent = race.online ? T('leave') : T('difficulty');
+    $('reAgain').disabled = false; $('reAgain').textContent = T('rematch');
     $('reNote').textContent = r.first ? `🏆 ${T('firstWin')} +${c.reward}` : r.win ? `🏁 +${r.reward} ${T('winReward')}` : '';
     show('raceEnd');
   }
-  $('reAgain').onclick = async () => { sfx.click(); await Platform.showInterstitial(runTime); startRace(race.key); };
-  $('reDiff').onclick = async () => { await Platform.showInterstitial(runTime); openRace(); };
-  $('reMenu').onclick = async () => { await Platform.showInterstitial(runTime); toMenu(); };
+  $('reAgain').onclick = async () => {
+    sfx.click();
+    if (race && race.online) {
+      if (!online || !online.opp) { toast(T('oppLeft', { name: race.cfg.name })); return; }
+      online.rematch(); $('reAgain').disabled = true; $('reAgain').textContent = T('waitingRematch', { name: race.cfg.name }); return;
+    }
+    await Platform.showInterstitial(runTime); startRace(race.key);
+  };
+  $('reDiff').onclick = async () => { if (race && race.online) { leaveOnline(); openRace(); return; } await Platform.showInterstitial(runTime); openRace(); };
+  $('reMenu').onclick = async () => { if (race && race.online) { leaveOnline(); toMenu(); return; } await Platform.showInterstitial(runTime); toMenu(); };
 
 
   // Уровень: перед первым уровнем горы — короткая история.
@@ -4756,7 +5020,7 @@ const Platform = {
   // Из заезда — сначала вернуть фон меню.
   function toMenuThen(fn) {
     if (state === 'menu') { fn(); return; }
-    fadeThrough(() => { state = 'menu'; level = null; race = null; daily = null; ghostRun = null; recorder = null; ghostRider.stop(); player.setRide(save.ride, save.up); newWorld(null, true); fn(); });
+    fadeThrough(() => { if (online && !(screen === 'onlineScr')) leaveOnline(); state = 'menu'; level = null; race = null; daily = null; ghostRun = null; recorder = null; ghostRider.stop(); player.setRide(save.ride, save.up); newWorld(null, true); fn(); });
   }
   function openMap() { sfx.unlock(); toMenuThen(() => { show('mapScr'); renderMap(); }); }
   $('btnMap').onclick = () => { sfx.click(); openMap(); };
@@ -5223,6 +5487,141 @@ const Platform = {
     try { await navigator.clipboard.writeText(`${d.text} ${d.link}`); toast(T('linkCopied')); } catch (e) { toast(d.link); }
   };
 
+  // ===================== Онлайн-гонка =====================
+  let rtClient = null, online = null, onMode = null, quickT = 0, quickTimer = null, netT = 0, sessionId = 'p' + Math.random().toString(36).slice(2, 10);
+  const rt = () => (rtClient || (rtClient = new RealtimeClient(crew.cfg.url, crew.cfg.key)));
+  function netTick(dt) {
+    netT += dt;
+    if (netT < 1 / NET.hz || !online) return;
+    netT = 0;
+    const c = world.center(player.s);
+    online.sendPos({ s: +player.s.toFixed(2), x: +(player.x - c).toFixed(2), h: +Math.max(0, player.y - world.height(player.x, player.s)).toFixed(2), v: +player.v.toFixed(1), vx: +player.vx.toFixed(2), cr: player.alive ? 0 : 1 });
+  }
+  function respawnOnline() {
+    player.revive(world); aval.pushBack(player, 70);
+    state = 'play'; show(null); Platform.gameplayStart();
+  }
+  function leaveOnline() { clearInterval(quickTimer); quickTimer = null; if (online) online.leave(); online = null; }
+  function onStatus(t) { $('onStatus').textContent = t; }
+  function onlineHooks() {
+    return {
+      start: (p) => {
+        clearInterval(quickTimer); quickTimer = null;
+        const opp = { nick: Nick.ok(Nick.clean(p.opp.nick)) ? Nick.clean(p.opp.nick) : 'Rider', ride: p.opp.ride, oid: p.opp.oid };
+        if (screen === 'onlineScr') onStatus(T('getReady', { name: opp.nick }));
+        startRun(null, 'online', { online: { ...p, opp } });
+      },
+      pos: (p) => { if (race && race.online) remote.push(p, performance.now()); },
+      fin: (t) => { if (race && race.online && !remote.finished) { remote.finished = true; remote.finishT = t; } },
+      left: () => {
+        if (screen === 'onlineScr') { onStatus(onMode === 'friend' ? T('waitingFriend') : T('searching', { s: 0 })); return; }
+        if (race && race.online) { popup(T('oppLeft', { name: race.cfg.name }), 'near'); remote.left = true; $('reAgain').disabled = true; }
+      },
+      rematch: () => { if (screen === 'raceEnd' && race) toast(T('wantsRematch', { name: race.cfg.name })); },
+      full: () => { $('onErr').textContent = T('roomFull'); showOnlineStep('friend'); },
+      blockedMatch: () => { if (onMode === 'quick') setTimeout(() => startOnline(), 1500); },
+      error: () => { $('onErr').textContent = T('onlineOff'); },
+    };
+  }
+  function me() { return { id: sessionId, nick: save.nick || 'Rider', ride: save.ride, oid: Platform.publicId(), blocked: save.onlineBlocked || [] }; }
+  // Экран онлайна: шаг ника (если ещё нет), затем комната друга или поиск соперника.
+  function showOnlineStep(step) {
+    const needNick = !(save.nick && Nick.ok(save.nick) && save.onlineTos);
+    $('onNick').style.display = needNick ? 'block' : 'none';
+    $('onFriend').style.display = step === 'friend' ? 'block' : 'none';
+    $('onWait').style.display = step === 'wait' ? 'block' : 'none';
+    $('onBack').textContent = T(step === 'wait' ? 'cancel' : 'back');
+  }
+  function checkNick() {
+    if (save.nick && Nick.ok(save.nick) && save.onlineTos) return true;
+    const nick = Nick.clean($('onNickIn').value);
+    if (!Nick.ok(nick)) { $('onErr').textContent = T('badNick'); return false; }
+    if (!$('onAgree').checked) { $('onErr').textContent = T('mustAgree'); return false; }
+    save.nick = nick; save.onlineTos = 1; persist(); showOnlineStep(onMode === 'friend' ? 'friend' : 'wait');
+    return true;
+  }
+  function openOnline(mode, code = null) {
+    if (!crew.enabled) { toast(T('onlineOff')); return; }
+    sfx.unlock(); sfx.click(); leaveOnline();
+    onMode = mode;
+    toMenuThen(() => {
+      $('onErr').textContent = ''; $('onCodeBig').textContent = ''; onStatus('');
+      $('onTitle').textContent = mode === 'friend' ? `👫 ${T('raceFriend')}` : `🌐 ${T('onlineRace')}`;
+      $('onNickIn').value = save.nick || ''; $('onAgree').checked = !!save.onlineTos; $('onRules').textContent = T('crewRules');
+      $('onShare').style.display = 'none';
+      show('onlineScr');
+      if (mode === 'quick') { showOnlineStep('friend'); $('onFriend').style.display = 'none'; if (save.nick && save.onlineTos) startOnline(); else { $('onWait').style.display = 'none'; $('onCreate').style.display = ''; quickNickStep(); } }
+      else { showOnlineStep('friend'); if (code) { $('onCode').value = code; if (save.nick && save.onlineTos) joinRoom(code); } }
+    });
+  }
+  // Быстрая игра без ника: показываем только поле ника и кнопку «найти».
+  function quickNickStep() {
+    $('onFriend').style.display = 'block';
+    $('onFriend').querySelector('.ordiv').style.display = 'none'; $('onFriend').querySelector('.joinrow').style.display = 'none';
+    $('onCreate').textContent = `🌐 ${T('onlineRace')}`;
+    $('onCreate').onclick = () => { if (checkNick()) startOnline(); };
+  }
+  function resetFriendUi() {
+    $('onFriend').querySelector('.ordiv').style.display = ''; $('onFriend').querySelector('.joinrow').style.display = '';
+    $('onCreate').textContent = T('createRoom'); $('onCreate').onclick = createRoom;
+  }
+  async function startOnline() {
+    showOnlineStep('wait'); onStatus(T('searching', { s: 0 })); quickT = 0;
+    online = new OnlineSession(rt(), me(), onlineHooks());
+    try { await online.quick(); } catch (e) { $('onErr').textContent = T('onlineOff'); return; }
+    clearInterval(quickTimer);
+    quickTimer = setInterval(() => {
+      quickT++;
+      if (!online || online.started) { clearInterval(quickTimer); return; }
+      if (!online.opp) onStatus(T('searching', { s: quickT }));
+      if (quickT >= NET.quickWait && !online.opp) {
+        // Никого нет — гонка с ботом, чтобы не ждать.
+        leaveOnline(); toast(T('noRivals', { name: RACE.diff.medium.name })); startRace('medium');
+      }
+    }, 1000);
+  }
+  async function createRoom() {
+    if (!checkNick()) return;
+    const code = Match.code();
+    await enterRoom(code, true);
+  }
+  async function joinRoom(code) {
+    if (!checkNick()) return;
+    code = Match.cleanCode(code);
+    if (code.length !== 4) { $('onErr').textContent = T('badRoom'); return; }
+    await enterRoom(code, false);
+  }
+  async function enterRoom(code, mine) {
+    $('onErr').textContent = '';
+    showOnlineStep('wait'); $('onCodeBig').textContent = code; onStatus(mine ? T('waitingFriend') : T('joining'));
+    $('onShare').style.display = mine ? '' : 'none';
+    online = new OnlineSession(rt(), me(), onlineHooks());
+    try { await online.joinRoom(code); } catch (e) { $('onErr').textContent = T('onlineOff'); }
+  }
+  $('btnQuick').onclick = () => openOnline('quick');
+  $('btnFriend').onclick = () => { resetFriendUi(); openOnline('friend'); };
+  $('onCreate').onclick = createRoom;
+  $('onJoin').onclick = () => joinRoom($('onCode').value);
+  $('onCode').oninput = () => { const v = Match.cleanCode($('onCode').value); if (v !== $('onCode').value) $('onCode').value = v; };
+  $('onBack').onclick = () => { sfx.click(); leaveOnline(); resetFriendUi(); openRace(); };
+  $('onShare').onclick = async () => {
+    const code = $('onCodeBig').textContent, link = await Platform.shareLink(code, 'room');
+    const text = `${T('joinRace')} ${code}`;
+    try {
+      if (navigator.share) await navigator.share({ text, url: link || undefined });
+      else { await navigator.clipboard.writeText(link ? `${text} ${link}` : text); toast(T('linkCopied')); }
+    } catch (e) { /* отмена */ }
+  };
+  $('reReport').onclick = async () => {
+    const oid = race && race.online && online && online.opp && online.opp.oid; if (!oid) return;
+    try { await crew.report('ONLINE', oid, 'name'); toast(T('reported')); } catch (e) { toast(T('crewOff')); }
+  };
+  $('reBlock').onclick = () => {
+    const oid = online && online.opp && online.opp.oid; if (!oid) return;
+    save.onlineBlocked = (save.onlineBlocked || []).concat(oid); persist(); toast(T('blockedT'));
+    leaveOnline(); toMenu();
+  };
+
   // ===================== Таблица группы =====================
   let crewTab = 'daily', crewMenuPid = null, forgetArmed = false;
   function openCrew() { sfx.unlock(); sfx.click(); toMenuThen(() => { show('crewScr'); renderCrew(); }); }
@@ -5397,6 +5796,7 @@ const Platform = {
       if (daily && player.alive && state === 'play' && player.s >= daily.lv.len) finishDaily();
       if (race) {
         rival.update(dt, world, player, true); rival.syncBody(dt);
+        if (race.online) netTick(dt);
         raceEvents();
         if (player.alive && state === 'play' && player.s >= RACE.len) finishRace();
       }
@@ -5414,24 +5814,26 @@ const Platform = {
       player.update(dt, input, world, []);
       boulders.update(dt, player, world, []);
       aval.s += aval.v * dt;
-      if (race) { rival.update(dt, world, player, true); rival.syncBody(dt); }
+      if (race) { rival.update(dt, world, player, true); rival.syncBody(dt); if (race.online) netTick(dt); }
       if (ghostRun) ghostRider.update(dt, world);
       updateHud();
-      if (crashTimer > 1.3) { if (daily) showDailyEnd(false); else showOver(); }
+      if (crashTimer > 1.3) { if (race && race.online) respawnOnline(); else if (daily) showDailyEnd(false); else showOver(); }
     } else if (state === 'countdown') {
       const prev = Math.ceil(countT);
       countT -= dt;
       const cur = Math.ceil(countT);
       if (cur !== prev && cur > 0) { showCount(String(cur)); sfx.count(false); }
       if (countT <= 0) { showCount(T('goGo')); sfx.count(true); state = 'play'; runTime = 0; input.clearActions(); Platform.gameplayStart(); }
-      player._animate(dt, 0); rival.syncBody(dt);
+      player._animate(dt, 0);
+      if (race && race.online) { rival.update(dt, world, player, true); netTick(dt); }
+      rival.syncBody(dt);
       updateHud();
     } else if (state === 'finish') {
       finishT += dt;
       player.update(dt, FIN_INPUT, world, []);
       world.update(player.s);
       aval.update(dt, player, []);
-      if (race) { rival.update(dt, world, player, true); rival.syncBody(dt); }
+      if (race) { rival.update(dt, world, player, true); rival.syncBody(dt); if (race.online) netTick(dt); }
       if (ghostRun) ghostRider.update(dt, world);
       updateHud();
       if (finishT > 1.7) { if (race) showRaceEnd(); else if (daily) showDailyEnd(true); else showWin(); }
@@ -5556,7 +5958,9 @@ const Platform = {
     // Новичок сразу попадает в игру: короткая история (одна кнопка) → уровень 1. Подарок дня — со следующего захода.
     const newPlayer = !save.runs && !Object.keys(save.levels).length;
     show('menu');
-    checkChallenge().then((ch) => { if (!ch) { if (newPlayer) playLevel(0); else maybeDaily(); } });
+    const roomLink = Platform.challengeParam('room');
+    if (roomLink && crew.enabled) openOnline('friend', Match.cleanCode(roomLink));
+    else checkChallenge().then((ch) => { if (!ch) { if (newPlayer) playLevel(0); else maybeDaily(); } });
     $('loading').style.display = 'none';
     Platform.gameReady();
     requestAnimationFrame((t) => { last = t; frame(t); });
@@ -5565,7 +5969,7 @@ const Platform = {
   // Для автотестов.
   window.__game = {
     get state() { return state; }, get screen() { return screen; }, player, input, get world() { return world; }, aval, startRun, startEndless, playLevel, openMap,
-    get level() { return level; }, get fading() { return fading; }, get race() { return race; }, rival, startRace, openRace,
+    get level() { return level; }, get fading() { return fading; }, get race() { return race; }, get rival() { return rival; }, remote, get online() { return online; }, openOnline, startRace, openRace,
     get score() { return score(); }, get save() { return save; }, get run() { return run; }, boulders,
     get daily() { return daily; }, startDaily, ghostRider, get ghostRun() { return ghostRun; }, get ghosts() { return ghosts; }, setClip, get clip() { return clip; },
     get timeScale() { return timeScale; }, openShare, openCrew, crew, get lastResult() { return lastResult; },
