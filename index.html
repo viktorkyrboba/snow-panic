@@ -575,7 +575,7 @@
   .onrep .link { font-size:12px; color:#7a8aa0; }
 
   /* ===== v11: магазин, новые транспорты, бусты перед стартом ===== */
-  #shopScr .card { max-width:480px; max-height:calc(100% - 20px); overflow:auto; }
+  #shopScr .card { max-width:480px; max-height:calc(100% - 76px); overflow:auto; margin-top:56px; }
   .shoplist { display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:8px; margin:8px 0; }
   .sitem { position:relative; background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink); padding:10px 8px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; font-weight:800; cursor:pointer; font:inherit; color:var(--ink); }
   .sitem .ic { font-size:38px; line-height:1.1; }
@@ -686,6 +686,51 @@
   @media (min-width:1000px) { .mcards { justify-content:safe center; padding:16px 20px 18px; } .mcard { flex-basis:min(236px, calc((100vw - 104px) / 5)); } .mdots { display:none; } .mbtns .btn { font-size:16px; } }
   @media (max-height:560px) { .mart { height:96px; } .mart .big { font-size:44px; } .cal { transform:translate(-62%,-56%) rotate(-6deg) scale(.7); } .c-endless .inf { font-size:60px; } .msub { min-height:0; font-size:12px; } .mbody { padding:6px 12px 10px; } .mbody > b { font-size:20px; } .mbtns .btn { padding:7px 10px; font-size:16px; } .c-adv .peaks i { border-bottom-width:60px !important; bottom:20px; } .mtitle { font-size:24px; } .mcards { padding-top:8px; padding-bottom:10px; } }
   .uplock { background:#eef3f8; border:2px dashed #9fb7cf; border-radius:14px; padding:12px; font-weight:800; color:#4a6a90; text-align:center; }
+
+  /* ===== v12: кнопка магазина рядом с PLAY, «назад» на экранах ===== */
+  .playrow { display:flex; gap:12px; align-items:center; justify-content:center; margin:8px 0 2px; }
+  .playrow #btnPlay { margin:0; }
+  .btn.shopbig { position:relative; margin:0; min-width:0; padding:12px 18px; font-size:20px; background:linear-gradient(#ffd34d,#ffb703); color:var(--ink); border-color:var(--ink); box-shadow:0 6px 0 var(--ink); transform:skewX(-6deg); flex-direction:column; gap:0; line-height:1; text-shadow:0 1px 0 rgba(255,255,255,.6); }
+  .btn.shopbig > span { transform:skewX(6deg); }
+  .btn.shopbig .sic { font-size:30px; filter:drop-shadow(0 2px 0 rgba(18,48,90,.35)); animation:shopWiggle 3s ease-in-out infinite; }
+  @keyframes shopWiggle { 0%,80%,100% { transform:skewX(6deg) rotate(0); } 85% { transform:skewX(6deg) rotate(-12deg); } 90% { transform:skewX(6deg) rotate(10deg); } 95% { transform:skewX(6deg) rotate(-6deg); } }
+  .btn.shopbig:active { transform:skewX(-6deg) translateY(4px); box-shadow:0 2px 0 var(--ink); }
+  .shopdot { position:absolute; top:-8px; right:-8px; min-width:22px; height:22px; border-radius:11px; background:#ff3b3b; color:#fff; border:2px solid var(--ink); font-size:12px; font-style:normal; display:none; align-items:center; justify-content:center; padding:0 5px; transform:skewX(6deg); }
+  .shopdot.on { display:flex; }
+  @media (max-width:640px) { .btn.shopbig { padding:10px 14px; font-size:16px; } .btn.shopbig .sic { font-size:26px; } }
+  @media (max-height:420px) { .btn.shopbig { padding:6px 12px; font-size:14px; } .btn.shopbig .sic { font-size:20px; } }
+  .card { position:relative; }
+  .cback { position:absolute; top:20px; left:12px; z-index:4; width:40px; height:40px; border-radius:12px; border:3px solid var(--ink); background:#fff; color:var(--ink); font:900 24px/1 system-ui,sans-serif; box-shadow:0 3px 0 var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0 0 3px; }
+  .cback:active { transform:translateY(2px); box-shadow:0 1px 0 var(--ink); }
+  .shead { font-weight:900; font-size:14px; text-align:left; margin:10px 2px 4px; color:var(--ink); opacity:.8; }
+  .sitem.soon { opacity:.75; cursor:default; }
+  .sitem.soon .pr { background:#e3e9f0 !important; color:#4a6a90 !important; }
+  .sitem.earn .pr { background:#7b6cf6; color:#fff; border:2px solid var(--ink); border-radius:12px; padding:2px 10px; }
+  .sitem.earn.ready { background:#fff6d6; }
+
+  /* ===== v12: заставка ===== */
+  #splash { position:fixed; inset:0; z-index:40; display:none; flex-direction:column; align-items:center; justify-content:space-between; padding:max(9vh, env(safe-area-inset-top)) 20px max(7vh, env(safe-area-inset-bottom));
+    background:linear-gradient(180deg, rgba(18,48,90,.55) 0%, rgba(18,48,90,0) 38%, rgba(18,48,90,0) 62%, rgba(18,48,90,.6) 100%); cursor:pointer; transition:opacity .45s, transform .45s; }
+  #splash.on { display:flex; }
+  #splash.out { opacity:0; transform:scale(1.06); pointer-events:none; }
+  .spsnow { position:absolute; inset:0; pointer-events:none; background-image:radial-gradient(circle,#fff 2px,transparent 2.6px),radial-gradient(circle,rgba(255,255,255,.8) 1.4px,transparent 2px); background-size:70px 70px,40px 40px; animation:spSnow 6s linear infinite; opacity:.85; }
+  @keyframes spSnow { to { background-position:-70px 420px, 40px 240px; } }
+  .splogo { position:relative; text-align:center; animation:spIn .9s cubic-bezier(.2,1.5,.4,1) .15s both; }
+  @keyframes spIn { from { transform:scale(.3) rotate(-12deg); opacity:0; } }
+  .sptop { font-size:44px; color:#fff; text-shadow:0 3px 0 var(--ink); animation:spin 6s linear infinite; display:inline-block; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  #splash h1.sph { font-size:clamp(58px,15vw,120px); transform:rotate(-4deg); margin:4px 0 6px; }
+  .sptag { margin-top:10px; color:#fff; font-weight:900; font-size:clamp(16px,4vw,22px); text-shadow:0 2px 0 var(--ink), 0 4px 12px rgba(0,30,80,.5); }
+  .spbottom { position:relative; width:min(320px, 80vw); text-align:center; }
+  .spbar { height:16px; border:3px solid var(--ink); border-radius:12px; background:#fff; overflow:hidden; box-shadow:0 4px 0 var(--ink); }
+  .spbar i { display:block; height:100%; width:0; background:repeating-linear-gradient(-45deg,#ff6a2b 0 12px,#ff8c42 12px 24px); animation:spLoad 1.6s ease-in-out forwards; }
+  @keyframes spLoad { to { width:100%; } }
+  .sptap { margin-top:16px; color:#fff; font-family:var(--disp); font-style:italic; font-size:clamp(22px,5vw,30px); text-shadow:0 3px 0 var(--ink); opacity:0; }
+  #splash.ready .spbar { display:none; }
+  #splash.ready .sptap { opacity:1; animation:tapPulse 1.3s ease-in-out infinite; }
+  @keyframes tapPulse { 50% { transform:scale(1.08); } }
+  #splash.on ~ * #topbar, body:has(#splash.on) #topbar, body:has(#splash.on) #menu { visibility:hidden; }
+  @media (max-height:420px) { #splash { padding-top:4vh; padding-bottom:4vh; } #splash h1.sph { font-size:clamp(44px,11vw,80px); } .sptop { font-size:30px; } }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -717,13 +762,13 @@
 
 <div class="topbar" id="topbar">
   <div class="coin"><i></i><span id="balance">0</span></div>
-  <div style="display:flex;gap:8px"><button class="icon" id="btnShop" aria-label="shop">🛒</button><button class="icon" id="btnClip" aria-label="clip mode">🎬</button><button class="icon" id="btnMusic" aria-label="music">🎵</button><button class="icon" id="btnSound" aria-label="sound">🔊</button></div>
+  <div style="display:flex;gap:8px"><button class="icon" id="btnClip" aria-label="clip mode">🎬</button><button class="icon" id="btnMusic" aria-label="music">🎵</button><button class="icon" id="btnSound" aria-label="sound">🔊</button></div>
 </div>
 
 <div class="screen show" id="menu">
   <h1 data-t="title">Snow Panic</h1>
   <div class="sub" data-t="subtitle"></div>
-  <button class="btn" id="btnPlay"><span data-t="playBig"></span></button>
+  <div class="playrow"><button class="btn" id="btnPlay"><span data-t="playBig"></span></button><button class="btn shopbig" id="btnShop" aria-label="shop"><span class="sic">🛒</span><span data-t="shop"></span><b class="shopdot" id="shopDot"></b></button></div>
   <div class="lvlsub" id="playSub"></div>
   <div class="tiles">
     <button class="tile t-map" id="btnMap"><b>🗺️</b><div data-t="map"></div><span id="tileStars"></span></button>
@@ -731,7 +776,7 @@
     <button class="tile t-mis" id="btnMissions"><b>🎯</b><div data-t="missions"></div><span id="tileMis"></span><div class="badge" id="misBadge"></div></button>
     <button class="tile t-chest" id="btnChest"><b>🎁</b><div data-t="chest"></div><span id="tileChest"></span></button>
   </div>
-  <div class="hint" id="controls"></div>
+  <div class="hint" id="controls" hidden></div>
 </div>
 
 <div class="screen" id="modesScr">
@@ -1002,6 +1047,11 @@
 <div class="toast" id="toast"></div>
 <div id="fade"></div>
 <div id="loading">…</div>
+<div id="splash" class="on">
+  <div class="spsnow"></div>
+  <div class="splogo"><div class="sptop">❄</div><h1 class="sph">Snow Panic</h1><div class="sptag" data-t="subtitle"></div></div>
+  <div class="spbottom"><div class="spbar"><i></i></div><div class="sptap" data-t="tapStart"></div></div>
+</div>
 <div id="nogl">WebGL is not available in this browser.</div>
 
 <script>
@@ -3614,6 +3664,9 @@ class Sfx {
 
 const STRINGS = {
   ru: {
+    tapStart: 'Нажми, чтобы начать',
+    earnFree: 'Монеты бесплатно', coinPacksH: 'Наборы монет', inApp: 'В приложении', chestReadyT: 'Сундук готов!', chestIn: 'Сундук через {t}', missionsT: 'Заданий выполнено: {n} — забери!', missionsIn: 'Выполняй задания за монеты',
+    dailyRunEarn: 'Проедь трассу дня', getApp: 'Наборы монет — в приложении Snow Panic для Android (скоро в Google Play).', open: 'Открыть', go: 'Вперёд',
     buyToUpgrade: 'Купи этот транспорт, чтобы прокачивать его',
     playBig: '▶ ИГРАТЬ', chooseRun: 'Выбери заезд', adventure: 'Приключение', todayTag: 'НОВАЯ', play: 'Играть', onlineSub: 'Гонка с живыми игроками — или позови друга', findRival: 'Найти соперника', withFriend: 'С другом',
     raceBots: 'Гонка с ботами', chooseRival: 'Выбрать соперника', botsSub: '3 соперника · побед: {n}', endlessSub: 'Как далеко уедешь?', newTrackIn: 'Новая трасса через {t}', advSub: 'Уровень {n} · {m} · ⭐ {s}/{t}',
@@ -3724,6 +3777,9 @@ const STRINGS = {
     rivalFinished: '{name} финишировал!', firstWin: 'Бонус за первую победу!', vs: 'против', raceLbl: 'Гонка · {d}', winReward: 'за победу', pisteEasy: 'лёгкий', pisteMid: 'средний', pisteHard: 'сложный',
   },
   en: {
+    tapStart: 'Tap to start',
+    earnFree: 'Earn coins for free', coinPacksH: 'Coin packs', inApp: 'In the app', chestReadyT: 'Chest is ready!', chestIn: 'Next chest in {t}', missionsT: '{n} missions done — collect!', missionsIn: 'Complete missions for coins',
+    dailyRunEarn: 'Play today\'s track', getApp: 'Buy coin packs in the Snow Panic app for Android (soon on Google Play).', open: 'Open', go: 'Go',
     buyToUpgrade: 'Buy this ride to upgrade it',
     playBig: '▶ PLAY', chooseRun: 'Choose your run', adventure: 'Adventure', todayTag: 'NEW TODAY', play: 'Play', onlineSub: 'Race real riders right now — or invite a friend', findRival: 'Find a rival', withFriend: 'With a friend',
     raceBots: 'Race the bots', chooseRival: 'Choose a rival', botsSub: '3 rivals · wins: {n}', endlessSub: 'How far can you go?', newTrackIn: 'New track in {t}', advSub: 'Level {n} · {m} · ⭐ {s}/{t}',
@@ -4935,6 +4991,8 @@ const Platform = {
     $('misBadge').textContent = ready; $('misBadge').classList.toggle('on', ready > 0);
     $('tileMis').textContent = `${save.missions.filter((m) => m.done).length}/${save.missions.length}`;
     updateChestTile();
+    const sd = (Meta.chestLeft(save, Date.now()) <= 0 ? 1 : 0) + Meta.readyMissions(save);
+    $('shopDot').textContent = sd ? '!' : ''; $('shopDot').classList.toggle('on', sd > 0);
   }
   function updateChestTile() {
     const left = Meta.chestLeft(save, Date.now());
@@ -6006,6 +6064,14 @@ const Platform = {
     leaveOnline(); toMenu();
   };
 
+  // Кнопка «‹» в углу карточки на экранах, откуда нужно вернуться: нажимает обычную «назад» экрана.
+  [['shopScr', 'shopBack'], ['missionsScr', 'msBack'], ['raceScr', 'raceBack'], ['onlineScr', 'onBack'], ['crewScr', 'crBack'], ['shareScr', 'shBack']].forEach(([scr, back]) => {
+    const card = $(scr).querySelector('.card'), b = document.createElement('button');
+    b.className = 'cback'; b.setAttribute('aria-label', 'back'); b.textContent = '‹';
+    b.onclick = () => $(back).click();
+    card.insertBefore(b, card.firstChild);
+  });
+
   // ===================== Выбор режима =====================
   function openModes() {
     toMenuThen(() => {
@@ -6132,7 +6198,14 @@ const Platform = {
       }
       return;
     }
-    // Монеты: бесплатные за видео + наборы за деньги (где площадка это поддерживает).
+    // Монеты: бесплатные способы (сундук, задания, трасса дня, видео) + наборы за деньги.
+    const head = (t) => { const h = document.createElement('div'); h.className = 'shead'; h.style.gridColumn = '1 / -1'; h.textContent = t; list.appendChild(h); };
+    head(`🎁 ${T('earnFree')}`);
+    const chestLeft = Meta.chestLeft(save, Date.now());
+    list.appendChild(shopCard('earn' + (chestLeft <= 0 ? ' ready' : ''), '🎁', T('chest'), chestLeft <= 0 ? T('chestReadyT') : T('chestIn', { t: fmtTime(chestLeft) }), T('open'), () => { if (chestLeft <= 0) { show('menu'); $('btnChest').click(); } else toast(T('chestIn', { t: fmtTime(chestLeft) })); }));
+    const ready = Meta.readyMissions(save);
+    list.appendChild(shopCard('earn' + (ready ? ' ready' : ''), '🎯', T('missions'), ready ? T('missionsT', { n: ready }) : T('missionsIn'), T('open'), () => { show('missionsScr'); renderMissions(); }));
+    list.appendChild(shopCard('earn', '🏔️', T('dailyRun'), T('dailyRunEarn'), `▶ ${T('go')}`, () => startDaily()));
     if (Platform.rewardedAvailable) {
       const left = (save.freeCoinsAt || 0) + FREE_EVERY - Date.now();
       list.appendChild(shopCard('coin', '🎬', T('freeCoins'), left > 0 ? T('cooldown', { t: fmtTime(left) }) : T('freeCoinsD'), `▶ +${FREE_COINS}`, async () => {
@@ -6142,6 +6215,7 @@ const Platform = {
       }));
     }
     if (Platform.iapAvailable) {
+      head(`💰 ${T('coinPacksH')}`);
       for (const pk of COIN_PACKS) {
         const p = Platform.product(pk.id); if (!p) continue;
         const price = document.createElement('span');
@@ -6153,7 +6227,12 @@ const Platform = {
         }, pk.tag ? T(pk.tag) : ''));
       }
       $('shopNote').textContent = T('packNote', { p: Platform.iapProvider });
-    } else $('shopNote').textContent = T('noPacks');
+    } else {
+      // Здесь оплаты нет (сайт, CrazyGames): показываем наборы как «в приложении».
+      head(`💰 ${T('coinPacksH')}`);
+      for (const pk of COIN_PACKS) list.appendChild(shopCard('coin soon', pk.coins >= 8000 ? '💰' : pk.coins >= 3000 ? '🪙🪙' : '🪙', T('coinPack', { n: pk.coins }), '', T('inApp'), () => toast(T('getApp')), pk.tag ? T(pk.tag) : ''));
+      $('shopNote').textContent = T('getApp');
+    }
   }
   function creditPack(id) {
     const pk = COIN_PACKS.find((x) => x.id === id); if (!pk) return;
@@ -6500,17 +6579,39 @@ const Platform = {
     applyTexts();
     document.body.classList.toggle('noads', !Platform.rewardedAvailable);
     newWorld(null, true);
-    // Новичок сразу попадает в игру: короткая история (одна кнопка) → уровень 1. Подарок дня — со следующего захода.
+    // Вход: заставка (живая сцена + логотип) → главная страница. Подарок дня — со следующего захода.
     const newPlayer = !save.runs && !Object.keys(save.levels).length;
     show('menu');
     Platform.restorePurchases(creditPack);
-    const roomLink = Platform.challengeParam('room');
-    if (roomLink && crew.enabled) openOnline('friend', Match.cleanCode(roomLink));
-    else checkChallenge().then((ch) => { if (!ch) { if (newPlayer) playLevel(0); else maybeDaily(); } });
+    const afterSplash = () => {
+      const roomLink = Platform.challengeParam('room');
+      if (roomLink && crew.enabled) openOnline('friend', Match.cleanCode(roomLink));
+      else checkChallenge().then((ch) => { if (!ch && !newPlayer) maybeDaily(); });
+    };
     $('loading').style.display = 'none';
     Platform.gameReady();
     requestAnimationFrame((t) => { last = t; frame(t); });
+    runSplash(afterSplash);
   });
+
+  // Заставка: полный экран — живая сцена игры, логотип, полоса загрузки, «нажми, чтобы начать».
+  // В автотестах (navigator.webdriver) пропускается, если в адресе нет ?splash.
+  function runSplash(done) {
+    const el = $('splash');
+    if (navigator.webdriver && !/[?&]splash/.test(location.search)) { el.remove(); done(); return; }
+    el.classList.add('on');
+    setTimeout(() => el.classList.add('ready'), 1700);
+    let closed = false;
+    const go = (e) => {
+      if (closed || !el.classList.contains('ready')) return;
+      closed = true; if (e) e.preventDefault();
+      sfx.unlock(); sfx.click(); sfx.music.play('menu');
+      el.classList.add('out');
+      setTimeout(() => { el.remove(); done(); }, 450);
+    };
+    el.addEventListener('pointerdown', go);
+    window.addEventListener('keydown', function k(e) { if (!closed && el.classList.contains('ready')) { window.removeEventListener('keydown', k); go(e); } });
+  }
 
   // Для автотестов.
   window.__game = {
