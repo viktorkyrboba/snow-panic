@@ -4169,7 +4169,9 @@ class OnlineSession {
       const pair = Match.pairs(mem, this.blocked).find(([a, b]) => a.id === this.me.id || b.id === this.me.id);
       if (!pair || this.code) return;
       const code = Match.roomFor(pair[0].id, pair[1].id);
-      this.lobby.leave(); this.lobby = null;
+      // Stay visible in the lobby a few seconds more: the partner must still see us there to pick the same pair.
+      const lob = this.lobby; lob.onPresence = null; this.lobby = null;
+      setTimeout(() => lob.leave(), 4000);
       this.joinRoom(code).catch(() => this.h.error && this.h.error());
     };
     await ch.join();
