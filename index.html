@@ -810,6 +810,154 @@
   .prephead b, .gname, .maphead, .mtn .mh, .ropt b { color:inherit; }
   .rplace { text-shadow:0 3px 0 #c47f00, 0 8px 16px rgba(140,80,0,.3); }
   .bigcode { border:0; box-shadow:0 6px 0 #c47f00, 0 12px 22px rgba(140,80,0,.25); background:linear-gradient(#ffe57e,#ffc21d); }
+
+  /* ===== v15: большой магазин — полноэкранный, вкладки, акции, анимации ===== */
+  #shopScr { padding:0; align-items:stretch; justify-content:stretch;
+    background:radial-gradient(120% 70% at 50% 0%, #6f8dff 0%, #4a5ee8 38%, #2c2f9e 100%); }
+  .shopwrap { position:relative; display:flex; flex-direction:column; width:100%; max-width:560px; margin:0 auto; height:100%;
+    padding:calc(10px + env(safe-area-inset-top)) 12px calc(8px + env(safe-area-inset-bottom)); }
+  #shopScr::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.22;
+    background-image:radial-gradient(circle,#fff 1.5px,transparent 2px),radial-gradient(circle,#fff 1px,transparent 1.5px);
+    background-size:46px 46px,23px 23px; background-position:0 0,11px 17px; animation:snowfall 9s linear infinite; }
+  @keyframes snowfall { to { background-position:0 460px,11px 247px; } }
+  .shophead { display:flex; align-items:center; gap:10px; margin-bottom:10px; position:relative; z-index:1; }
+  .shophead .cback { position:static; flex:none; }
+  .shoptitle { flex:1; font-family:var(--disp); font-size:30px; color:#fff; text-shadow:0 3px 0 #1c2a8a, 0 8px 18px rgba(0,0,40,.4); letter-spacing:.5px; }
+  .shoptitle span { display:inline-block; animation:wob 2.4s ease-in-out infinite; }
+  @keyframes wob { 0%,100% { transform:rotate(-8deg); } 50% { transform:rotate(8deg) translateY(-2px); } }
+  .shopbal { display:flex; align-items:center; gap:6px; background:rgba(0,0,40,.35); border-radius:999px; padding:6px 14px 6px 8px; color:#fff; font-weight:900; font-size:19px; box-shadow:inset 0 2px 4px rgba(0,0,0,.25); }
+  .shopbal.bump { animation:balbump .45s cubic-bezier(.2,1.8,.4,1); }
+  @keyframes balbump { 40% { transform:scale(1.18); } }
+  i.cn { display:inline-block; width:20px; height:20px; border-radius:50%; flex:none;
+    background:radial-gradient(circle at 35% 30%,#fff6b0 0 18%,#ffd23f 40%,#f2a900 75%); box-shadow:inset 0 -2px 0 rgba(150,90,0,.45), 0 1px 2px rgba(0,0,0,.25); }
+  .shoptabs { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; background:rgba(0,0,40,.28); padding:5px; border-radius:20px; position:relative; z-index:1; }
+  .shoptabs button { position:relative; border:0; background:transparent; color:#dfe6ff; font:inherit; font-weight:900; font-size:13px; border-radius:15px; padding:7px 2px 6px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:1px; transition:transform .15s; }
+  .shoptabs button span { font-size:22px; line-height:1; transition:transform .25s cubic-bezier(.2,1.8,.4,1); }
+  .shoptabs button.on { background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#ffd84d,#ffa400); color:#6a3a00; box-shadow:0 4px 0 #c47800, 0 8px 16px rgba(0,0,0,.25); }
+  .shoptabs button.on span { transform:scale(1.2) rotate(-6deg); }
+  .shoptabs button:active { transform:scale(.95); }
+  #shTabBoosts[data-n]:not([data-n=""])::after { content:attr(data-n); position:absolute; top:-5px; right:2px; background:#ff3b5c; color:#fff; font-size:11px; border-radius:10px; padding:1px 6px; box-shadow:0 2px 4px rgba(0,0,0,.3); }
+  .shopbody { flex:1; overflow-y:auto; overflow-x:hidden; margin:10px -12px 0; padding:4px 12px 16px; position:relative; z-index:1; -webkit-overflow-scrolling:touch; }
+  .shopbody > * { animation:shopIn .45s cubic-bezier(.2,1.3,.4,1) both; animation-delay:calc(var(--i,0) * 55ms); }
+  @keyframes shopIn { from { opacity:0; transform:translateY(18px) scale(.96); } }
+  #shopScr .shopnote { color:#cdd6ff; font-size:11px; font-weight:700; text-align:center; padding:4px 10px 0; position:relative; z-index:1; }
+  #shopScr .shead { color:#fff; opacity:1; font-size:16px; margin:16px 4px 8px; font-family:var(--disp); text-shadow:0 2px 0 rgba(0,0,40,.35); }
+  /* кнопки цены */
+  .pbtn { position:relative; border:0; cursor:pointer; font:inherit; font-weight:900; font-size:17px; border-radius:14px; padding:8px 14px; color:#fff; display:inline-flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; transition:transform .1s; line-height:1.1; }
+  .pbtn:active { transform:translateY(3px); }
+  .pbtn.coins { background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#ffd84d,#ffa400); color:#5a3000; box-shadow:0 4px 0 #c47800, 0 6px 12px rgba(150,80,0,.25); }
+  .pbtn.coins.poor { filter:saturate(.35); opacity:.8; }
+  .pbtn.coins.armed { background:linear-gradient(180deg,#7ee88a,#1fa448); color:#fff; box-shadow:0 4px 0 #14783a; animation:armP .6s ease-in-out infinite alternate; }
+  @keyframes armP { to { transform:scale(1.06); } }
+  .pbtn.money { background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#5ef08a,#18b24e); box-shadow:0 4px 0 #0e7a35, 0 6px 14px rgba(0,80,30,.3); }
+  .pbtn.money small { flex-basis:100%; font-size:10px; opacity:.85; font-weight:800; }
+  .pbtn.money img { width:16px; height:16px; }
+  .pbtn.money.big { font-size:24px; padding:10px 26px; border-radius:18px; animation:pricePulse 1.4s ease-in-out infinite; }
+  @keyframes pricePulse { 50% { transform:scale(1.07); } }
+  .pbtn.equip { background:linear-gradient(180deg,#63bcff,#1f74d8); box-shadow:0 4px 0 #14529c; }
+  .pbtn.riding { background:#e3f7ea; color:#1b7a43; box-shadow:none; }
+  /* блик, бегущий по карточке */
+  .shine { position:absolute; inset:0; overflow:hidden; border-radius:inherit; pointer-events:none; }
+  .shine::after { content:''; position:absolute; top:-20%; bottom:-20%; width:38%; left:-60%; transform:skewX(-20deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent); animation:shine 3.4s ease-in-out infinite; }
+  @keyframes shine { 0%,55% { left:-60%; } 100% { left:140%; } }
+  .burst { position:absolute; left:50%; top:46%; width:640px; height:640px; margin:-320px 0 0 -320px; pointer-events:none; opacity:.35;
+    background:repeating-conic-gradient(rgba(255,255,255,.55) 0 10deg, transparent 10deg 24deg); animation:spin 16s linear infinite;
+    -webkit-mask:radial-gradient(circle,#000 10%,transparent 62%); mask:radial-gradient(circle,#000 10%,transparent 62%); }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .offbadge { position:absolute; top:-8px; right:-6px; z-index:3; background:linear-gradient(180deg,#ff6b6b,#e1173a); color:#fff; font-weight:900; font-size:20px; padding:6px 10px; border-radius:14px; transform:rotate(10deg); box-shadow:0 4px 0 #a00d27, 0 8px 14px rgba(0,0,0,.25); animation:badgeW 1.8s ease-in-out infinite; }
+  .offbadge.sm { font-size:14px; padding:3px 8px; border-radius:10px; top:-7px; right:-5px; }
+  @keyframes badgeW { 50% { transform:rotate(4deg) scale(1.08); } }
+  /* герой: стартовый набор */
+  .hero { position:relative; overflow:hidden; border-radius:26px; padding:16px 16px 14px; color:#fff; text-align:center; margin-top:6px;
+    background:linear-gradient(160deg,#ff9a3c 0%,#ff4f7b 55%,#b33cff 100%); box-shadow:0 0 0 3px rgba(255,255,255,.55), 0 16px 34px rgba(30,0,60,.45); }
+  .hero > *:not(.burst):not(.shine):not(.offbadge) { position:relative; z-index:1; }
+  .hero .offbadge { top:10px; right:10px; font-size:24px; }
+  #shopScr .bxcard.mega .offbadge { top:8px; right:8px; }
+  .hribbon { display:inline-block; background:rgba(0,0,0,.25); border-radius:999px; padding:3px 12px; font-size:12px; font-weight:900; letter-spacing:1px; text-transform:uppercase; }
+  .htitle { font-family:var(--disp); font-size:34px; line-height:1.05; margin-top:6px; text-shadow:0 3px 0 rgba(120,0,60,.5), 0 8px 18px rgba(0,0,0,.3); }
+  .hsub { font-weight:800; font-size:13px; opacity:.95; margin-top:3px; }
+  .pkitems { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:12px 0 10px; }
+  .pki { min-width:62px; height:62px; border-radius:18px; background:rgba(255,255,255,.92); display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 4px 0 rgba(0,0,0,.15); color:#3a2a6a; animation:bob 2.2s ease-in-out infinite; padding:0 6px; }
+  .pki:nth-child(2) { animation-delay:.3s; } .pki:nth-child(3) { animation-delay:.6s; } .pki:nth-child(4) { animation-delay:.9s; } .pki:nth-child(5) { animation-delay:1.2s; }
+  .pki b { font-size:30px; line-height:1; font-weight:400; }
+  .pki em { font-style:normal; font-weight:900; font-size:12px; }
+  .pki.got { opacity:.45; }
+  @keyframes bob { 50% { transform:translateY(-5px); } }
+  .hfoot, .pfoot { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .hworth { font-weight:900; font-size:13px; text-align:left; opacity:.95; }
+  /* акция дня */
+  .deal { position:relative; overflow:hidden; margin-top:14px; border-radius:22px; padding:12px; color:#fff; background:linear-gradient(150deg,#22c1c3,#1a7fd6); box-shadow:0 0 0 3px rgba(255,255,255,.45), 0 12px 26px rgba(0,0,40,.35); display:flex; flex-direction:column; gap:8px; }
+  .deal.r-legend { background:linear-gradient(150deg,#ffb52e,#ff6a00); } .deal.r-epic { background:linear-gradient(150deg,#b46cff,#6a3df0); } .deal.r-rare { background:linear-gradient(150deg,#34d399,#0f9f6e); }
+  .dhead { display:flex; justify-content:space-between; align-items:center; font-weight:900; font-size:15px; position:relative; z-index:1; }
+  .timer { background:rgba(0,0,0,.28); border-radius:10px; padding:3px 9px; font-variant-numeric:tabular-nums; font-size:14px; }
+  .dmid { display:flex; align-items:center; gap:12px; text-align:left; position:relative; z-index:1; }
+  .dic { font-size:56px; width:78px; height:78px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.22); border-radius:22px; animation:bob 2s ease-in-out infinite; flex:none; }
+  .dinfo b { font-size:20px; font-family:var(--disp); display:block; } .dinfo small { font-weight:700; font-size:12px; opacity:.92; display:block; }
+  .dprice { margin-top:4px; font-weight:900; } .dprice s { opacity:.75; }
+  .offsm { background:#ff2d55; border-radius:8px; padding:1px 6px; font-size:12px; }
+  .deal > .pbtn { position:relative; z-index:1; align-self:stretch; font-size:20px; }
+  /* бесплатное */
+  .freerow { display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:8px; }
+  .free { position:relative; border:0; cursor:pointer; font:inherit; border-radius:18px; padding:10px 6px 9px; background:rgba(255,255,255,.14); color:#fff; display:flex; flex-direction:column; align-items:center; gap:2px; box-shadow:inset 0 0 0 2px rgba(255,255,255,.25); }
+  .free .fic { font-size:30px; line-height:1.1; } .free b { font-weight:900; font-size:15px; } .free small { font-size:11px; font-weight:700; opacity:.85; }
+  .free.ready { background:linear-gradient(180deg,#ffe36e,#ffb300); color:#6a3a00; box-shadow:0 4px 0 #c47f00, 0 0 0 0 rgba(255,210,60,.7); animation:readyGlow 1.6s ease-out infinite; }
+  .free.ready .fic { animation:wob 1.2s ease-in-out infinite; }
+  @keyframes readyGlow { 70% { box-shadow:0 4px 0 #c47f00, 0 0 0 10px rgba(255,210,60,0); } }
+  /* наборы */
+  .pack { position:relative; overflow:hidden; margin-bottom:12px; border-radius:22px; padding:12px; color:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.4), 0 12px 24px rgba(0,0,40,.35); overflow:visible; }
+  .pack .shine { border-radius:22px; }
+  .p-party { background:linear-gradient(150deg,#ff7eb3,#ff4e8a 50%,#ff8a3d); }
+  .p-speed { background:linear-gradient(150deg,#4facfe,#2b5ce6 60%,#7b2ff7); }
+  .p-all { background:linear-gradient(150deg,#ffd86b,#f7971e 45%,#e1306c); }
+  .pack.done { filter:saturate(.5); }
+  .phead { display:flex; align-items:center; gap:10px; text-align:left; position:relative; z-index:1; }
+  .phead .part { font-size:34px; width:52px; height:52px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.22); border-radius:16px; flex:none; animation:wob 2.6s ease-in-out infinite; }
+  .phead b { font-family:var(--disp); font-size:21px; display:block; text-shadow:0 2px 0 rgba(0,0,0,.18); } .phead small { font-weight:700; font-size:12px; opacity:.95; }
+  .pack .pkitems { justify-content:flex-start; margin:10px 0 8px; position:relative; z-index:1; } .pack .pki { min-width:52px; height:52px; } .pack .pki b { font-size:26px; }
+  .pfoot { position:relative; z-index:1; } .pdone { font-weight:900; }
+  /* транспорт */
+  .ridegrid, .boxgrid, .coingrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  #shopScr .sitem { position:relative; border-radius:22px; padding:10px 8px 10px; gap:3px; color:#22305a; background:linear-gradient(180deg,#ffffff,#eef3ff) !important; box-shadow:0 5px 0 rgba(0,0,40,.25), 0 10px 20px rgba(0,0,40,.25) !important; overflow:visible; cursor:pointer; }
+  #shopScr .sitem .ic { font-size:46px; line-height:1.15; animation:bob 2.4s ease-in-out infinite; }
+  #shopScr .sitem .nm { font-size:16px; font-family:var(--disp); }
+  #shopScr .sitem .ds { font-size:11px; min-height:2.6em; }
+  #shopScr .sitem .pbtn { align-self:stretch; margin-top:3px; }
+  .rcard .rar { font-size:10px; font-weight:900; letter-spacing:1px; text-transform:uppercase; padding:2px 8px; border-radius:8px; color:#fff; background:#8aa0c0; }
+  #shopScr .rcard.r-common { background:linear-gradient(180deg,#ffffff,#e8f2ff) !important; }
+  #shopScr .rcard.r-rare .rar { background:#18b24e; } #shopScr .rcard.r-rare { background:linear-gradient(180deg,#ffffff,#e3fbea) !important; }
+  #shopScr .rcard.r-epic .rar { background:#8a4dff; } #shopScr .rcard.r-epic { background:linear-gradient(180deg,#ffffff,#efe6ff) !important; }
+  #shopScr .rcard.r-legend .rar { background:linear-gradient(90deg,#ffb300,#ff5a00); } #shopScr .rcard.r-legend { background:linear-gradient(180deg,#fffaf0,#ffe9c2) !important; box-shadow:0 0 0 2px #ffc23a, 0 5px 0 rgba(150,80,0,.35), 0 10px 22px rgba(255,150,0,.3) !important; }
+  #shopScr .rcard.r-start .rar { background:#5aa0e0; }
+  #shopScr .rcard.sel { box-shadow:0 0 0 3px #2fd06a, 0 5px 0 rgba(0,0,40,.25) !important; }
+  .inpack { border:0; background:none; font:inherit; font-size:11px; font-weight:800; color:#d0367a; cursor:pointer; padding:2px 0 0; text-decoration:underline; }
+  /* бусты */
+  .invbar { display:flex; align-items:center; gap:6px; flex-wrap:wrap; background:rgba(255,255,255,.14); border-radius:18px; padding:8px 10px; color:#fff; margin-top:4px; }
+  .invt { font-weight:900; font-size:13px; flex-basis:100%; text-align:left; }
+  .invi { flex:1; display:flex; align-items:center; justify-content:center; gap:4px; background:rgba(0,0,40,.25); border-radius:12px; padding:5px; font-size:20px; opacity:.6; }
+  .invi.has { opacity:1; background:rgba(255,255,255,.25); } .invi b { font-size:15px; }
+  .boosthint { color:#dfe6ff; font-size:12px; font-weight:700; margin:8px 4px 10px; text-align:center; }
+  .bxcard .qty { font-weight:900; font-size:15px; color:#7b2ff7; }
+  .bxcard .was { font-size:12px; opacity:.6; font-weight:800; }
+  .bxcard .ic { font-size:36px !important; letter-spacing:-4px; }
+  #shopScr .bxcard.mega { grid-column:1 / -1; overflow:hidden; background:linear-gradient(150deg,#8a4dff,#4a2ad8) !important; color:#fff; }
+  .bxcard.mega .qty { color:#ffe36e; } .bxcard.mega .ic { font-size:44px !important; letter-spacing:2px; }
+  .bxcard.mega > *:not(.burst):not(.shine):not(.offbadge) { position:relative; z-index:1; }
+  .bxcard.mega .offbadge { z-index:3; }
+  /* монеты */
+  .ccard .pile { font-size:30px; letter-spacing:-12px; padding-right:12px; animation:bob 2.2s ease-in-out infinite; line-height:1.4; }
+  .ccard .amt { font-family:var(--disp); font-size:26px; color:#b06a00; }
+  .ccard .bonus { font-size:11px; font-weight:800; opacity:.75; min-height:2.4em; }
+  .ccard .bonusb { position:absolute; top:8px; left:8px; background:#18b24e; color:#fff; font-weight:900; font-size:12px; border-radius:8px; padding:1px 6px; }
+  .ccard .ctag { position:absolute; top:-9px; right:-4px; z-index:2; background:linear-gradient(180deg,#ff6b6b,#e1173a); color:#fff; font-size:11px; font-weight:900; padding:2px 8px; border-radius:10px; transform:rotate(6deg); box-shadow:0 2px 0 #a00d27; }
+  #shopScr .ccard.c2 { background:linear-gradient(180deg,#fffaf0,#ffe9c2) !important; box-shadow:0 0 0 2px #ffc23a, 0 5px 0 rgba(150,80,0,.35) !important; }
+  .ccard .shine { border-radius:22px; }
+  /* летящие монеты */
+  .flycoin { position:fixed; z-index:200; font-size:26px; pointer-events:none; margin:-13px 0 0 -13px; animation:fly .9s cubic-bezier(.5,-0.4,.6,1) both; }
+  @keyframes fly { 0% { transform:translate(0,0) scale(.4); opacity:0; } 15% { transform:translate(0,-30px) scale(1.2); opacity:1; } 100% { transform:translate(var(--dx),var(--dy)) scale(.6); opacity:.9; } }
+  .pitem.have { box-shadow:0 0 0 2px #8a4dff, 0 3px 0 rgba(0,0,0,.2) !important; }
+  .pitem .pr.own { background:linear-gradient(180deg,#b46cff,#7b2ff7) !important; color:#fff; }
+  @media (prefers-reduced-motion: reduce) { .shine::after, .burst, .pki, .offbadge, .pbtn.money.big, #shopScr::before { animation:none !important; } }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1053,12 +1201,20 @@
 </div>
 
 <div class="screen" id="shopScr">
-  <div class="card" style="--band:var(--gold)">
-    <h2>🛒 <span data-t="shop"></span></h2>
-    <div class="tabs"><button id="shTabRides" class="on" data-t="rides"></button><button id="shTabCoins" data-t="coinsTab"></button></div>
-    <div class="shoplist" id="shopList"></div>
+  <div class="shopwrap">
+    <div class="shophead">
+      <button class="cback" id="shopBack" aria-label="back">‹</button>
+      <div class="shoptitle"><span>🛒</span> <b data-t="shop"></b></div>
+      <div class="shopbal"><i class="cn"></i><span id="shopCoins">0</span></div>
+    </div>
+    <div class="shoptabs">
+      <button id="shTabDeals" class="on"><span>🔥</span><b data-t="deals"></b></button>
+      <button id="shTabRides"><span>🛷</span><b data-t="rides"></b></button>
+      <button id="shTabBoosts"><span>⚡</span><b data-t="boostsTab"></b></button>
+      <button id="shTabCoins"><span>🪙</span><b data-t="coinsTab"></b></button>
+    </div>
+    <div class="shopbody" id="shopList"></div>
     <div class="shopnote" id="shopNote"></div>
-    <button class="btn ghost" id="shopBack" data-t="back"></button>
   </div>
 </div>
 
@@ -3757,6 +3913,14 @@ class Sfx {
 const STRINGS = {
   ru: {
     tapStart: 'Нажми, чтобы начать',
+    deals: 'Акции', boostsTab: 'Бусты', oneTime: 'Только один раз', worth: 'Ценность: {n} монет', dealDay: 'Акция дня', bundles: 'Наборы',
+    pk_starter: 'Стартовый набор', pkd_starter: 'Сноуборд + Ванна + 2 000 монет + 20 бустов', pk_party: 'Весёлый набор', pkd_party: 'Тележка + Диван + 1 500 монет',
+    pk_speed: 'Скоростной набор', pkd_speed: 'Лыжи + Ракетные сани + 2 500 монет', pk_all: 'Всё и сразу', pkd_all: 'Весь транспорт + 10 000 монет + 40 бустов',
+    purchased: 'Куплено', videosLeft: 'Осталось сегодня: {n}', comeTomorrow: 'Ещё завтра', collectN: 'Забери {n}!', riding: 'Едешь', needMore: 'Не хватает {n} монет',
+    rar_start: 'Стартовый', rar_common: 'Обычный', rar_rare: 'Редкий', rar_epic: 'Эпический', rar_legend: 'Легендарный', inPack: 'Дешевле в «{p}»',
+    yourBoosts: 'Твои бусты', boostHint: 'Запасись и включай перед любым заездом — без монет на старте.', megaBox: 'Мега-ящик бустов', megaBoxD: 'Все четыре буста',
+    each: 'каждого', bd_boost: 'Взлёт со старта', bd_shield: '+1 удар на заезд', bd_magnet: 'Тянет монеты 20 с', bd_spring: 'Двойной прыжок 15 с',
+    coinsW: 'монет', bonusW: 'бонус', packsBetter: '💡 Наборы во вкладке «Акции» — самые выгодные.',
     earnFree: 'Монеты бесплатно', coinPacksH: 'Наборы монет', inApp: 'В приложении', chestReadyT: 'Сундук готов!', chestIn: 'Сундук через {t}', missionsT: 'Заданий выполнено: {n} — забери!', missionsIn: 'Выполняй задания за монеты',
     dailyRunEarn: 'Проедь трассу дня', getApp: 'Наборы монет — в приложении Snow Panic для Android (скоро в Google Play).', open: 'Открыть', go: 'Вперёд',
     buyToUpgrade: 'Купи этот транспорт, чтобы прокачивать его',
@@ -3870,6 +4034,14 @@ const STRINGS = {
   },
   en: {
     tapStart: 'Tap to start',
+    deals: 'Deals', boostsTab: 'Boosts', oneTime: 'One-time offer', worth: 'Worth {n} coins', dealDay: 'Deal of the day', bundles: 'Bundles',
+    pk_starter: 'Starter Pack', pkd_starter: 'Snowboard + Bathtub + 2,000 coins + 20 boosts', pk_party: 'Party Pack', pkd_party: 'Shopping cart + Sofa + 1,500 coins',
+    pk_speed: 'Speed Pack', pkd_speed: 'Skis + Rocket sled + 2,500 coins', pk_all: 'Everything Pack', pkd_all: 'All 7 rides + 10,000 coins + 40 boosts',
+    purchased: 'Purchased', videosLeft: '{n} left today', comeTomorrow: 'More tomorrow', collectN: 'Collect {n}!', riding: 'Riding', needMore: 'Need {n} more coins',
+    rar_start: 'Starter', rar_common: 'Common', rar_rare: 'Rare', rar_epic: 'Epic', rar_legend: 'Legendary', inPack: 'Cheaper in {p}',
+    yourBoosts: 'Your boosts', boostHint: 'Stock up and use them before any run — no coins needed at the start.', megaBox: 'Mega Boost Box', megaBoxD: 'All four boosts',
+    each: 'each', bd_boost: 'Blast off at the start', bd_shield: '+1 hit for a run', bd_magnet: 'Pulls coins for 20 s', bd_spring: 'Double jump for 15 s',
+    coinsW: 'coins', bonusW: 'bonus', packsBetter: '💡 Bundles in Deals give the most for your money.',
     earnFree: 'Earn coins for free', coinPacksH: 'Coin packs', inApp: 'In the app', chestReadyT: 'Chest is ready!', chestIn: 'Next chest in {t}', missionsT: '{n} missions done — collect!', missionsIn: 'Complete missions for coins',
     dailyRunEarn: 'Play today\'s track', getApp: 'Buy coin packs in the Snow Panic app for Android (soon on Google Play).', open: 'Open', go: 'Go',
     buyToUpgrade: 'Buy this ride to upgrade it',
@@ -4011,6 +4183,51 @@ const MISSION_POOL = [
   { type: 'powers', targets: [3, 6, 10], reward: (t) => t * 15 + 40 },
 ];
 
+// ===== Экономика магазина =====
+// usd — рекомендуемые цены для Play Console / Яндекса. Правило: наборы всегда выгоднее любых монет,
+// а крупные пачки монет выгоднее мелких — тогда покупка «по частям» никогда не лучше набора.
+const BOOST_PRICE = { boost: 60, shield: 80, magnet: 50, spring: 40 };
+const ALL5 = { boost: 5, shield: 5, magnet: 5, spring: 5 }, ALL10 = { boost: 10, shield: 10, magnet: 10, spring: 10 };
+const SHOP = {
+  coins: [
+    { id: 'coins_s', coins: 1000, bonus: 0, usd: 0.99 },
+    { id: 'coins_m', coins: 3000, bonus: 600, usd: 2.49, tag: 'popular' },
+    { id: 'coins_l', coins: 8000, bonus: 4000, usd: 5.99, tag: 'bestValue' },
+  ],
+  packs: [
+    { id: 'pack_starter', usd: 0.99, rides: ['board', 'tub'], coins: 2000, inv: ALL5, theme: 'starter' },
+    { id: 'pack_party', usd: 2.99, rides: ['cart', 'sofa'], coins: 1500, inv: {}, theme: 'party' },
+    { id: 'pack_speed', usd: 3.99, rides: ['skis', 'rocket'], coins: 2500, inv: {}, theme: 'speed' },
+    { id: 'pack_all', usd: 9.99, rides: ['sled', 'board', 'tub', 'skis', 'cart', 'sofa', 'rocket'], coins: 10000, inv: ALL10, theme: 'all' },
+  ],
+  boxes: [
+    { id: 'bx_mega', inv: ALL5, price: 760, mega: true },
+    { id: 'bx_shield', inv: { shield: 5 }, price: 320 },
+    { id: 'bx_boost', inv: { boost: 5 }, price: 240 },
+    { id: 'bx_magnet', inv: { magnet: 5 }, price: 200 },
+    { id: 'bx_spring', inv: { spring: 5 }, price: 160 },
+  ],
+  dealOff: 0.3, adCoins: 100, adPerDay: 5,
+  get ids() { return this.coins.map((c) => c.id).concat(this.packs.map((p) => p.id)); },
+  find(id) { return this.coins.find((c) => c.id === id) || this.packs.find((p) => p.id === id) || null; },
+  isPack(id) { return this.packs.some((p) => p.id === id); },
+  // Лучший курс монет за $ среди пачек — от него считаются честные скидки наборов.
+  bestRate() { return Math.max(...this.coins.map((c) => (c.coins + c.bonus) / c.usd)); },
+  invValue(inv) { let v = 0; for (const k in inv || {}) v += (BOOST_PRICE[k] || 0) * inv[k]; return v; },
+  // Ценность набора в монетах (транспорт, которого ещё нет, + монеты + бусты).
+  packValue(pk, owned = []) { return pk.coins + this.invValue(pk.inv) + pk.rides.filter((r) => !owned.includes(r)).reduce((a, r) => a + RIDES[r].price, 0); },
+  packOff(pk, owned = []) { return Math.max(0, Math.round((1 - pk.usd / (this.packValue(pk, owned) / this.bestRate())) * 100)); },
+  boxOff(bx) { return Math.max(0, Math.round((1 - bx.price / this.invValue(bx.inv)) * 100)); },
+  // Акция дня: транспорт, которого нет, со скидкой 30 % (меняется в полночь UTC).
+  deal(save, dayKey) {
+    const ids = Object.keys(RIDES).filter((id) => RIDES[id].price > 0 && !save.owned.includes(id));
+    if (!ids.length) return null;
+    let h = 0; for (const ch of dayKey) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    const id = ids[h % ids.length], full = RIDES[id].price;
+    return { id, full, price: Math.round(full * (1 - this.dealOff) / 50) * 50 };
+  },
+};
+
 const Meta = {
   defaults() {
     return {
@@ -4021,6 +4238,7 @@ const Meta = {
       runs: 0,
       levels: {}, story: [], ended: false, race: { easy: 0, medium: 0, hard: 0 },
       nick: '', dstreak: { last: '', streak: 0, bestStreak: 0 }, dbest: { key: '', r: null }, crew: null, crewBlocked: [], clipHint: false,
+      inv: { boost: 0, shield: 0, magnet: 0, spring: 0 }, bought: [], dealDay: '', adCoins: { day: '', n: 0 },
     };
   },
 
@@ -4028,6 +4246,9 @@ const Meta = {
     const d = this.defaults(), s = Object.assign(d, save || {});
     s.up = Object.assign(this.defaults().up, s.up || {});
     s.daily = Object.assign(this.defaults().daily, s.daily || {});
+    s.inv = Object.assign(this.defaults().inv, s.inv || {});
+    if (!Array.isArray(s.bought)) s.bought = [];
+    if (!s.adCoins || typeof s.adCoins !== 'object') s.adCoins = { day: '', n: 0 };
     if (!Array.isArray(s.owned) || !s.owned.includes('tube')) s.owned = ['tube'].concat(Array.isArray(s.owned) ? s.owned : []);
     s.owned = s.owned.filter((id) => RIDES[id]);
     if (!s.owned.includes(s.ride)) s.ride = 'tube';
@@ -4081,6 +4302,42 @@ const Meta = {
     const r = RIDES[id];
     if (!r || save.owned.includes(id) || save.coins < r.price) return false;
     save.coins -= r.price; save.owned.push(id); save.ride = id; save.ups = save.ups || {}; save.ups[id] = save.ups[id] || { speed: 0, handling: 0, armor: 0 }; save.up = save.ups[id];
+    return true;
+  },
+  // Покупка за реальные деньги: монеты — всегда; набор — один раз (повторная выдача ничего не даёт).
+  creditProduct(save, id) {
+    const c = SHOP.coins.find((x) => x.id === id);
+    if (c) { save.coins += c.coins + c.bonus; return { coins: c.coins + c.bonus, rides: [] }; }
+    const pk = SHOP.packs.find((x) => x.id === id);
+    if (!pk || save.bought.includes(id)) return null;
+    save.bought.push(id); save.coins += pk.coins;
+    for (const k in pk.inv) save.inv[k] = (save.inv[k] || 0) + pk.inv[k];
+    const rides = pk.rides.filter((r) => this.grantRide(save, r));
+    return { coins: pk.coins, rides };
+  },
+  buyBox(save, id) {
+    const bx = SHOP.boxes.find((x) => x.id === id);
+    if (!bx || save.coins < bx.price) return false;
+    save.coins -= bx.price; for (const k in bx.inv) save.inv[k] = (save.inv[k] || 0) + bx.inv[k];
+    return true;
+  },
+  buyDeal(save, dayKey) {
+    const d = SHOP.deal(save, dayKey);
+    if (!d || save.coins < d.price) return false;
+    save.coins -= d.price; this.grantRide(save, d.id); save.ride = d.id; save.up = this.upOf(save, d.id);
+    return true;
+  },
+  // Монеты за видео: не больше SHOP.adPerDay в день.
+  adCoinsLeft(save, dayKey) { return save.adCoins.day === dayKey ? Math.max(0, SHOP.adPerDay - save.adCoins.n) : SHOP.adPerDay; },
+  takeAdCoins(save, dayKey) {
+    if (!this.adCoinsLeft(save, dayKey)) return 0;
+    if (save.adCoins.day !== dayKey) save.adCoins = { day: dayKey, n: 0 };
+    save.adCoins.n++; save.coins += SHOP.adCoins; return SHOP.adCoins;
+  },
+  // Выдать транспорт без оплаты (наборы, акции).
+  grantRide(save, id) {
+    if (!RIDES[id] || save.owned.includes(id)) return false;
+    save.owned.push(id); save.ups = save.ups || {}; save.ups[id] = save.ups[id] || { speed: 0, handling: 0, armor: 0 };
     return true;
   },
   // Улучшения у каждого транспорта свои и только у купленного.
@@ -4631,7 +4888,7 @@ const AD_POLICY = {
 const SAVE_KEY = 'bs_save';
 const BUILD_CFG = (typeof BUILD !== 'undefined' && BUILD) || { target: 'web', sdk: null, ads: false };
 
-const PLAY_PRODUCTS = ['coins_s', 'coins_m', 'coins_l'];   // те же id создаются в Play Console → Монетизация → Товары
+const PLAY_PRODUCTS = SHOP.ids;   // те же id создаются в Play Console → Монетизация → Товары (цены — SHOP.*.usd)
 
 const Platform = {
   name: BUILD_CFG.target,
@@ -4713,13 +4970,14 @@ const Platform = {
     let icon = ''; try { icon = p.getPriceCurrencyImage ? p.getPriceCurrencyImage('small') : ''; } catch (e) { /* ignore */ }
     return { id, price: p.priceValue || p.price, priceText: p.price, icon, title: p.title };
   },
-  // Купить и сразу «потребить» (монеты — расходуемая покупка). credit(id) начисляет товар до потребления.
+  // Монеты — расходуемая покупка (сразу «потребляем», можно купить снова); наборы — разовые (не потребляем).
+  // credit(id) начисляет товар до потребления.
   async buy(id, credit) {
     if (!this.iap) return false;
+    const consumable = !SHOP.isPack(id);
     if (this.play) {
       try {
-        // isConsumable: плагин сам «потребляет» покупку после выдачи — монеты можно купить снова.
-        const tr = await this.play.purchaseProduct({ productIdentifier: id, productType: 'inapp', isConsumable: true });
+        const tr = await this.play.purchaseProduct({ productIdentifier: id, productType: 'inapp', isConsumable: consumable });
         if (!tr) return false;
         credit(tr.productIdentifier || id);
         return true;
@@ -4728,7 +4986,7 @@ const Platform = {
     try {
       const pur = await this.iap.purchase({ id });
       credit(pur.productID || id);
-      await this.iap.consumePurchase(pur.purchaseToken);
+      if (consumable) await this.iap.consumePurchase(pur.purchaseToken);
       return true;
     } catch (e) { return false; }
   },
@@ -4743,13 +5001,20 @@ const Platform = {
         for (const p of purchases || []) {
           const done = p.purchaseState === 'PURCHASED' || p.purchaseState === 1 || p.purchaseState === '1';
           if (!done || !p.purchaseToken || !PLAY_PRODUCTS.includes(p.productIdentifier)) continue;
+          // Набор куплен навсегда: выдаём заново (credit сам не даст дважды), монеты — выдать и потребить.
+          if (SHOP.isPack(p.productIdentifier)) { credit(p.productIdentifier); continue; }
           await this.play.consumePurchase({ purchaseToken: p.purchaseToken });
           credit(p.productIdentifier); n++;
         }
       } catch (e) { /* нет незавершённых */ }
       return n;
     }
-    try { for (const pur of await this.iap.getPurchases()) { credit(pur.productID); await this.iap.consumePurchase(pur.purchaseToken); n++; } } catch (e) { /* ignore */ }
+    try {
+      for (const pur of await this.iap.getPurchases()) {
+        credit(pur.productID);
+        if (!SHOP.isPack(pur.productID)) { await this.iap.consumePurchase(pur.purchaseToken); n++; }
+      }
+    } catch (e) { /* ignore */ }
     return n;
   },
 
@@ -5019,7 +5284,7 @@ const Platform = {
     });
     $('hud').classList.toggle('show', id === null);
     if (['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'story', 'raceScr', 'crewScr', 'challenge', 'shopScr', 'modesScr'].includes(id)) sfx.music.play('menu');
-    $('topbar').style.display = ['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'raceScr', 'shopScr'].includes(id) ? 'flex' : 'none';
+    $('topbar').style.display = ['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'raceScr'].includes(id) ? 'flex' : 'none';
     refreshMeta();
   }
   // Переход через белую вспышку: fn выполняется, пока экран закрыт.
@@ -6156,7 +6421,7 @@ const Platform = {
   };
 
   // Кнопка «‹» в углу карточки на экранах, откуда нужно вернуться: нажимает обычную «назад» экрана.
-  [['shopScr', 'shopBack'], ['missionsScr', 'msBack'], ['raceScr', 'raceBack'], ['onlineScr', 'onBack'], ['crewScr', 'crBack'], ['shareScr', 'shBack']].forEach(([scr, back]) => {
+  [['missionsScr', 'msBack'], ['raceScr', 'raceBack'], ['onlineScr', 'onBack'], ['crewScr', 'crBack'], ['shareScr', 'shBack']].forEach(([scr, back]) => {
     const card = $(scr).querySelector('.card'), b = document.createElement('button');
     b.className = 'cback'; b.setAttribute('aria-label', 'back'); b.textContent = '‹';
     b.onclick = () => $(back).click();
@@ -6196,12 +6461,13 @@ const Platform = {
 
   // ===================== Бусты перед стартом =====================
   const BOOSTS = {
-    boost: { ic: '🎆', price: 60 },     // ракетный старт: петарда на первые секунды
-    shield: { ic: '🛡️', price: 80 },    // +1 удар на заезд
-    magnet: { ic: '🌀', price: 50 },    // магнит на 20 с
-    spring: { ic: '🎈', price: 40 },    // шарики (двойной прыжок) на 15 с
+    boost: { ic: '🎆', price: BOOST_PRICE.boost },     // ракетный старт: петарда на первые секунды
+    shield: { ic: '🛡️', price: BOOST_PRICE.shield },   // +1 удар на заезд
+    magnet: { ic: '🌀', price: BOOST_PRICE.magnet },   // магнит на 20 с
+    spring: { ic: '🎈', price: BOOST_PRICE.spring },   // шарики (двойной прыжок) на 15 с
   };
   const PREP_TIME = 5;
+  // prepSel[k]: 'coin' — оплачено монетами, 'inv' — взято из запаса (куплено в магазине заранее).
   let prepT = 0, prepPaused = false, prepSel = {}, prepFree = null;
   function openPrep() {
     state = 'prep'; prepT = PREP_TIME; prepSel = {}; prepFree = null; prepPaused = false;
@@ -6215,20 +6481,26 @@ const Platform = {
     const box = $('prepItems'); box.innerHTML = '';
     const vidOk = Platform.rewardedAvailable && !(race && race.online) && !prepFree;
     for (const k of Object.keys(BOOSTS)) {
-      const b = BOOSTS[k], on = !!prepSel[k] || prepFree === k, poor = !on && save.coins < b.price;
+      const b = BOOSTS[k], on = !!prepSel[k] || prepFree === k, have = save.inv[k] || 0;
+      const poor = !on && !have && save.coins < b.price, vid = poor && vidOk && k === 'boost';
       const el = document.createElement('button');
-      el.className = 'pitem' + (on ? ' on' : '') + (poor && !(vidOk && k === 'boost') ? ' poor' : '');
-      const price = on ? '✓' : poor && vidOk && k === 'boost' ? `▶ ${T('freeVid')}` : `🪙${b.price}`;
-      el.innerHTML = `<span class="ic">${b.ic}</span><span class="nm"></span><span class="pr${poor && vidOk && k === 'boost' ? ' vid' : ''}">${price}</span>`;
+      el.className = 'pitem' + (on ? ' on' : '') + (poor && !vid ? ' poor' : '') + (have && !on ? ' have' : '');
+      const price = on ? '✓' : have ? `×${have}` : vid ? `▶ ${T('freeVid')}` : `🪙${b.price}`;
+      el.innerHTML = `<span class="ic">${b.ic}</span><span class="nm"></span><span class="pr${vid ? ' vid' : have && !on ? ' own' : ''}">${price}</span>`;
       el.querySelector('.nm').textContent = T('b_' + k);
-      el.onclick = () => togglePrep(k, poor && vidOk && k === 'boost');
+      el.onclick = () => togglePrep(k, vid);
       box.appendChild(el);
     }
+  }
+  function unpick(k) {
+    if (prepSel[k] === 'inv') save.inv[k] = (save.inv[k] || 0) + 1; else if (prepSel[k]) save.coins += BOOSTS[k].price;
+    delete prepSel[k];
   }
   async function togglePrep(k, viaVideo) {
     const b = BOOSTS[k];
     if (prepFree === k) return;
-    if (prepSel[k]) { delete prepSel[k]; save.coins += b.price; persist(); sfx.click(); renderPrep(); return; }
+    if (prepSel[k]) { unpick(k); persist(); sfx.click(); renderPrep(); refreshMeta(); return; }
+    if (save.inv[k] > 0) { save.inv[k]--; prepSel[k] = 'inv'; persist(); sfx.coin(); renderPrep(); return; }
     if (viaVideo) {
       prepPaused = true;
       const ok = await rewarded();
@@ -6237,9 +6509,9 @@ const Platform = {
       renderPrep(); return;
     }
     if (save.coins < b.price) { toast(T('notEnough')); return; }
-    save.coins -= b.price; prepSel[k] = true; persist(); sfx.coin(); renderPrep(); refreshMeta();
+    save.coins -= b.price; prepSel[k] = 'coin'; persist(); sfx.coin(); renderPrep(); refreshMeta();
   }
-  function refundPrep() { for (const k in prepSel) save.coins += BOOSTS[k].price; prepSel = {}; persist(); }
+  function refundPrep() { for (const k of Object.keys(prepSel)) unpick(k); persist(); }
   function updatePrepRing() {
     $('prepSec').textContent = Math.max(0, Math.ceil(prepT));
     $('prepArc').style.strokeDashoffset = (97.4 * (1 - Math.max(0, prepT) / PREP_TIME)).toFixed(1);
@@ -6256,79 +6528,254 @@ const Platform = {
   $('prepGo').onclick = () => { if (state === 'prep') { sfx.click(); goRun(); } };
 
   // ===================== Магазин =====================
-  const COIN_PACKS = [{ id: 'coins_s', coins: 1000 }, { id: 'coins_m', coins: 3000, tag: 'popular' }, { id: 'coins_l', coins: 8000, tag: 'bestValue' }];
-  const FREE_COINS = 150, FREE_EVERY = 180e3;
-  let shopTab = 'rides', buyArm = null;
-  function openShop(tab = 'rides') { sfx.unlock(); sfx.click(); shopTab = tab; buyArm = null; toMenuThen(() => { show('shopScr'); renderShop(); }); }
+  // Вкладки: Акции (стартовый набор, акция дня, наборы), Транспорт, Бусты (запас на заезды), Монеты.
+  const SHOP_TABS = ['deals', 'rides', 'boosts', 'coins'];
+  const RARITY = { sled: 'common', board: 'rare', skis: 'rare', tub: 'epic', cart: 'epic', sofa: 'legend', rocket: 'legend' };
+  const PACK_ART = { starter: '🎁', party: '🎉', speed: '⚡', all: '👑' };
+  let shopTab = 'deals', buyArm = null;
+  const dayKey = () => Daily.key(Date.now());
+  const msToMidnight = () => { const n = new Date(); return Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate() + 1) - n.getTime(); };
+  const hms = (ms) => { const s = Math.max(0, Math.floor(ms / 1000)); return [Math.floor(s / 3600), Math.floor(s / 60) % 60, s % 60].map((x) => String(x).padStart(2, '0')).join(':'); };
+  const nf = (n) => n.toLocaleString('en-US');
+  function openShop(tab = 'deals') { sfx.unlock(); sfx.click(); shopTab = tab; buyArm = null; toMenuThen(() => { show('shopScr'); renderShop(); }); }
   $('btnShop').onclick = () => openShop();
   $('shopBack').onclick = () => { sfx.click(); show('menu'); };
-  $('shTabRides').onclick = () => { shopTab = 'rides'; renderShop(); };
-  $('shTabCoins').onclick = () => { shopTab = 'coins'; renderShop(); };
-  function shopCard(cls, ic, name, desc, price, onClick, tag) {
-    const el = document.createElement('button'); el.className = 'sitem ' + cls;
-    el.innerHTML = `${tag ? '<span class="tag"></span>' : ''}<span class="ic">${ic}</span><span class="nm"></span><span class="ds"></span><span class="pr"></span>`;
-    el.querySelector('.nm').textContent = name; el.querySelector('.ds').textContent = desc;
-    if (tag) el.querySelector('.tag').textContent = tag;
-    if (price instanceof Node) el.querySelector('.pr').appendChild(price); else el.querySelector('.pr').innerHTML = price;
-    el.onclick = onClick; return el;
+  for (const t of SHOP_TABS) $('shTab' + t[0].toUpperCase() + t.slice(1)).onclick = () => { if (shopTab === t) return; sfx.click(); shopTab = t; buyArm = null; renderShop(); $('shopList').scrollTop = 0; };
+  // Цена за реальные деньги: из магазина площадки, иначе — рекомендованная в $ (покупка — в приложении).
+  function moneyPrice(id) {
+    const p = Platform.iapAvailable && Platform.product(id);
+    if (p) return { text: String(p.price), icon: p.icon, live: true };
+    return { text: '$' + SHOP.find(id).usd.toFixed(2), live: false };
   }
+  function moneyBtn(id, cls = '') {
+    const pr = moneyPrice(id), b = document.createElement('button');
+    b.className = 'pbtn money ' + cls; b.textContent = pr.text;
+    if (pr.icon) { const im = document.createElement('img'); im.src = pr.icon; im.alt = ''; b.appendChild(im); }
+    if (!pr.live) { const s = document.createElement('small'); s.textContent = '📱 ' + T('inApp'); b.appendChild(s); }
+    b.onclick = (e) => { e.stopPropagation(); buyMoney(id, b); };
+    return b;
+  }
+  async function buyMoney(id, btn) {
+    if (!Platform.iapAvailable || !Platform.product(id)) { toast(T('getApp')); return; }
+    sfx.click();
+    const ok = await Platform.buy(id, (pid) => creditPack(pid, btn));
+    if (!ok) toast(T('buyFail'));
+  }
+  function coinBtn(price, armed, poor, onBuy) {
+    const b = document.createElement('button');
+    b.className = 'pbtn coins' + (armed ? ' armed' : '') + (poor ? ' poor' : '');
+    b.innerHTML = armed ? `${T('buy')}?` : `<i class="cn"></i>${nf(price)}`;
+    b.onclick = (e) => { e.stopPropagation(); onBuy(b); };
+    return b;
+  }
+  // Двойное нажатие для покупок за монеты: первое — «Купить?», второе — покупка.
+  function coinBuy(key, price, btn, doBuy) {
+    if (save.coins < price) { toast(T('needMore', { n: nf(price - save.coins) })); sfx.click(); return; }
+    if (buyArm !== key) { buyArm = key; sfx.click(); renderShop(); return; }
+    buyArm = null;
+    if (doBuy()) { persist(); sfx.coin(); sfx.trick(); burst(btn, 8, '✨'); renderShop(); refreshMeta(); }
+  }
+  // Летящие монеты/искры от кнопки к счётчику.
+  function burst(from, n = 10, ch = '🪙') {
+    const a = from && from.getBoundingClientRect ? from.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
+    const t = $('shopCoins').getBoundingClientRect();
+    for (let i = 0; i < n; i++) {
+      const c = document.createElement('div'); c.className = 'flycoin'; c.textContent = ch;
+      const x0 = a.left + a.width / 2 + (Math.random() - 0.5) * 60, y0 = a.top + a.height / 2 + (Math.random() - 0.5) * 30;
+      c.style.left = x0 + 'px'; c.style.top = y0 + 'px';
+      c.style.setProperty('--dx', (t.left + t.width / 2 - x0) + 'px'); c.style.setProperty('--dy', (t.top + t.height / 2 - y0) + 'px');
+      c.style.animationDelay = (i * 45) + 'ms';
+      document.body.appendChild(c); setTimeout(() => c.remove(), 1200 + i * 45);
+    }
+    const sc = $('shopCoins').parentNode; sc.classList.remove('bump'); void sc.offsetWidth; setTimeout(() => sc.classList.add('bump'), 650);
+  }
+  const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; };
+  const txt = (tag, cls, text) => { const e = el(tag, cls); e.textContent = text; return e; };
+  const section = (box, title) => box.appendChild(txt('div', 'shead', title));
+
   function renderShop() {
-    $('shTabRides').classList.toggle('on', shopTab === 'rides');
-    $('shTabCoins').classList.toggle('on', shopTab === 'coins');
-    const list = $('shopList'); list.innerHTML = ''; $('shopNote').textContent = '';
-    if (shopTab === 'rides') {
-      for (const id of RIDE_IDS) {
-        const r = RIDES[id], owned = save.owned.includes(id), sel = save.ride === id, armed = buyArm === id;
-        const price = owned ? (sel ? `✓ ${T('equipped')}` : T('equip')) : armed ? `${T('buy')}?` : `<span class="cbal"><i></i>${r.price}</span>`;
-        list.appendChild(shopCard((owned ? 'owned' : '') + (sel ? ' sel' : '') + (!owned && save.coins < r.price ? ' poor' : ''), RIDE_ICON[id], rideName(id), T('desc_' + id), price, () => {
-          if (owned) { save.ride = id; save.up = Meta.upOf(save, id); player.setRide(id, Meta.upOf(save, id)); persist(); sfx.click(); renderShop(); refreshMeta(); return; }
-          if (save.coins < r.price) { toast(T('notEnough')); if (Platform.iapAvailable || Platform.rewardedAvailable) { shopTab = 'coins'; renderShop(); } return; }
-          if (buyArm !== id) { buyArm = id; sfx.click(); renderShop(); return; }
-          if (Meta.buyRide(save, id)) { buyArm = null; persist(); sfx.coin(); sfx.trick(); player.setRide(id, Meta.upOf(save, id)); popup(`${T('bought')} ${rideName(id)}`, 'gain'); renderShop(); refreshMeta(); }
-        }));
-      }
-      return;
-    }
-    // Монеты: бесплатные способы (сундук, задания, трасса дня, видео) + наборы за деньги.
-    const head = (t) => { const h = document.createElement('div'); h.className = 'shead'; h.style.gridColumn = '1 / -1'; h.textContent = t; list.appendChild(h); };
-    head(`🎁 ${T('earnFree')}`);
-    const chestLeft = Meta.chestLeft(save, Date.now());
-    list.appendChild(shopCard('earn' + (chestLeft <= 0 ? ' ready' : ''), '🎁', T('chest'), chestLeft <= 0 ? T('chestReadyT') : T('chestIn', { t: fmtTime(chestLeft) }), T('open'), () => { if (chestLeft <= 0) { show('menu'); $('btnChest').click(); } else toast(T('chestIn', { t: fmtTime(chestLeft) })); }));
-    const ready = Meta.readyMissions(save);
-    list.appendChild(shopCard('earn' + (ready ? ' ready' : ''), '🎯', T('missions'), ready ? T('missionsT', { n: ready }) : T('missionsIn'), T('open'), () => { show('missionsScr'); renderMissions(); }));
-    list.appendChild(shopCard('earn', '🏔️', T('dailyRun'), T('dailyRunEarn'), `▶ ${T('go')}`, () => startDaily()));
-    if (Platform.rewardedAvailable) {
-      const left = (save.freeCoinsAt || 0) + FREE_EVERY - Date.now();
-      list.appendChild(shopCard('coin', '🎬', T('freeCoins'), left > 0 ? T('cooldown', { t: fmtTime(left) }) : T('freeCoinsD'), `▶ +${FREE_COINS}`, async () => {
-        if ((save.freeCoinsAt || 0) + FREE_EVERY > Date.now()) return;
-        const ok = await rewarded(); if (!ok) return;
-        save.coins += FREE_COINS; save.freeCoinsAt = Date.now(); persist(); sfx.coin(); refreshMeta(); renderShop();
-      }));
-    }
-    if (Platform.iapAvailable) {
-      head(`💰 ${T('coinPacksH')}`);
-      for (const pk of COIN_PACKS) {
-        const p = Platform.product(pk.id); if (!p) continue;
-        const price = document.createElement('span');
-        price.textContent = String(p.price) + ' ';
-        if (p.icon) { const im = document.createElement('img'); im.src = p.icon; im.alt = ''; im.style.cssText = 'width:16px;height:16px;vertical-align:-3px'; price.appendChild(im); }
-        list.appendChild(shopCard('coin', pk.coins >= 8000 ? '💰' : pk.coins >= 3000 ? '🪙🪙' : '🪙', T('coinPack', { n: pk.coins }), '', price, async () => {
-          const ok = await Platform.buy(pk.id, creditPack);
-          if (!ok) toast(T('buyFail'));
-        }, pk.tag ? T(pk.tag) : ''));
-      }
-      $('shopNote').textContent = T('packNote', { p: Platform.iapProvider });
-    } else {
-      // Здесь оплаты нет (сайт, CrazyGames): показываем наборы как «в приложении».
-      head(`💰 ${T('coinPacksH')}`);
-      for (const pk of COIN_PACKS) list.appendChild(shopCard('coin soon', pk.coins >= 8000 ? '💰' : pk.coins >= 3000 ? '🪙🪙' : '🪙', T('coinPack', { n: pk.coins }), '', T('inApp'), () => toast(T('getApp')), pk.tag ? T(pk.tag) : ''));
-      $('shopNote').textContent = T('getApp');
-    }
+    for (const t of SHOP_TABS) $('shTab' + t[0].toUpperCase() + t.slice(1)).classList.toggle('on', shopTab === t);
+    $('shopCoins').textContent = nf(save.coins);
+    const invN = Object.values(save.inv).reduce((a, b) => a + b, 0);
+    $('shTabBoosts').dataset.n = invN ? invN : '';
+    const box = $('shopList'); box.innerHTML = ''; box.className = 'shopbody t-' + shopTab; $('shopNote').textContent = '';
+    ({ deals: shopDeals, rides: shopRides, boosts: shopBoosts, coins: shopCoins })[shopTab](box);
+    [...box.children].forEach((c, i) => c.style.setProperty('--i', Math.min(i, 10)));
+    if (shopTab === 'coins' || shopTab === 'deals') $('shopNote').textContent = Platform.iapAvailable ? T('packNote', { p: Platform.iapProvider }) : T('getApp');
   }
-  function creditPack(id) {
-    const pk = COIN_PACKS.find((x) => x.id === id); if (!pk) return;
-    save.coins += pk.coins; persist(); sfx.coin(); sfx.trick(); refreshMeta(); toast(T('thanksBuy', { n: pk.coins }));
-    if (screen === 'shopScr') renderShop();
+  function packContents(pk) {
+    const row = el('div', 'pkitems');
+    for (const r of pk.rides) row.appendChild(el('span', 'pki' + (save.owned.includes(r) ? ' got' : ''), `<b>${RIDE_ICON[r]}</b>`));
+    row.appendChild(el('span', 'pki coin', `<b>🪙</b><em>${nf(pk.coins)}</em>`));
+    const inv = Object.values(pk.inv).reduce((a, b) => a + b, 0);
+    if (inv) row.appendChild(el('span', 'pki', `<b>⚡</b><em>×${inv}</em>`));
+    return row;
+  }
+  function shopDeals(box) {
+    const starter = SHOP.packs.find((p) => p.id === 'pack_starter');
+    if (!save.bought.includes(starter.id)) {
+      const h = el('div', 'hero h-starter', '<div class="burst"></div><div class="shine"></div>');
+      h.appendChild(txt('div', 'hribbon', T('oneTime')));
+      h.appendChild(txt('div', 'htitle', T('pk_starter')));
+      h.appendChild(txt('div', 'hsub', T('pkd_starter')));
+      h.appendChild(packContents(starter));
+      const off = SHOP.packOff(starter, save.owned);
+      const foot = el('div', 'hfoot');
+      foot.appendChild(txt('div', 'hworth', T('worth', { n: nf(SHOP.packValue(starter, save.owned)) })));
+      foot.appendChild(moneyBtn(starter.id, 'big'));
+      h.appendChild(foot);
+      if (off > 0) h.appendChild(txt('div', 'offbadge', `-${off}%`));
+      box.appendChild(h);
+    }
+    // Акция дня (за монеты) с настоящим таймером до полуночи UTC.
+    const d = SHOP.deal(save, dayKey());
+    if (d) {
+      const c = el('div', 'deal r-' + RARITY[d.id], '<div class="shine"></div>');
+      c.appendChild(el('div', 'dhead', `<span>🔥 ${T('dealDay')}</span><span class="timer" data-until="midnight">${hms(msToMidnight())}</span>`));
+      const mid = el('div', 'dmid');
+      mid.appendChild(txt('div', 'dic', RIDE_ICON[d.id]));
+      const info = el('div', 'dinfo');
+      info.appendChild(txt('b', '', rideName(d.id)));
+      info.appendChild(txt('small', '', T('desc_' + d.id)));
+      info.appendChild(el('div', 'dprice', `<s>🪙 ${nf(d.full)}</s> <span class="offsm">-${Math.round(SHOP.dealOff * 100)}%</span>`));
+      mid.appendChild(info);
+      c.appendChild(mid);
+      c.appendChild(coinBtn(d.price, buyArm === 'deal', save.coins < d.price, (b) => coinBuy('deal', d.price, b, () => {
+        const ok = Meta.buyDeal(save, dayKey());
+        if (ok) { player.setRide(save.ride, Meta.upOf(save, save.ride)); popup(`${T('bought')} ${rideName(d.id)}`, 'gain'); }
+        return ok;
+      })));
+      box.appendChild(c);
+    }
+    freeCards(box, true);
+    section(box, `🎁 ${T('bundles')}`);
+    for (const pk of SHOP.packs) if (pk.id !== 'pack_starter') box.appendChild(packCard(pk));
+  }
+  function packCard(pk) {
+    const owned = save.bought.includes(pk.id);
+    const c = el('div', 'pack p-' + pk.theme + (owned ? ' done' : ''), '<div class="shine"></div>');
+    c.appendChild(el('div', 'phead', `<span class="part">${PACK_ART[pk.theme]}</span><span><b></b><small></small></span>`));
+    c.querySelector('.phead b').textContent = T('pk_' + pk.theme); c.querySelector('.phead small').textContent = T('pkd_' + pk.theme);
+    c.appendChild(packContents(pk));
+    const foot = el('div', 'pfoot');
+    if (owned) foot.appendChild(txt('div', 'pdone', `✓ ${T('purchased')}`));
+    else {
+      foot.appendChild(txt('div', 'hworth', T('worth', { n: nf(SHOP.packValue(pk, save.owned)) })));
+      foot.appendChild(moneyBtn(pk.id));
+      const off = SHOP.packOff(pk, save.owned); if (off > 0) c.appendChild(txt('div', 'offbadge sm', `-${off}%`));
+    }
+    c.appendChild(foot);
+    return c;
+  }
+  function freeCards(box, compact) {
+    section(box, `🆓 ${T('earnFree')}`);
+    const row = el('div', 'freerow');
+    if (Platform.rewardedAvailable) {
+      const left = Meta.adCoinsLeft(save, dayKey());
+      const f = el('button', 'free f-video' + (left ? ' ready' : ''), `<span class="fic">🎬</span><b>+${SHOP.adCoins}</b><small></small>`);
+      f.querySelector('small').textContent = left ? T('videosLeft', { n: left }) : T('comeTomorrow');
+      f.onclick = async () => {
+        if (!Meta.adCoinsLeft(save, dayKey())) { toast(T('comeTomorrow')); return; }
+        const ok = await rewarded(); if (!ok) return;
+        Meta.takeAdCoins(save, dayKey()); persist(); sfx.coin(); burst(f, 6); renderShop(); refreshMeta();
+      };
+      row.appendChild(f);
+    }
+    const chestLeft = Meta.chestLeft(save, Date.now());
+    const ch = el('button', 'free f-chest' + (chestLeft <= 0 ? ' ready' : ''), `<span class="fic">🎁</span><b></b><small></small>`);
+    ch.querySelector('b').textContent = T('chest'); ch.querySelector('small').textContent = chestLeft <= 0 ? T('chestReadyT') : fmtTime(chestLeft);
+    ch.onclick = () => { if (Meta.chestLeft(save, Date.now()) <= 0) { show('menu'); $('btnChest').click(); } else toast(T('chestIn', { t: fmtTime(Meta.chestLeft(save, Date.now())) })); };
+    row.appendChild(ch);
+    const ready = Meta.readyMissions(save);
+    const ms = el('button', 'free f-mis' + (ready ? ' ready' : ''), `<span class="fic">🎯</span><b></b><small></small>`);
+    ms.querySelector('b').textContent = T('missions'); ms.querySelector('small').textContent = ready ? T('collectN', { n: ready }) : T('missionsIn');
+    ms.onclick = () => { show('missionsScr'); renderMissions(); };
+    row.appendChild(ms);
+    if (!compact || !Platform.rewardedAvailable) {
+      const dr = el('button', 'free f-daily', `<span class="fic">🏔️</span><b></b><small></small>`);
+      dr.querySelector('b').textContent = T('dailyRun'); dr.querySelector('small').textContent = T('dailyRunEarn');
+      dr.onclick = () => startDaily();
+      row.appendChild(dr);
+    }
+    box.appendChild(row);
+  }
+  function shopRides(box) {
+    const grid = el('div', 'ridegrid');
+    for (const id of RIDE_IDS) {
+      const r = RIDES[id], owned = save.owned.includes(id), sel = save.ride === id, rar = RARITY[id] || 'start';
+      const c = el('div', `sitem rcard r-${rar}` + (owned ? ' owned' : '') + (sel ? ' sel' : ''));
+      c.appendChild(txt('span', 'rar', T('rar_' + rar)));
+      c.appendChild(txt('span', 'ic', RIDE_ICON[id]));
+      c.appendChild(txt('span', 'nm', rideName(id)));
+      c.appendChild(txt('span', 'ds', T('desc_' + id)));
+      if (owned) {
+        const b = el('button', 'pbtn ' + (sel ? 'riding' : 'equip'));
+        b.textContent = sel ? `✓ ${T('riding')}` : T('equip');
+        b.onclick = (e) => { e.stopPropagation(); if (sel) return; save.ride = id; save.up = Meta.upOf(save, id); player.setRide(id, Meta.upOf(save, id)); persist(); sfx.click(); renderShop(); refreshMeta(); };
+        c.appendChild(b);
+      } else {
+        c.appendChild(coinBtn(r.price, buyArm === id, save.coins < r.price, (b) => coinBuy(id, r.price, b, () => {
+          const ok = Meta.buyRide(save, id);
+          if (ok) { player.setRide(id, Meta.upOf(save, id)); popup(`${T('bought')} ${rideName(id)}`, 'gain'); }
+          return ok;
+        })));
+        const pk = SHOP.packs.find((p) => p.id !== 'pack_all' && p.rides.includes(id) && !save.bought.includes(p.id));
+        if (pk) { const h = txt('button', 'inpack', `${PACK_ART[pk.theme]} ${T('inPack', { p: T('pk_' + pk.theme) })}`); h.onclick = (e) => { e.stopPropagation(); shopTab = 'deals'; renderShop(); }; c.appendChild(h); }
+      }
+      c.onclick = () => c.querySelector('.pbtn').click();
+      grid.appendChild(c);
+    }
+    box.appendChild(grid);
+  }
+  function shopBoosts(box) {
+    const inv = el('div', 'invbar');
+    inv.appendChild(txt('span', 'invt', T('yourBoosts')));
+    for (const k of Object.keys(BOOSTS)) inv.appendChild(el('span', 'invi' + (save.inv[k] ? ' has' : ''), `${BOOSTS[k].ic}<b>${save.inv[k] || 0}</b>`));
+    box.appendChild(inv);
+    box.appendChild(txt('div', 'boosthint', T('boostHint')));
+    const grid = el('div', 'boxgrid');
+    for (const bx of SHOP.boxes) {
+      const ks = Object.keys(bx.inv), full = SHOP.invValue(bx.inv);
+      const c = el('div', 'sitem bxcard' + (bx.mega ? ' mega' : ''), bx.mega ? '<div class="burst"></div><div class="shine"></div>' : '');
+      c.appendChild(el('span', 'ic', ks.map((k) => BOOSTS[k].ic).join('')));
+      c.appendChild(txt('span', 'nm', bx.mega ? T('megaBox') : T('b_' + ks[0])));
+      c.appendChild(txt('span', 'ds', bx.mega ? T('megaBoxD') : T('bd_' + ks[0])));
+      c.appendChild(el('span', 'qty', ks.map((k) => `×${bx.inv[k]}`)[0] + (bx.mega ? ` ${T('each')}` : '')));
+      c.appendChild(el('span', 'was', `<s>🪙 ${nf(full)}</s>`));
+      c.appendChild(coinBtn(bx.price, buyArm === bx.id, save.coins < bx.price, (b) => coinBuy(bx.id, bx.price, b, () => Meta.buyBox(save, bx.id))));
+      c.appendChild(txt('div', 'offbadge sm', `-${SHOP.boxOff(bx)}%`));
+      grid.appendChild(c);
+    }
+    box.appendChild(grid);
+  }
+  function shopCoins(box) {
+    section(box, `💰 ${T('coinPacksH')}`);
+    const grid = el('div', 'coingrid');
+    SHOP.coins.forEach((ck, i) => {
+      const c = el('div', 'sitem ccard c' + i, '<div class="shine"></div>');
+      if (ck.tag) c.appendChild(txt('span', 'ctag', T(ck.tag)));
+      c.appendChild(el('span', 'pile', '🪙'.repeat(i + 1)));
+      c.appendChild(txt('span', 'amt', nf(ck.coins + ck.bonus)));
+      c.appendChild(txt('span', 'bonus', ck.bonus ? `${nf(ck.coins)} + ${nf(ck.bonus)} ${T('bonusW')}` : T('coinsW')));
+      if (ck.bonus) c.appendChild(txt('span', 'bonusb', `+${Math.round(ck.bonus / ck.coins * 100)}%`));
+      c.appendChild(moneyBtn(ck.id));
+      grid.appendChild(c);
+    });
+    box.appendChild(grid);
+    box.appendChild(txt('div', 'boosthint', T('packsBetter')));
+    freeCards(box, false);
+  }
+  // Таймеры в магазине идут каждую секунду без перерисовки.
+  setInterval(() => {
+    if (screen !== 'shopScr') return;
+    document.querySelectorAll('#shopList [data-until="midnight"]').forEach((t) => { t.textContent = hms(msToMidnight()); });
+  }, 1000);
+  function creditPack(id, from) {
+    const got = Meta.creditProduct(save, id); if (!got) return;
+    persist(); sfx.coin(); sfx.trick(); refreshMeta();
+    if (got.rides.length) popup(`${T('bought')} ${got.rides.map((r) => RIDE_ICON[r]).join(' ')}`, 'gain');
+    toast(T('thanksBuy', { n: nf(got.coins) }));
+    if (screen === 'shopScr') { renderShop(); burst(from, 12); }
   }
 
   // ===================== Таблица группы =====================
