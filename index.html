@@ -573,6 +573,118 @@
   .onrep { display:none; gap:14px; justify-content:center; }
   .onrep.on { display:flex; }
   .onrep .link { font-size:12px; color:#7a8aa0; }
+
+  /* ===== v11: магазин, новые транспорты, бусты перед стартом ===== */
+  #shopScr .card { max-width:480px; max-height:calc(100% - 20px); overflow:auto; }
+  .shoplist { display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:8px; margin:8px 0; }
+  .sitem { position:relative; background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink); padding:10px 8px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; font-weight:800; cursor:pointer; font:inherit; color:var(--ink); }
+  .sitem .ic { font-size:38px; line-height:1.1; }
+  .sitem .nm { font-size:15px; font-weight:900; }
+  .sitem .ds { font-size:11px; opacity:.7; font-weight:700; min-height:2.4em; }
+  .sitem .pr { margin-top:2px; }
+  .sitem .pr .cbal { background:var(--gold); border:2px solid var(--ink); border-radius:12px; padding:1px 10px 1px 6px; }
+  .sitem.owned .pr { color:#1b7a43; }
+  .sitem.sel { background:#e7f8ee; }
+  .sitem.poor .pr .cbal { background:#e3e9f0; opacity:.8; }
+  .sitem .tag { position:absolute; top:-9px; right:-6px; background:#ff5a36; color:#fff; border:2px solid var(--ink); border-radius:10px; font-size:11px; padding:0 6px; transform:rotate(6deg); }
+  .sitem.coin .ic { font-size:34px; }
+  .sitem.coin .pr { background:var(--pine); color:#fff; border:2px solid var(--ink); border-radius:12px; padding:2px 12px; }
+  .shopnote { font-size:12px; font-weight:700; opacity:.7; margin:2px 0 6px; }
+  .shopnote:empty { display:none; }
+  #prep { position:fixed; left:0; right:0; bottom:calc(14px + env(safe-area-inset-bottom)); z-index:8; display:none; justify-content:center; padding:0 10px; pointer-events:none; }
+  #prep.on { display:flex; animation:prepIn .3s cubic-bezier(.2,1.4,.4,1) both; }
+  @keyframes prepIn { from { transform:translateY(60px); opacity:0; } }
+  .prepcard { pointer-events:auto; background:#f6faff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 5px 0 var(--ink); padding:8px 10px 10px; width:min(560px, 100%); }
+  .prephead { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .prephead b { flex:1; text-align:left; font-family:var(--disp); font-style:italic; font-size:20px; }
+  .prepring { position:relative; width:40px; height:40px; }
+  .prepring svg { width:100%; height:100%; transform:rotate(-90deg); }
+  .prepring circle { fill:none; stroke-width:4; }
+  .prepring .bg { stroke:#d6e2ee; } .prepring .fg { stroke:var(--lift); stroke-dasharray:97.4; stroke-linecap:round; }
+  .prepring span { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; }
+  .prepitems { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+  .pitem { background:#fff; border:3px solid var(--ink); border-radius:14px; padding:6px 4px; font:inherit; color:var(--ink); font-weight:800; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; box-shadow:0 3px 0 var(--ink); }
+  .pitem .ic { font-size:26px; line-height:1; }
+  .pitem .nm { font-size:11px; line-height:1.15; }
+  .pitem .pr { font-size:12px; background:var(--gold); border:2px solid var(--ink); border-radius:10px; padding:0 6px; }
+  .pitem.on { background:#d7f5e2; transform:translateY(2px); box-shadow:0 1px 0 var(--ink); }
+  .pitem.on .pr { background:var(--pine); color:#fff; }
+  .pitem.poor { opacity:.45; }
+  .pitem .pr.vid { background:#7b6cf6; color:#fff; }
+  #prepGo { width:100%; margin:8px 0 0; padding:9px; font-size:22px; }
+  @media (max-height:420px) { .pitem .ic { font-size:20px; } .pitem .nm { display:none; } #prepGo { padding:5px; font-size:18px; margin-top:5px; } }
+
+  /* ===== v11: значки бонусов ===== */
+  #powers { top:84px; flex-direction:row; gap:8px; }
+  .pw { --c:#ff6a2b; position:relative; width:46px; height:46px; padding:0; border-radius:50%; background:conic-gradient(#fff calc(var(--p,1) * 360deg), rgba(255,255,255,.28) 0); border:3px solid var(--ink); box-shadow:0 3px 0 var(--ink); display:block; font-size:0; animation:pwIn .35s cubic-bezier(.2,1.6,.4,1) both; }
+  .pw i { position:absolute; inset:4px; border-radius:50%; background:var(--c); border:2px solid var(--ink); display:flex; align-items:center; justify-content:center; }
+  .pw svg { width:26px; height:26px; fill:#fff; stroke:var(--ink); stroke-width:1.6; stroke-linejoin:round; }
+  .pw svg .in { fill:var(--gold); stroke:none; }
+  .pw svg .tip { fill:#e3e9f0; }
+  .pw svg .str { fill:none; stroke:#fff; stroke-width:1.4; }
+  .pw-boost { --c:#ff6a2b; } .pw-spring { --c:#ff4d6d; } .pw-magnet { --c:#8e5cf7; }
+  .pw.low { animation:pwBlink .35s steps(2) infinite; }
+  @keyframes pwIn { from { transform:scale(0) rotate(-90deg); } }
+  @keyframes pwBlink { 50% { opacity:.45; } }
+  @media (max-width:640px) { #powers { top:136px; } }
+  @media (max-height:420px) { .pw { width:38px; height:38px; } .pw svg { width:18px; height:18px; } }
+
+  /* ===== v11: выбор режима ===== */
+  #modesScr { justify-content:flex-start; padding-top:max(14px, env(safe-area-inset-top)); padding-left:0; padding-right:0; }
+  .mhead { display:flex; align-items:center; gap:10px; width:min(100%, 1100px); padding:0 14px; }
+  .mhead .icon { flex:none; } .mspace { width:44px; flex:none; }
+  .mtitle { flex:1; font-family:var(--disp); font-style:italic; font-weight:900; font-size:clamp(26px,6vw,40px); color:#fff; text-shadow:0 3px 0 var(--ink); transform:rotate(-2deg); }
+  .mcards { display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; width:100%; padding:16px max(14px, calc(50% - 140px)) 18px; flex:1; align-items:center; scrollbar-width:none; }
+  .mcards::-webkit-scrollbar { display:none; }
+  .mcard { flex:0 0 min(280px, 78vw); scroll-snap-align:center; background:#f6faff; border:3px solid var(--ink); border-radius:22px; box-shadow:0 6px 0 var(--ink); overflow:hidden; text-align:left; transition:transform .25s, box-shadow .25s; animation:mcIn .45s cubic-bezier(.2,1.3,.4,1) both; }
+  .mcard:nth-child(2) { animation-delay:.06s } .mcard:nth-child(3) { animation-delay:.12s } .mcard:nth-child(4) { animation-delay:.18s } .mcard:nth-child(5) { animation-delay:.24s }
+  @keyframes mcIn { from { transform:translateY(40px) rotate(3deg); opacity:0; } }
+  .mcard.focus { transform:translateY(-6px) scale(1.03); box-shadow:0 10px 0 var(--ink); }
+  .mart { position:relative; height:150px; overflow:hidden; border-bottom:3px solid var(--ink); }
+  .mart .hill { position:absolute; left:0; right:0; bottom:-1px; width:100%; height:44px; }
+  .mart .big { position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); font-size:64px; filter:drop-shadow(0 4px 0 rgba(18,48,90,.35)); animation:bob 2.6s ease-in-out infinite; z-index:1; }
+  @keyframes bob { 50% { transform:translate(-50%,-58%) rotate(-4deg); } }
+  .mart::after { content:''; position:absolute; inset:0; background-image:radial-gradient(circle,#fff 1.3px,transparent 1.7px); background-size:28px 28px; opacity:.6; animation:mapSnow 7s linear infinite; pointer-events:none; }
+  .piste { position:absolute; top:10px; right:10px; width:26px; height:26px; border:3px solid #fff; box-shadow:0 0 0 2px var(--ink); z-index:2; }
+  .piste.green { background:#1f9d63; border-radius:50%; } .piste.blue { background:#2f80ed; border-radius:4px; } .piste.black { background:#12305a; transform:rotate(45deg) scale(.85); }
+  .mtag { position:absolute; top:10px; left:10px; z-index:2; background:#fff; color:var(--ink); border:2px solid var(--ink); border-radius:10px; font-weight:900; font-size:12px; padding:1px 8px; }
+  .mtag.live { background:#ff3b3b; color:#fff; display:flex; align-items:center; gap:5px; }
+  .mtag.live i { width:8px; height:8px; border-radius:50%; background:#fff; animation:recPulse 1s infinite; }
+  .c-adv .mart { background:linear-gradient(#7cc4ff,#d9efff); }
+  .c-adv .peaks i { position:absolute; bottom:30px; width:0; height:0; border-left:60px solid transparent; border-right:60px solid transparent; border-bottom:90px solid #6f9fcf; }
+  .c-adv .peaks i:nth-child(1) { left:-20px; border-bottom-color:#a7c7e6; } .c-adv .peaks i:nth-child(2) { left:80px; border-bottom-width:110px; } .c-adv .peaks i:nth-child(3) { left:180px; border-bottom-color:#a7c7e6; }
+  .c-adv .flag { position:absolute; left:128px; top:12px; font-size:22px; z-index:1; }
+  .c-adv .big { display:none; }
+  .c-daily .mart { background:linear-gradient(#18a7b5,#8fe3ea); }
+  .cal { position:absolute; left:50%; top:50%; transform:translate(-62%,-56%) rotate(-6deg); width:84px; height:86px; background:#fff; border:3px solid var(--ink); border-radius:12px; box-shadow:0 4px 0 var(--ink); text-align:center; z-index:1; overflow:hidden; }
+  .cal i { display:block; height:22px; background:#ff5a36; border-bottom:3px solid var(--ink); }
+  .cal b { display:block; font-family:var(--disp); font-size:38px; line-height:1; margin-top:4px; color:var(--ink); }
+  .cal span { font-size:11px; font-weight:900; color:#7a8aa0; }
+  .c-daily .flame { left:70%; top:58%; font-size:48px; animation-duration:1.4s; }
+  .c-online .mart { background:linear-gradient(135deg,#7b6cf6,#ff6a9a); }
+  .c-online .rider { position:absolute; top:44%; font-size:50px; z-index:1; filter:drop-shadow(0 4px 0 rgba(18,48,90,.35)); }
+  .c-online .r1 { left:18%; animation:riderL 1.6s ease-in-out infinite; } .c-online .r2 { right:18%; animation:riderR 1.6s ease-in-out infinite; }
+  @keyframes riderL { 50% { transform:translate(8px,-6px) rotate(-6deg); } } @keyframes riderR { 50% { transform:translate(-8px,-4px) rotate(6deg); } }
+  .c-online .vs { position:absolute; left:50%; top:40%; transform:translate(-50%,-50%) rotate(-8deg); font-family:var(--disp); font-style:italic; font-size:34px; color:#ffd166; text-shadow:0 3px 0 var(--ink); z-index:2; }
+  .c-bots .mart { background:linear-gradient(#ff9a3c,#ffd6a5); }
+  .c-bots .chk { position:absolute; left:0; right:0; top:0; height:18px; background:repeating-conic-gradient(#12305a 0 25%, #fff 0 50%) 0 0/18px 18px; opacity:.9; }
+  .c-bots .bolt { position:absolute; left:64%; top:22%; font-size:30px; z-index:2; animation:bob 1.2s ease-in-out infinite; }
+  .c-endless .mart { background:linear-gradient(#3a4a8c,#8aa4d6); }
+  .c-endless .inf { font-family:var(--disp); font-size:88px; color:#fff; text-shadow:0 4px 0 var(--ink); font-style:italic; }
+  .c-endless .wave { position:absolute; left:-20%; right:-20%; bottom:20px; height:60px; background:radial-gradient(circle at 20% 60%,#fff 22px,transparent 23px),radial-gradient(circle at 45% 50%,#fff 30px,transparent 31px),radial-gradient(circle at 72% 60%,#fff 26px,transparent 27px),radial-gradient(circle at 92% 55%,#fff 20px,transparent 21px); opacity:.85; animation:waveMove 3s ease-in-out infinite; }
+  @keyframes waveMove { 50% { transform:translateX(18px); } }
+  .mbody { padding:10px 14px 14px; display:flex; flex-direction:column; gap:2px; }
+  .mbody > b { font-family:var(--disp); font-style:italic; font-size:24px; color:var(--ink); }
+  .msub { font-size:13px; font-weight:700; color:#4a6a90; min-height:2.6em; }
+  .mbtns { display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
+  .mbtns .btn { flex:1 1 auto; margin:0; min-width:0; padding:10px 12px; font-size:18px; }
+  .mbtns .btn.sq { flex:0 0 auto; padding:10px 14px; font-style:normal; }
+  .mbtns .btn.ghost { font-size:15px; }
+  .mdots { display:flex; gap:8px; justify-content:center; padding-bottom:max(10px, env(safe-area-inset-bottom)); }
+  .mdots i { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.5); border:2px solid var(--ink); transition:all .2s; }
+  .mdots i.on { background:#fff; width:26px; border-radius:6px; }
+  @media (min-width:1000px) { .mcards { justify-content:safe center; padding:16px 20px 18px; } .mcard { flex-basis:min(236px, calc((100vw - 104px) / 5)); } .mdots { display:none; } .mbtns .btn { font-size:16px; } }
+  @media (max-height:560px) { .mart { height:96px; } .mart .big { font-size:44px; } .cal { transform:translate(-62%,-56%) rotate(-6deg) scale(.7); } .c-endless .inf { font-size:60px; } .msub { min-height:0; font-size:12px; } .mbody { padding:6px 12px 10px; } .mbody > b { font-size:20px; } .mbtns .btn { padding:7px 10px; font-size:16px; } .c-adv .peaks i { border-bottom-width:60px !important; bottom:20px; } .mtitle { font-size:24px; } .mcards { padding-top:8px; padding-bottom:10px; } }
 </style>
 </head>
 <body>
@@ -598,15 +710,14 @@
 
 <div class="topbar" id="topbar">
   <div class="coin"><i></i><span id="balance">0</span></div>
-  <div style="display:flex;gap:8px"><button class="icon" id="btnCrew" aria-label="crew">👥</button><button class="icon" id="btnClip" aria-label="clip mode">🎬</button><button class="icon" id="btnMusic" aria-label="music">🎵</button><button class="icon" id="btnSound" aria-label="sound">🔊</button></div>
+  <div style="display:flex;gap:8px"><button class="icon" id="btnShop" aria-label="shop">🛒</button><button class="icon" id="btnClip" aria-label="clip mode">🎬</button><button class="icon" id="btnMusic" aria-label="music">🎵</button><button class="icon" id="btnSound" aria-label="sound">🔊</button></div>
 </div>
 
 <div class="screen show" id="menu">
   <h1 data-t="title">Snow Panic</h1>
   <div class="sub" data-t="subtitle"></div>
-  <button class="btn" id="btnPlay"><span id="playLbl"></span></button>
+  <button class="btn" id="btnPlay"><span data-t="playBig"></span></button>
   <div class="lvlsub" id="playSub"></div>
-  <div class="modes"><button class="btn slim dailyb" id="btnDaily">📅 <span data-t="dailyRun"></span><b class="streak" id="dailyStreak"></b></button><button class="btn ghost slim" id="btnEndless">∞ <span data-t="endless"></span> · <span id="endBest"></span></button><button class="btn slim race" id="btnRace">🏁 <span data-t="race"></span></button></div>
   <div class="tiles">
     <button class="tile t-map" id="btnMap"><b>🗺️</b><div data-t="map"></div><span id="tileStars"></span></button>
     <button class="tile t-gar" id="btnGarage"><b>🛷</b><div data-t="garage"></div><span id="tileRide"></span></button>
@@ -614,6 +725,38 @@
     <button class="tile t-chest" id="btnChest"><b>🎁</b><div data-t="chest"></div><span id="tileChest"></span></button>
   </div>
   <div class="hint" id="controls"></div>
+</div>
+
+<div class="screen" id="modesScr">
+  <div class="mhead"><button class="icon" id="modesBack" aria-label="back">‹</button><div class="mtitle" data-t="chooseRun"></div><span class="mspace"></span></div>
+  <div class="mcards" id="mcards">
+    <div class="mcard c-adv">
+      <div class="mart"><span class="piste green"></span><div class="peaks"><i></i><i></i><i></i></div><span class="flag">🚩</span><span class="trailp"></span><span class="big">🏔️</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
+      <div class="mbody"><b data-t="adventure"></b><span class="msub" id="mAdvSub"></span>
+        <div class="mbtns"><button class="btn green" id="mAdvGo"><span id="playLbl"></span></button><button class="btn ghost sq" id="mAdvMap" aria-label="map">🗺️</button></div></div>
+    </div>
+    <div class="mcard c-daily">
+      <div class="mart"><span class="mtag" data-t="todayTag"></span><div class="cal"><i></i><b id="mCalDay">8</b><span id="mCalMon">NOV</span></div><span class="big flame">🔥</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
+      <div class="mbody"><b data-t="dailyRun"></b><span class="msub" id="mDailySub"></span>
+        <div class="mbtns"><button class="btn" id="btnDaily">▶ <span data-t="play"></span><b class="streak" id="dailyStreak"></b></button></div></div>
+    </div>
+    <div class="mcard c-online" id="mOnline">
+      <div class="mart"><span class="mtag live"><i></i>LIVE</span><span class="rider r1">🏂</span><span class="vs">VS</span><span class="rider r2">🛷</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
+      <div class="mbody"><b data-t="onlineRace"></b><span class="msub" data-t="onlineSub"></span>
+        <div class="mbtns"><button class="btn" id="mQuick">🌐 <span data-t="findRival"></span></button><button class="btn ghost" id="mFriend">👫 <span data-t="withFriend"></span></button></div></div>
+    </div>
+    <div class="mcard c-bots">
+      <div class="mart"><span class="piste blue"></span><span class="chk"></span><span class="big">🤖</span><span class="bolt">⚡</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
+      <div class="mbody"><b data-t="raceBots"></b><span class="msub" id="mBotsSub"></span>
+        <div class="mbtns"><button class="btn" id="btnRace">🏁 <span data-t="chooseRival"></span></button></div></div>
+    </div>
+    <div class="mcard c-endless">
+      <div class="mart"><span class="piste black"></span><div class="wave"></div><span class="big inf">∞</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
+      <div class="mbody"><b data-t="endless"></b><span class="msub"><span data-t="endlessSub"></span> · <span id="endBest"></span></span>
+        <div class="mbtns"><button class="btn" id="btnEndless">▶ <span data-t="play"></span></button></div></div>
+    </div>
+  </div>
+  <div class="mdots" id="mdots"></div>
 </div>
 
 <div class="screen" id="garage">
@@ -775,6 +918,24 @@
     <button class="btn green" id="shGo">📤 <span data-t="share"></span></button>
     <div class="row2"><button class="btn ghost" id="shSave" data-t="saveImage"></button><button class="btn ghost" id="shCopy" data-t="copyLink"></button></div>
     <button class="btn ghost slimback" id="shBack" data-t="back"></button>
+  </div>
+</div>
+
+<div class="screen" id="shopScr">
+  <div class="card" style="--band:var(--gold)">
+    <h2>🛒 <span data-t="shop"></span></h2>
+    <div class="tabs"><button id="shTabRides" class="on" data-t="rides"></button><button id="shTabCoins" data-t="coinsTab"></button></div>
+    <div class="shoplist" id="shopList"></div>
+    <div class="shopnote" id="shopNote"></div>
+    <button class="btn ghost" id="shopBack" data-t="back"></button>
+  </div>
+</div>
+
+<div id="prep">
+  <div class="prepcard">
+    <div class="prephead"><b data-t="boosts"></b><span class="cbal"><i></i><span id="prepCoins">0</span></span><div class="prepring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" class="bg"/><circle cx="18" cy="18" r="15.5" class="fg" id="prepArc"/></svg><span id="prepSec">5</span></div></div>
+    <div class="prepitems" id="prepItems"></div>
+    <button class="btn green" id="prepGo">GO ▶</button>
   </div>
 </div>
 
@@ -1274,6 +1435,42 @@ const RIDES = {
     bars: { speed: 3, handling: 2, tricks: 1, armor: 5 },
     colors: { body: '#14b8c4', jacket: '#e84393', jacket2: '#ffffff', hat: '#ffd32a', hat2: '#e84393', mitt: '#ffd32a', scarf: '#6c5ce7', pants: '#5f27cd' },
   },
+  skis: {
+    height: 2.2,
+    price: 1500, order: 4,
+    accel: 9.4, tuckAccel: 15, brake: 20, steer: 14.5, steerResp: 6,
+    vmaxBase: 25.5, vmaxGrow: 15, spinRate: 7.5, flipRate: 5.6, radius: 0.5,
+    groundSpin: 0, landTol: 0.75, trickMul: 1.3, hp: 0, smash: false,
+    bars: { speed: 4, handling: 5, tricks: 4, armor: 1 },
+    colors: { body: '#e63946', body2: '#ffffff', jacket: '#1d3557', jacket2: '#e63946', hat: '#ffffff', hat2: '#e63946', mitt: '#e63946', scarf: '#ffffff', pants: '#1d3557', lens: '#ffd166' },
+  },
+  cart: {
+    height: 2.0,
+    price: 3000, order: 5,
+    accel: 8.2, tuckAccel: 13, brake: 11, steer: 11, steerResp: 3.8,
+    vmaxBase: 26, vmaxGrow: 15.5, spinRate: 5, flipRate: 4.6, radius: 0.85,
+    groundSpin: 0.8, landTol: 0.85, trickMul: 1.4, hp: 1, smash: false,
+    bars: { speed: 4, handling: 3, tricks: 3, armor: 3 },
+    colors: { body: '#b8c2cc', body2: '#e63946', jacket: '#f4a261', jacket2: '#264653', hat: '#264653', hat2: '#f4a261', mitt: '#264653', scarf: '#e76f51', pants: '#264653' },
+  },
+  sofa: {
+    height: 1.9,
+    price: 4500, order: 6,
+    accel: 7.4, tuckAccel: 12, brake: 9, steer: 9.5, steerResp: 3.2,
+    vmaxBase: 27, vmaxGrow: 16, spinRate: 4, flipRate: 3.8, radius: 1.05,
+    groundSpin: 0.3, landTol: 1.0, trickMul: 1.1, hp: 2, smash: true,
+    bars: { speed: 5, handling: 1, tricks: 1, armor: 6 },
+    colors: { body: '#6a4c93', body2: '#8b6fc1', jacket: '#ffca3a', jacket2: '#6a4c93', hat: '#ff595e', hat2: '#ffffff', mitt: '#ff595e', scarf: '#8ac926', pants: '#3a2e5c' },
+  },
+  rocket: {
+    height: 1.9,
+    price: 7000, order: 7,
+    accel: 10.5, tuckAccel: 16, brake: 13, steer: 12, steerResp: 4.6,
+    vmaxBase: 28, vmaxGrow: 16.5, spinRate: 6.5, flipRate: 5.4, radius: 0.75,
+    groundSpin: 0, landTol: 0.85, trickMul: 1.3, hp: 1, smash: false,
+    bars: { speed: 7, handling: 4, tricks: 3, armor: 2 },
+    colors: { body: '#f8f9fa', body2: '#e63946', jacket: '#4361ee', jacket2: '#ffffff', hat: '#4361ee', hat2: '#ffd166', mitt: '#ffd166', scarf: '#e63946', pants: '#3a0ca3', lens: '#4cc9f0' },
+  },
 };
 const RIDE_IDS = Object.keys(RIDES).sort((a, b) => RIDES[a].order - RIDES[b].order);
 
@@ -1459,6 +1656,58 @@ const RideModels = {
       mb.add(Prim.sphere(0.085, 8, 6), T3(0.32, 0.74, -0.72), hexToRgb('#ffd32a'));
       mb.add(Prim.cone(0.045, 0.1, 6), MM(T3(0.32, 0.73, -0.8), M4.rotX(-Math.PI / 2)), hexToRgb('#ff7a1a'));
       mb.add(Prim.sphere(0.018, 4, 3), T3(0.36, 0.77, -0.79), dark);
+    } else if (id === 'skis') {
+      const accent = hexToRgb(c.body2 || '#ffffff'), pole = hexToRgb('#adb5bd');
+      for (const sx of [-0.17, 0.17]) {
+        mb.add(Prim.box(0.13, 0.04, 1.7), T3(sx, 0.02, 0.05), body);
+        mb.add(Prim.box(0.06, 0.042, 1.5), T3(sx, 0.025, 0.08), accent);
+        mb.add(Prim.tube([sx, 0.04, -0.8], [sx, 0.16, -0.95], 0.06, 6), M4.create(), body);   // загнутые носки
+        mb.add(Prim.box(0.16, 0.1, 0.32), T3(sx, 0.08, 0.02), dark);                         // крепления
+        mb.add(Prim.tube([sx * 3.2, 0.03, 0.35], [sx * 2.6, 0.95, -0.1], 0.018, 5), M4.create(), pole);   // палки
+        mb.add(Prim.cylinder(0.07, 0.015, 8), T3(sx * 3.15, 0.12, 0.3), dark);
+      }
+    } else if (id === 'cart') {
+      const red = hexToRgb(c.body2 || '#e63946'), wire = body, wheel = dark;
+      // корзина из «прутьев»: дно, борта сеткой
+      mb.add(Prim.box(0.9, 0.04, 1.3), T3(0, 0.3, 0), wire);
+      for (let k = -4; k <= 4; k++) {
+        mb.add(Prim.box(0.03, 0.55, 0.03), T3(-0.45, 0.58, k * 0.155), wire); mb.add(Prim.box(0.03, 0.55, 0.03), T3(0.45, 0.58, k * 0.155), wire);
+      }
+      for (let k = -3; k <= 3; k++) { mb.add(Prim.box(0.03, 0.55, 0.03), T3(k * 0.13, 0.58, -0.65), wire); mb.add(Prim.box(0.03, 0.55, 0.03), T3(k * 0.13, 0.58, 0.65), wire); }
+      for (const y of [0.55, 0.85]) {
+        mb.add(Prim.box(0.92, 0.035, 0.035), T3(0, y, -0.66), wire); mb.add(Prim.box(0.92, 0.035, 0.035), T3(0, y, 0.66), wire);
+        mb.add(Prim.box(0.035, 0.035, 1.32), T3(-0.46, y, 0), wire); mb.add(Prim.box(0.035, 0.035, 1.32), T3(0.46, y, 0), wire);
+      }
+      mb.add(Prim.tube([-0.42, 0.88, 0.68], [-0.42, 1.12, 0.9], 0.025, 5), M4.create(), wire);
+      mb.add(Prim.tube([0.42, 0.88, 0.68], [0.42, 1.12, 0.9], 0.025, 5), M4.create(), wire);
+      mb.add(Prim.tube([-0.45, 1.12, 0.9], [0.45, 1.12, 0.9], 0.045, 8), M4.create(), red);      // ручка
+      for (const sx of [-0.38, 0.38]) for (const sz of [-0.55, 0.55]) {
+        mb.add(Prim.tube([sx, 0.3, sz], [sx, 0.12, sz], 0.025, 5), M4.create(), wire);
+        mb.add(Prim.cylinder(0.11, 0.06, 10), MM(T3(sx, 0.11, sz), M4.rotZ(Math.PI / 2)), wheel);
+      }
+    } else if (id === 'sofa') {
+      const cushion = hexToRgb(c.body2 || '#8b6fc1'), leg = hexToRgb('#5c3d1e'), pillow = hexToRgb('#ffca3a');
+      mb.add(Prim.box(1.5, 0.3, 0.9), T3(0, 0.25, 0), body);                           // основание
+      for (const sx of [-0.36, 0.36]) mb.add(Prim.box(0.68, 0.16, 0.74), T3(sx, 0.48, -0.04), cushion);   // сиденья
+      mb.add(Prim.box(1.5, 0.62, 0.22), T3(0, 0.62, 0.36), body);                      // спинка
+      for (const sx of [-0.68, 0.68]) mb.add(Prim.box(0.18, 0.42, 0.9), T3(sx, 0.52, 0), body);       // подлокотники
+      for (const sx of [-0.66, 0.66]) for (const sz of [-0.38, 0.38]) mb.add(Prim.cylinder(0.05, 0.12, 6), T3(sx, 0.06, sz), leg);
+      mb.add(Prim.box(0.36, 0.3, 0.12), MM(T3(-0.42, 0.72, 0.2), M4.rotZ(0.2)), pillow);  // подушка
+      // полозья, чтобы диван ехал по снегу
+      for (const sx of [-0.55, 0.55]) mb.add(Prim.tube([sx, 0.02, 0.5], [sx, 0.02, -0.6], 0.04, 6), M4.create(), hexToRgb('#adb5bd'));
+    } else if (id === 'rocket') {
+      const red = hexToRgb(c.body2 || '#e63946'), glass = hexToRgb('#4cc9f0'), flame = hexToRgb('#ffb703'), metal = hexToRgb('#adb5bd');
+      mb.add(Prim.tube([0, 0.42, 0.95], [0, 0.42, -0.75], 0.42, 14), M4.create(), body);           // корпус
+      mb.add(Prim.cone(0.42, 0.55, 14), MM(T3(0, 0.42, -0.75), M4.rotX(-Math.PI / 2)), red);     // нос
+      mb.add(Prim.cylinder(0.44, 0.1, 14), MM(T3(0, 0.42, -0.2), M4.rotX(Math.PI / 2)), red);     // полоса
+      mb.add(Prim.sphere(0.13, 10, 6), MM(T3(0, 0.78, -0.45), M4.scale(1, 0.6, 1.2)), glass);     // иллюминатор
+      for (const a of [0, 2.1, 4.2]) {                                                           // стабилизаторы
+        const x = Math.sin(a) * 0.48, y = 0.42 + Math.cos(a) * 0.48;
+        mb.add(Prim.box(0.06, 0.34, 0.4), MM(T3(x, y, 0.8), M4.rotZ(-a)), red);
+      }
+      mb.add(Prim.cylinder(0.28, 0.16, 12), MM(T3(0, 0.42, 1.0), M4.rotX(Math.PI / 2)), metal);   // сопло
+      mb.add(Prim.cone(0.22, 0.45, 10), MM(T3(0, 0.42, 1.12), M4.rotX(Math.PI / 2)), flame);       // пламя
+      for (const sx of [-0.32, 0.32]) mb.add(Prim.tube([sx, 0.02, 0.8], [sx, 0.02, -0.6], 0.035, 6), M4.create(), metal);
     }
     return mb;
   },
@@ -1471,6 +1720,10 @@ const RideModels = {
       sled: { seat: [0, 0.4, 0.25], pose: 'sit', armX: -1.25, armZ: 0.22, yaw: 0 },
       board: { seat: [0, 0.9, 0], pose: 'stand', armX: -0.2, armZ: 1.05, yaw: Math.PI / 2 - 0.3, legLen: 0.84 },
       tub: { seat: [0, 0.48, 0.25], pose: 'sit', armX: -0.15, armZ: 1.25, yaw: 0 },
+      skis: { seat: [0, 0.92, 0.05], pose: 'stand', armX: -0.55, armZ: 0.42, yaw: 0, legLen: 0.84 },
+      cart: { seat: [0, 0.42, 0.1], pose: 'sit', armX: -0.3, armZ: 1.6, yaw: 0 },
+      sofa: { seat: [0, 0.6, 0.05], pose: 'sit', armX: -0.2, armZ: 0.55, yaw: 0 },
+      rocket: { seat: [0, 0.82, 0.15], pose: 'sit', armX: -0.9, armZ: 0.5, yaw: 0 },
     }[id];
   },
 
@@ -3354,6 +3607,14 @@ class Sfx {
 
 const STRINGS = {
   ru: {
+    playBig: '▶ ИГРАТЬ', chooseRun: 'Выбери заезд', adventure: 'Приключение', todayTag: 'НОВАЯ', play: 'Играть', onlineSub: 'Гонка с живыми игроками — или позови друга', findRival: 'Найти соперника', withFriend: 'С другом',
+    raceBots: 'Гонка с ботами', chooseRival: 'Выбрать соперника', botsSub: '3 соперника · побед: {n}', endlessSub: 'Как далеко уедешь?', newTrackIn: 'Новая трасса через {t}', advSub: 'Уровень {n} · {m} · ⭐ {s}/{t}',
+
+    shop: 'Магазин', rides: 'Транспорт', coinsTab: 'Монеты', owned: 'Есть', equip: 'Выбрать', equipped: 'Выбран', boosts: 'Бусты на заезд',
+    b_boost: 'Ракетный старт', b_shield: 'Щит', b_magnet: 'Магнит', b_spring: 'Шарики', freeVid: 'Даром', freeCoins: 'Монеты даром', freeCoinsD: 'Короткое видео',
+    coinPack: '{n} монет', bestValue: 'Выгодно', popular: 'Хит', packNote: 'Оплата через {p}. Монеты придут сразу.', noPacks: 'Наборы монет есть в приложении и на Яндекс Играх. Монеты дают за заезды, подарки и задания!',
+    bought: 'Куплено!', notEnough: 'Не хватает монет', boostOn: '{b} готово!', cooldown: 'Снова доступно через {t}', thanksBuy: '+{n} монет — спасибо!', buyFail: 'Покупка не завершена',
+
     onlineRace: 'Онлайн-гонка', raceFriend: 'С другом', orBot: 'или гонка с ботом:', online: 'Онлайн', createRoom: 'Создать комнату', orJoin: 'или войди в комнату друга',
     joinRoom: 'Войти', shareRoom: 'Отправить ссылку', cancel: 'Отмена', waitingFriend: 'Отправь код или ссылку другу', searching: 'Ищем соперника… {s} с',
     noRivals: 'Сейчас никого нет — гонка с ботом {name}!', roomFull: 'Комната уже занята', oppLeft: '{name} вышел из гонки', wantsRematch: '{name} хочет реванш!',
@@ -3411,8 +3672,8 @@ const STRINGS = {
     reasonSkier: 'Сбил лыжника!',
     garage: 'Гараж', missions: 'Задания', chest: 'Сундук', back: 'Назад',
     chestReady: 'Открыть', chestOpened: 'Сундук: +{n}',
-    ride_tube: 'Ватрушка', ride_sled: 'Санки', ride_board: 'Сноуборд', ride_tub: 'Ванна',
-    desc_tube: 'Крутится и не унывает', desc_sled: 'Быстрые, но рулят неохотно', desc_board: 'Трюки ×1.5, мягкое приземление', desc_tub: 'Разбивает камни, +1 удар',
+    ride_tube: 'Ватрушка', ride_sled: 'Санки', ride_board: 'Сноуборд', ride_tub: 'Ванна', ride_skis: 'Лыжи', ride_cart: 'Тележка', ride_sofa: 'Диван', ride_rocket: 'Ракетные сани',
+    desc_tube: 'Крутится и не унывает', desc_sled: 'Быстрые, но рулят неохотно', desc_board: 'Трюки ×1.5, мягкое приземление', desc_tub: 'Разбивает камни, +1 удар', desc_skis: 'Самые послушные в повороте', desc_cart: 'Из супермаркета прямо на склон, +1 удар', desc_sofa: 'Тяжёлый, быстрый, сносит всё, +2 удара', desc_rocket: 'Самая высокая скорость',
     st_speed: 'Скорость', st_handling: 'Управление', st_tricks: 'Трюки', st_armor: 'Прочность',
     up_speed: 'Скорость', up_handling: 'Управление', up_armor: 'Прочность',
     upd_speed: 'выше максимум и разгон', upd_handling: 'быстрее поворот', upd_armor: '+1 удар за заезд',
@@ -3455,6 +3716,14 @@ const STRINGS = {
     rivalFinished: '{name} финишировал!', firstWin: 'Бонус за первую победу!', vs: 'против', raceLbl: 'Гонка · {d}', winReward: 'за победу', pisteEasy: 'лёгкий', pisteMid: 'средний', pisteHard: 'сложный',
   },
   en: {
+    playBig: '▶ PLAY', chooseRun: 'Choose your run', adventure: 'Adventure', todayTag: 'NEW TODAY', play: 'Play', onlineSub: 'Race real riders right now — or invite a friend', findRival: 'Find a rival', withFriend: 'With a friend',
+    raceBots: 'Race the bots', chooseRival: 'Choose a rival', botsSub: '3 rivals · wins: {n}', endlessSub: 'How far can you go?', newTrackIn: 'New track in {t}', advSub: 'Level {n} · {m} · ⭐ {s}/{t}',
+
+    shop: 'Shop', rides: 'Rides', coinsTab: 'Coins', owned: 'Owned', equip: 'Ride it', equipped: 'Riding', boosts: 'Boosts for this run',
+    b_boost: 'Rocket start', b_shield: 'Shield', b_magnet: 'Magnet', b_spring: 'Balloons', freeVid: 'Free', freeCoins: 'Free coins', freeCoinsD: 'Watch a short video',
+    coinPack: '{n} coins', bestValue: 'Best value', popular: 'Popular', packNote: 'Payments are handled by {p}. Coins arrive instantly.', noPacks: 'Coin packs are available in the app and on Yandex Games. Earn coins by playing, daily gifts and missions!',
+    bought: 'Bought!', notEnough: 'Not enough coins', boostOn: '{b} ready!', cooldown: 'Available again in {t}', thanksBuy: '+{n} coins — thank you!', buyFail: 'Purchase was not completed',
+
     onlineRace: 'Online race', raceFriend: 'Race a friend', orBot: 'or race a bot:', online: 'Online', createRoom: 'Create a room', orJoin: "or join a friend's room",
     joinRoom: 'Join', shareRoom: 'Share link', cancel: 'Cancel', waitingFriend: 'Send the code or link to a friend', searching: 'Looking for a rival… {s} s',
     noRivals: 'Nobody online right now — racing {name}!', roomFull: 'This room is already full', oppLeft: '{name} left the race', wantsRematch: '{name} wants a rematch!',
@@ -3512,8 +3781,8 @@ const STRINGS = {
     reasonSkier: 'Knocked over a skier!',
     garage: 'Garage', missions: 'Missions', chest: 'Chest', back: 'Back',
     chestReady: 'Open', chestOpened: 'Chest: +{n}',
-    ride_tube: 'Snow tube', ride_sled: 'Sled', ride_board: 'Snowboard', ride_tub: 'Bathtub',
-    desc_tube: 'Spins and never gives up', desc_sled: 'Fast but stubborn to steer', desc_board: 'Tricks ×1.5, soft landings', desc_tub: 'Smashes rocks, +1 hit',
+    ride_tube: 'Snow tube', ride_sled: 'Sled', ride_board: 'Snowboard', ride_tub: 'Bathtub', ride_skis: 'Skis', ride_cart: 'Shopping cart', ride_sofa: 'Sofa', ride_rocket: 'Rocket sled',
+    desc_tube: 'Spins and never gives up', desc_sled: 'Fast but stubborn to steer', desc_board: 'Tricks ×1.5, soft landings', desc_tub: 'Smashes rocks, +1 hit', desc_skis: 'The sharpest turns on the mountain', desc_cart: 'Straight from the supermarket, +1 hit', desc_sofa: 'Heavy, fast, smashes everything, +2 hits', desc_rocket: 'The highest top speed',
     st_speed: 'Speed', st_handling: 'Handling', st_tricks: 'Tricks', st_armor: 'Toughness',
     up_speed: 'Speed', up_handling: 'Handling', up_armor: 'Toughness',
     upd_speed: 'higher top speed', upd_handling: 'sharper turns', upd_armor: '+1 hit per run',
@@ -4210,6 +4479,7 @@ const Platform = {
   cloud: null,       // сохранение из облака площадки
   onPause: null, onResume: null,
 
+  iap: null, catalog: [],   // покупки за реальные деньги (сейчас — Яндекс Игры)
   // Кнопки «за видео» показываем, только если реклама реально может быть.
   get rewardedAvailable() { return this.adsEnabled; },
 
@@ -4219,6 +4489,7 @@ const Platform = {
     if (BUILD_CFG.sdk === 'crazygames') await this._initCrazy().then((l) => { if (l) lang = l; }).catch((e) => console.warn('CrazyGames SDK', e));
     if (BUILD_CFG.sdk === 'yandex') await this._initYandex().then((l) => { if (l) lang = l; }).catch((e) => console.warn('Yandex SDK', e));
     this.adsEnabled = !!BUILD_CFG.ads && !!(this.cg || this.ysdk);
+    if (this.ysdk) await this._initPayments().catch(() => {});
     // Игра на английском везде; только на Яндекс Играх язык берётся у площадки (там русскоязычная аудитория).
     if (BUILD_CFG.target !== 'yandex') lang = 'en';
     return { lang };
@@ -4247,6 +4518,37 @@ const Platform = {
       if (d && d[SAVE_KEY]) this.cloud = d[SAVE_KEY];
     } catch (e) { /* без облака — локальное сохранение */ }
     return y.environment && y.environment.i18n ? y.environment.i18n.lang : null;
+  },
+
+  // --- Покупки (Яндекс: getPayments → getCatalog → purchase → consumePurchase) ---
+  async _initPayments() {
+    this.iap = await this.ysdk.getPayments({ signed: false });
+    this.catalog = await this.iap.getCatalog();
+  },
+  get iapAvailable() { return !!(this.iap && this.catalog && this.catalog.length); },
+  get iapProvider() { return this.ysdk ? 'Yandex Games' : ''; },
+  // Товар каталога: цена и значок валюты площадки (требование Яндекса 1.13.2 — брать из SDK).
+  product(id) {
+    const p = (this.catalog || []).find((x) => x.id === id); if (!p) return null;
+    let icon = ''; try { icon = p.getPriceCurrencyImage ? p.getPriceCurrencyImage('small') : ''; } catch (e) { /* ignore */ }
+    return { id, price: p.priceValue || p.price, priceText: p.price, icon, title: p.title };
+  },
+  // Купить и сразу «потребить» (монеты — расходуемая покупка). credit(id) начисляет товар до потребления.
+  async buy(id, credit) {
+    if (!this.iap) return false;
+    try {
+      const pur = await this.iap.purchase({ id });
+      credit(pur.productID || id);
+      await this.iap.consumePurchase(pur.purchaseToken);
+      return true;
+    } catch (e) { return false; }
+  },
+  // Незавершённые покупки (оплатил, но игра закрылась): начислить и потребить при запуске.
+  async restorePurchases(credit) {
+    if (!this.iap) return 0;
+    let n = 0;
+    try { for (const pur of await this.iap.getPurchases()) { credit(pur.productID); await this.iap.consumePurchase(pur.purchaseToken); n++; } } catch (e) { /* ignore */ }
+    return n;
   },
 
   // Игра загружена и готова (Яндекс: обязательный вызов LoadingAPI.ready).
@@ -4438,6 +4740,13 @@ const Platform = {
   const RACE_ZONES = [0, 1, 3, 2, 4];
   const boulderMesh = renderer.createMesh(Models.boulder());
   const POWER_ICON = { boost: '🎆', spring: '🎈', magnet: '🌀' }, POWER_COL = { boost: '#ff6b35', spring: '#ff4d6d', magnet: '#9d4edd' };
+  // Значки активных бонусов: круглые, в стиле игры, кольцо — оставшееся время.
+  const POWER_SVG = {
+    boost: '<svg viewBox="0 0 24 24"><path d="M12 2c1.8 3.2 5 5.6 5 10.2A5 5 0 0 1 7 12.4c0-2 .9-3.6 2.2-4.8.2 1.8 1 3 2.3 3.4C11 8.2 11.2 5 12 2z"/><path class="in" d="M12 12.5c1 1.2 2 2.2 2 3.6a2 2 0 0 1-4 0c0-1.3.9-2.4 2-3.6z"/></svg>',
+    spring: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="9" rx="6" ry="7"/><path class="in" d="M9.5 6.2a3 3 0 0 1 2.4-1.6"/><path d="M11 16h2l-1 2z"/><path class="str" d="M12 18c-1.5 1.5 1.5 2.5 0 4"/></svg>',
+    magnet: '<svg viewBox="0 0 24 24"><path d="M5 3h5v9a2 2 0 0 0 4 0V3h5v9a7 7 0 0 1-14 0z"/><path class="tip" d="M5 3h5v4H5zM14 3h5v4h-5z"/></svg>',
+  };
+  const powerMax = {};
   const tmp = M4.create();
   const zoneCol = ZONES.map((z) => ({ fog: hexToRgb(z.fog), skyTop: hexToRgb(z.skyTop) }));
 
@@ -4492,7 +4801,7 @@ const Platform = {
     const t = $('toast'); t.textContent = text; t.style.display = 'block';
     clearTimeout(toastT); toastT = setTimeout(() => { t.style.display = 'none'; }, 1800);
   }
-  const SCREENS = ['menu', 'garage', 'missionsScr', 'daily', 'over', 'pause', 'mapScr', 'story', 'win', 'raceScr', 'raceEnd', 'dailyEnd', 'challenge', 'shareScr', 'crewScr', 'onlineScr'];
+  const SCREENS = ['menu', 'garage', 'missionsScr', 'daily', 'over', 'pause', 'mapScr', 'story', 'win', 'raceScr', 'raceEnd', 'dailyEnd', 'challenge', 'shareScr', 'crewScr', 'onlineScr', 'shopScr', 'modesScr'];
   // Экраны появляются и исчезают плавно (CSS: .show — вход, .leaving — выход).
   function show(id) {
     screen = id;
@@ -4505,8 +4814,8 @@ const Platform = {
       }
     });
     $('hud').classList.toggle('show', id === null);
-    if (['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'story', 'raceScr', 'crewScr', 'challenge'].includes(id)) sfx.music.play('menu');
-    $('topbar').style.display = ['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'raceScr'].includes(id) ? 'flex' : 'none';
+    if (['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'story', 'raceScr', 'crewScr', 'challenge', 'shopScr', 'modesScr'].includes(id)) sfx.music.play('menu');
+    $('topbar').style.display = ['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'raceScr', 'shopScr'].includes(id) ? 'flex' : 'none';
     refreshMeta();
   }
   // Переход через белую вспышку: fn выполняется, пока экран закрыт.
@@ -4552,11 +4861,17 @@ const Platform = {
     $('btnMusic').classList.toggle('off', !!save.musicOff);
     const cur = Levels.current(save), ci = Levels.info(cur), stars = Levels.totalStars(save);
     $('playLbl').textContent = `▶ ${T('levelN', { n: cur + 1 })}`;
+    $('mAdvSub').textContent = T('advSub', { n: cur + 1, m: T('mtn_' + MOUNTAINS[ci.m].id), s: stars, t: LEVEL_COUNT * 3 });
+    const wins = (save.race.easy || 0) + (save.race.medium || 0) + (save.race.hard || 0);
+    $('mBotsSub').textContent = T('botsSub', { n: wins });
+    const dk = Daily.key(), dd = new Date(dk + 'T12:00:00Z');
+    $('mCalDay').textContent = dd.getUTCDate(); $('mCalMon').textContent = dd.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }).toUpperCase();
+    $('mOnline').style.display = crew.enabled ? '' : 'none';
+    updateDailySub();
     $('playSub').textContent = `${T('mtn_' + MOUNTAINS[ci.m].id)} · ⭐ ${stars}/${LEVEL_COUNT * 3}`;
     $('endBest').textContent = `${T('best')}: ${save.best}`;
     const stk = Daily.shownStreak(save.dstreak, Daily.key());
     $('dailyStreak').textContent = stk ? T('streakN', { n: stk }) : '';
-    $('btnCrew').style.display = crew.enabled ? '' : 'none';
     $('btnClip').classList.toggle('on', clip);
     $('tileStars').textContent = `⭐ ${stars}`;
     $('tileRide').textContent = rideName(save.ride);
@@ -4620,9 +4935,15 @@ const Platform = {
     const key = act.join(',');
     if (key !== powersKey) {
       powersKey = key;
-      $('powers').innerHTML = act.map((k) => `<div class="pw">${POWER_ICON[k]}<div class="bar"><div id="pw_${k}" style="background:${POWER_COL[k]}"></div></div></div>`).join('');
+      $('powers').innerHTML = act.map((k) => `<div class="pw pw-${k}" id="pw_${k}"><i>${POWER_SVG[k]}</i></div>`).join('');
+      for (const k of act) powerMax[k] = Math.max(POWER_TIME[k], player.power[k]);
     }
-    for (const k of act) { const el = $('pw_' + k); if (el) el.style.width = `${(player.power[k] / POWER_TIME[k]) * 100}%`; }
+    for (const k of act) {
+      const el = $('pw_' + k); if (!el) continue;
+      const left = player.power[k], p = clamp(left / (powerMax[k] || POWER_TIME[k]), 0, 1);
+      el.style.setProperty('--p', p.toFixed(3));
+      el.classList.toggle('low', left < 1.5);
+    }
   }
 
   // --- Мир и заезд ---
@@ -4696,16 +5017,10 @@ const Platform = {
       if (race) $('hudLvl').textContent = T('raceLbl', { d: T(race.key) });
       if (daily) $('hudLvl').textContent = T('dailyOf', { d: fmtDay(daily.key) });
       show(null);
-      if (race) {
-        // Отсчёт 3-2-1-GO: игрок и соперник стоят на старте.
-        state = 'countdown'; countT = 3; showCount('3'); sfx.count(false);
-        sfx.music.play('race');
-      } else {
-        state = 'play';
-        const dm = daily && MOUNTAINS.find((m) => m.zone === daily.lv.zone);
-        sfx.music.play(level ? MOUNTAINS[level.m].id : dm ? dm.id : 'endless');
-        Platform.gameplayStart();
-      }
+      const dm = daily && MOUNTAINS.find((m) => m.zone === daily.lv.zone);
+      sfx.music.play(race ? 'race' : level ? MOUNTAINS[level.m].id : dm ? dm.id : 'endless');
+      // 5 секунд на бусты перед стартом (кроме самого первого заезда новичка).
+      if ((save.runs > 0 || !level || level.id > 0) && !window.__noPrep) openPrep(); else goRun();   // __noPrep — для автотестов
       if (trial) popup(T('trying', { r: rideName(rideId) }), 'zone');
       else if (level) popup(T('levelN', { n: level.id + 1 }), 'zone');
       else if (daily) popup(ghostRun && !ghostRun.own ? `👻 ${ghostRun.run.nick}` : T('dailyRun'), 'zone');
@@ -4713,6 +5028,13 @@ const Platform = {
   }
   const fmtDay = (key) => new Date(key + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   const startDaily = (key = Daily.key(), ghost = null) => startRun(null, null, { daily: key, ghost });
+  // Старт после выбора бустов: гонка — отсчёт 3-2-1, остальное — сразу.
+  function goRun() {
+    $('prep').classList.remove('on');
+    applyBoosts();
+    if (race) { state = 'countdown'; countT = 3; showCount('3'); sfx.count(false); }
+    else { state = 'play'; runTime = 0; Platform.gameplayStart(); }
+  }
   const startEndless = () => startRun(null);
   const startRace = (key) => startRun(null, key);
 
@@ -4723,7 +5045,7 @@ const Platform = {
   }
 
   // --- Гонка: выбор сложности ---
-  const RIDE_ICON = { tube: '🛟', sled: '🛷', board: '🏂', tub: '🛁' };
+  const RIDE_ICON = { tube: '🛟', sled: '🛷', board: '🏂', tub: '🛁', skis: '🎿', cart: '🛒', sofa: '🛋️', rocket: '🚀' };
   function openRace() {
     sfx.unlock(); sfx.click();
     const list = $('raceList'); list.innerHTML = '';
@@ -4744,7 +5066,7 @@ const Platform = {
     toMenuThen(() => show('raceScr'));
   }
   $('btnRace').onclick = openRace;
-  $('raceBack').onclick = () => { sfx.click(); show('menu'); };
+  $('raceBack').onclick = () => { sfx.click(); show('modesScr'); };
 
   // Обгоны и финиш соперника — короткие подсказки.
   function raceEvents() {
@@ -5022,7 +5344,7 @@ const Platform = {
   // Из заезда — сначала вернуть фон меню.
   function toMenuThen(fn) {
     if (state === 'menu') { fn(); return; }
-    fadeThrough(() => { if (online && !(screen === 'onlineScr')) leaveOnline(); state = 'menu'; level = null; race = null; daily = null; ghostRun = null; recorder = null; ghostRider.stop(); player.setRide(save.ride, save.up); newWorld(null, true); fn(); });
+    fadeThrough(() => { if (online && !(screen === 'onlineScr')) leaveOnline(); if (state === 'prep') refundPrep(); $('prep').classList.remove('on'); state = 'menu'; level = null; race = null; daily = null; ghostRun = null; recorder = null; ghostRider.stop(); player.setRide(save.ride, save.up); newWorld(null, true); fn(); });
   }
   function openMap() { sfx.unlock(); toMenuThen(() => { show('mapScr'); renderMap(); }); }
   $('btnMap').onclick = () => { sfx.click(); openMap(); };
@@ -5113,7 +5435,7 @@ const Platform = {
   });
 
   // --- Кнопки: заезд ---
-  $('btnPlay').onclick = () => { sfx.unlock(); sfx.click(); playLevel(Levels.current(save)); };
+  $('btnPlay').onclick = () => { sfx.unlock(); sfx.click(); openModes(); };
   $('btnEndless').onclick = () => startEndless();
   $('btnAgain').onclick = async () => { await Platform.showInterstitial(runTime); if (race) startRace(race.key); else startRun(level ? level.id : null); };
   $('btnMenu').onclick = async () => { await Platform.showInterstitial(runTime); if (level) openMap(); else toMenu(); };
@@ -5624,10 +5946,164 @@ const Platform = {
     leaveOnline(); toMenu();
   };
 
+  // ===================== Выбор режима =====================
+  function openModes() {
+    toMenuThen(() => {
+      show('modesScr');
+      const box = $('mcards'), cards = [...box.querySelectorAll('.mcard')].filter((c) => c.style.display !== 'none');
+      $('mdots').innerHTML = cards.map(() => '<i></i>').join('');
+      box.scrollLeft = 0; focusCard();
+    });
+  }
+  function focusCard() {
+    const box = $('mcards'), cards = [...box.querySelectorAll('.mcard')].filter((c) => c.style.display !== 'none');
+    const mid = box.scrollLeft + box.clientWidth / 2;
+    let best = 0, bd = 1e9;
+    cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
+    const wide = box.scrollWidth <= box.clientWidth + 4;
+    cards.forEach((c, i) => c.classList.toggle('focus', !wide && i === best));
+    [...$('mdots').children].forEach((d, i) => d.classList.toggle('on', i === best));
+  }
+  $('mcards').addEventListener('scroll', () => requestAnimationFrame(focusCard), { passive: true });
+  function updateDailySub() {
+    const now = Date.now(), next = Date.UTC(new Date(now).getUTCFullYear(), new Date(now).getUTCMonth(), new Date(now).getUTCDate() + 1);
+    const ms = next - now, h = Math.floor(ms / 36e5), m = Math.floor(ms / 6e4) % 60;
+    $('mDailySub').textContent = `${T('dailyHint')} · ${T('newTrackIn', { t: `${h}h ${String(m).padStart(2, '0')}m` })}`;
+  }
+  setInterval(() => { if (screen === 'modesScr') updateDailySub(); }, 30000);
+  $('modesBack').onclick = () => { sfx.click(); show('menu'); };
+  $('mAdvGo').onclick = () => { sfx.unlock(); sfx.click(); playLevel(Levels.current(save)); };
+  $('mAdvMap').onclick = () => { sfx.click(); openMap(); };
+  $('mQuick').onclick = () => openOnline('quick');
+  $('mFriend').onclick = () => { resetFriendUi(); openOnline('friend'); };
+
+  // ===================== Бусты перед стартом =====================
+  const BOOSTS = {
+    boost: { ic: '🎆', price: 60 },     // ракетный старт: петарда на первые секунды
+    shield: { ic: '🛡️', price: 80 },    // +1 удар на заезд
+    magnet: { ic: '🌀', price: 50 },    // магнит на 20 с
+    spring: { ic: '🎈', price: 40 },    // шарики (двойной прыжок) на 15 с
+  };
+  const PREP_TIME = 5;
+  let prepT = 0, prepPaused = false, prepSel = {}, prepFree = null;
+  function openPrep() {
+    state = 'prep'; prepT = PREP_TIME; prepSel = {}; prepFree = null; prepPaused = false;
+    const online = race && race.online;
+    $('prepGo').style.display = online ? 'none' : '';
+    renderPrep(); updatePrepRing();
+    $('prep').classList.add('on');
+  }
+  function renderPrep() {
+    $('prepCoins').textContent = save.coins;
+    const box = $('prepItems'); box.innerHTML = '';
+    const vidOk = Platform.rewardedAvailable && !(race && race.online) && !prepFree;
+    for (const k of Object.keys(BOOSTS)) {
+      const b = BOOSTS[k], on = !!prepSel[k] || prepFree === k, poor = !on && save.coins < b.price;
+      const el = document.createElement('button');
+      el.className = 'pitem' + (on ? ' on' : '') + (poor && !(vidOk && k === 'boost') ? ' poor' : '');
+      const price = on ? '✓' : poor && vidOk && k === 'boost' ? `▶ ${T('freeVid')}` : `🪙${b.price}`;
+      el.innerHTML = `<span class="ic">${b.ic}</span><span class="nm"></span><span class="pr${poor && vidOk && k === 'boost' ? ' vid' : ''}">${price}</span>`;
+      el.querySelector('.nm').textContent = T('b_' + k);
+      el.onclick = () => togglePrep(k, poor && vidOk && k === 'boost');
+      box.appendChild(el);
+    }
+  }
+  async function togglePrep(k, viaVideo) {
+    const b = BOOSTS[k];
+    if (prepFree === k) return;
+    if (prepSel[k]) { delete prepSel[k]; save.coins += b.price; persist(); sfx.click(); renderPrep(); return; }
+    if (viaVideo) {
+      prepPaused = true;
+      const ok = await rewarded();
+      prepPaused = false;
+      if (ok) { prepFree = k; popup(T('boostOn', { b: T('b_' + k) }), 'gain'); }
+      renderPrep(); return;
+    }
+    if (save.coins < b.price) { toast(T('notEnough')); return; }
+    save.coins -= b.price; prepSel[k] = true; persist(); sfx.coin(); renderPrep(); refreshMeta();
+  }
+  function refundPrep() { for (const k in prepSel) save.coins += BOOSTS[k].price; prepSel = {}; persist(); }
+  function updatePrepRing() {
+    $('prepSec').textContent = Math.max(0, Math.ceil(prepT));
+    $('prepArc').style.strokeDashoffset = (97.4 * (1 - Math.max(0, prepT) / PREP_TIME)).toFixed(1);
+  }
+  function applyBoosts() {
+    const has = (k) => prepSel[k] || prepFree === k;
+    if (has('boost')) player.power.boost = POWER_TIME.boost;
+    if (has('shield')) player.hits += 1;
+    if (has('magnet')) player.power.magnet = 20;
+    if (has('spring')) player.power.spring = 15;
+    if (Object.keys(prepSel).length || prepFree) { sfx.trick(); for (const k of Object.keys(BOOSTS)) if (has(k)) popup(`${BOOSTS[k].ic} ${T('b_' + k)}`, 'gain'); }
+    prepSel = {}; prepFree = null;
+  }
+  $('prepGo').onclick = () => { if (state === 'prep') { sfx.click(); goRun(); } };
+
+  // ===================== Магазин =====================
+  const COIN_PACKS = [{ id: 'coins_s', coins: 1000 }, { id: 'coins_m', coins: 3000, tag: 'popular' }, { id: 'coins_l', coins: 8000, tag: 'bestValue' }];
+  const FREE_COINS = 150, FREE_EVERY = 180e3;
+  let shopTab = 'rides', buyArm = null;
+  function openShop(tab = 'rides') { sfx.unlock(); sfx.click(); shopTab = tab; buyArm = null; toMenuThen(() => { show('shopScr'); renderShop(); }); }
+  $('btnShop').onclick = () => openShop();
+  $('shopBack').onclick = () => { sfx.click(); show('menu'); };
+  $('shTabRides').onclick = () => { shopTab = 'rides'; renderShop(); };
+  $('shTabCoins').onclick = () => { shopTab = 'coins'; renderShop(); };
+  function shopCard(cls, ic, name, desc, price, onClick, tag) {
+    const el = document.createElement('button'); el.className = 'sitem ' + cls;
+    el.innerHTML = `${tag ? '<span class="tag"></span>' : ''}<span class="ic">${ic}</span><span class="nm"></span><span class="ds"></span><span class="pr"></span>`;
+    el.querySelector('.nm').textContent = name; el.querySelector('.ds').textContent = desc;
+    if (tag) el.querySelector('.tag').textContent = tag;
+    if (price instanceof Node) el.querySelector('.pr').appendChild(price); else el.querySelector('.pr').innerHTML = price;
+    el.onclick = onClick; return el;
+  }
+  function renderShop() {
+    $('shTabRides').classList.toggle('on', shopTab === 'rides');
+    $('shTabCoins').classList.toggle('on', shopTab === 'coins');
+    const list = $('shopList'); list.innerHTML = ''; $('shopNote').textContent = '';
+    if (shopTab === 'rides') {
+      for (const id of RIDE_IDS) {
+        const r = RIDES[id], owned = save.owned.includes(id), sel = save.ride === id, armed = buyArm === id;
+        const price = owned ? (sel ? `✓ ${T('equipped')}` : T('equip')) : armed ? `${T('buy')}?` : `<span class="cbal"><i></i>${r.price}</span>`;
+        list.appendChild(shopCard((owned ? 'owned' : '') + (sel ? ' sel' : '') + (!owned && save.coins < r.price ? ' poor' : ''), RIDE_ICON[id], rideName(id), T('desc_' + id), price, () => {
+          if (owned) { save.ride = id; player.setRide(id, save.up); persist(); sfx.click(); renderShop(); refreshMeta(); return; }
+          if (save.coins < r.price) { toast(T('notEnough')); if (Platform.iapAvailable || Platform.rewardedAvailable) { shopTab = 'coins'; renderShop(); } return; }
+          if (buyArm !== id) { buyArm = id; sfx.click(); renderShop(); return; }
+          if (Meta.buyRide(save, id)) { buyArm = null; persist(); sfx.coin(); sfx.trick(); player.setRide(id, save.up); popup(`${T('bought')} ${rideName(id)}`, 'gain'); renderShop(); refreshMeta(); }
+        }));
+      }
+      return;
+    }
+    // Монеты: бесплатные за видео + наборы за деньги (где площадка это поддерживает).
+    if (Platform.rewardedAvailable) {
+      const left = (save.freeCoinsAt || 0) + FREE_EVERY - Date.now();
+      list.appendChild(shopCard('coin', '🎬', T('freeCoins'), left > 0 ? T('cooldown', { t: fmtTime(left) }) : T('freeCoinsD'), `▶ +${FREE_COINS}`, async () => {
+        if ((save.freeCoinsAt || 0) + FREE_EVERY > Date.now()) return;
+        const ok = await rewarded(); if (!ok) return;
+        save.coins += FREE_COINS; save.freeCoinsAt = Date.now(); persist(); sfx.coin(); refreshMeta(); renderShop();
+      }));
+    }
+    if (Platform.iapAvailable) {
+      for (const pk of COIN_PACKS) {
+        const p = Platform.product(pk.id); if (!p) continue;
+        const price = document.createElement('span');
+        price.textContent = String(p.price) + ' ';
+        if (p.icon) { const im = document.createElement('img'); im.src = p.icon; im.alt = ''; im.style.cssText = 'width:16px;height:16px;vertical-align:-3px'; price.appendChild(im); }
+        list.appendChild(shopCard('coin', pk.coins >= 8000 ? '💰' : pk.coins >= 3000 ? '🪙🪙' : '🪙', T('coinPack', { n: pk.coins }), '', price, async () => {
+          const ok = await Platform.buy(pk.id, creditPack);
+          if (!ok) toast(T('buyFail'));
+        }, pk.tag ? T(pk.tag) : ''));
+      }
+      $('shopNote').textContent = T('packNote', { p: Platform.iapProvider });
+    } else $('shopNote').textContent = T('noPacks');
+  }
+  function creditPack(id) {
+    const pk = COIN_PACKS.find((x) => x.id === id); if (!pk) return;
+    save.coins += pk.coins; persist(); sfx.coin(); sfx.trick(); refreshMeta(); toast(T('thanksBuy', { n: pk.coins }));
+    if (screen === 'shopScr') renderShop();
+  }
+
   // ===================== Таблица группы =====================
   let crewTab = 'daily', crewMenuPid = null, forgetArmed = false;
   function openCrew() { sfx.unlock(); sfx.click(); toMenuThen(() => { show('crewScr'); renderCrew(); }); }
-  $('btnCrew').onclick = openCrew;
   $('crBack').onclick = () => { sfx.click(); show('menu'); };
   function renderCrew() {
     const c = save.crew, joined = !!(c && c.grp && c.nick && c.tos);
@@ -5774,6 +6250,7 @@ const Platform = {
   function frame(t) {
     requestAnimationFrame(frame);
     let dt = (t - last) / 1000; last = t;
+    const rawDt = Math.min(dt, 0.5);   // настоящее время (таймер бустов — ровно 5 с даже на медленном телефоне)
     if (dt > 0.05) dt = 0.05;
     dt = clipSlowmo(dt);
     now += dt;
@@ -5820,6 +6297,12 @@ const Platform = {
       if (ghostRun) ghostRider.update(dt, world);
       updateHud();
       if (crashTimer > 1.3) { if (race && race.online) respawnOnline(); else if (daily) showDailyEnd(false); else showOver(); }
+    } else if (state === 'prep') {
+      if (!prepPaused) { prepT -= rawDt; updatePrepRing(); if (prepT <= 0) goRun(); }
+      player._animate(dt, 0);
+      if (race && race.online) { rival.update(dt, world, player, true); netTick(dt); }
+      if (race) rival.syncBody(dt);
+      updateHud();
     } else if (state === 'countdown') {
       const prev = Math.ceil(countT);
       countT -= dt;
@@ -5904,7 +6387,7 @@ const Platform = {
     renderer.begin();
     world.draw(ps - 9, eye[1], now);
     player.draw(renderer, world, now);
-    const tag = $('rivalTag'), inRun = ['countdown', 'play', 'finish', 'crash', 'pause', 'over', 'won'].includes(state);
+    const tag = $('rivalTag'), inRun = ['prep', 'countdown', 'play', 'finish', 'crash', 'pause', 'over', 'won'].includes(state);
     // Табличка с именем над соперником/призраком: проекция точки над головой на экран.
     const placeTag = (X, Y, S, name, cls) => {
       const v = renderer.vp, Z = -S;
@@ -5960,6 +6443,7 @@ const Platform = {
     // Новичок сразу попадает в игру: короткая история (одна кнопка) → уровень 1. Подарок дня — со следующего захода.
     const newPlayer = !save.runs && !Object.keys(save.levels).length;
     show('menu');
+    Platform.restorePurchases(creditPack);
     const roomLink = Platform.challengeParam('room');
     if (roomLink && crew.enabled) openOnline('friend', Match.cleanCode(roomLink));
     else checkChallenge().then((ch) => { if (!ch) { if (newPlayer) playLevel(0); else maybeDaily(); } });
@@ -5974,7 +6458,7 @@ const Platform = {
     get level() { return level; }, get fading() { return fading; }, get race() { return race; }, get rival() { return rival; }, remote, get online() { return online; }, openOnline, startRace, openRace,
     get score() { return score(); }, get save() { return save; }, get run() { return run; }, boulders,
     get daily() { return daily; }, startDaily, ghostRider, get ghostRun() { return ghostRun; }, get ghosts() { return ghosts; }, setClip, get clip() { return clip; },
-    get timeScale() { return timeScale; }, openShare, openCrew, crew, get lastResult() { return lastResult; },
+    get timeScale() { return timeScale; }, openShop, openModes, get prepT() { return prepT; }, openShare, openCrew, crew, get lastResult() { return lastResult; },
   };
 })();
 
