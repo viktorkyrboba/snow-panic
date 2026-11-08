@@ -1,0 +1,7 @@
+{
+  "appId": "io.github.viktorkyrboba.snowpanic",
+  "appName": "Snow Panic",
+  "webDir": "www",
+  "android": { "backgroundColor": "#4f8fd8", "allowMixedContent": false },
+  "server": { "androidScheme": "https" }
+}

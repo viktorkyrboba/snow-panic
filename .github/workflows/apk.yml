@@ -1,0 +1,42 @@
+name: Android APK (direct download)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['index.html', 'app/**', '.github/workflows/apk.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - name: Capacitor project
+        working-directory: app
+        run: |
+          npm run prepare-web
+          npm install --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+          node configure-android.js
+      - name: Build APK
+        working-directory: app/android
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          VERSION_NAME: 1.0.${{ github.run_number }}
+        run: |
+          ./gradlew --no-daemon assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk ../../snow-panic.apk
+      - name: Publish download link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete apk-latest --yes --cleanup-tag || true
+          gh release create apk-latest snow-panic.apk --title "Snow Panic for Android" --notes "Install: download snow-panic.apk and open it (allow installing from this source). In-app purchases work only in the Google Play version." --latest
