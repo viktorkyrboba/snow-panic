@@ -515,6 +515,8 @@
   .fld { display:flex; flex-direction:column; gap:3px; margin:6px 0; font-weight:800; font-size:13px; }
   .fld input { font:inherit; font-size:18px; font-weight:800; padding:8px 12px; border:3px solid var(--line); border-radius:12px; color:var(--ink); background:#fff; text-transform:none; }
   #crCode { text-transform:uppercase; letter-spacing:2px; }
+  .rules:not(.open) { display:none; }
+  .rulelink { color:#2f7be0; font-weight:900; text-decoration:underline; cursor:pointer; }
   .rules { font-size:12px; line-height:1.35; background:#eef5fb; border:2px dashed #9fb7cf; border-radius:10px; padding:8px 10px; margin:8px 0; max-height:120px; overflow:auto; }
   .chk { display:flex; gap:8px; align-items:flex-start; font-size:13px; font-weight:800; margin:4px 0 6px; }
   .chk input { width:20px; height:20px; flex:none; accent-color:#18a7b5; }
@@ -958,6 +960,66 @@
   .pitem.have { box-shadow:0 0 0 2px #8a4dff, 0 3px 0 rgba(0,0,0,.2) !important; }
   .pitem .pr.own { background:linear-gradient(180deg,#b46cff,#7b2ff7) !important; color:#fff; }
   @media (prefers-reduced-motion: reduce) { .shine::after, .burst, .pki, .offbadge, .pbtn.money.big, #shopScr::before { animation:none !important; } }
+
+  /* ===== v16: задания ===== */
+  #missionsScr { padding:0; align-items:stretch; justify-content:stretch; background:radial-gradient(120% 70% at 50% 0%, #4fe0b0 0%, #19b38a 40%, #0b6f6a 100%); }
+  #missionsScr::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.2;
+    background-image:radial-gradient(circle,#fff 1.5px,transparent 2px),radial-gradient(circle,#fff 1px,transparent 1.5px);
+    background-size:46px 46px,23px 23px; background-position:0 0,11px 17px; animation:snowfall 9s linear infinite; }
+  #missionsScr .shoptitle { text-shadow:0 3px 0 #0a5a4a, 0 8px 18px rgba(0,40,30,.4); }
+  .mshead { position:relative; z-index:1; display:flex; align-items:center; gap:10px; background:rgba(0,40,30,.25); border-radius:20px; padding:10px 14px; color:#fff; font-weight:900; font-size:15px; text-align:left; }
+  .msmedal { font-size:34px; animation:wob 2.4s ease-in-out infinite; }
+  .mshead.ready { background:linear-gradient(180deg,#ffe36e,#ffb300); color:#6a3a00; box-shadow:0 4px 0 #c47f00; }
+  .ms2 { position:relative; z-index:1; flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding:14px 2px 14px; }
+  .mcardm { --c1:#5cc4ff; --c2:#1f86e0; position:relative; display:flex; align-items:center; gap:12px; background:#fff; border-radius:22px; padding:12px; text-align:left;
+    box-shadow:0 5px 0 rgba(0,40,30,.25), 0 12px 22px rgba(0,40,30,.25); animation:shopIn .45s cubic-bezier(.2,1.3,.4,1) both; animation-delay:calc(var(--i,0) * 80ms); }
+  .mcardm .mic { flex:none; width:62px; height:62px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:34px;
+    background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 50%),linear-gradient(160deg,var(--c1),var(--c2)); box-shadow:0 4px 0 rgba(0,0,0,.18), inset 0 -3px 0 rgba(0,0,0,.12); }
+  .mcardm .mic span { animation:bob 2.2s ease-in-out infinite; display:inline-block; }
+  .mbody2 { flex:1; min-width:0; }
+  .mcardm .mt { font-weight:900; font-size:15px; color:#22305a; line-height:1.2; margin-bottom:7px; }
+  .mbar { position:relative; height:20px; border-radius:10px; background:#e6edf5; box-shadow:inset 0 2px 3px rgba(0,0,0,.12); overflow:hidden; }
+  .mbar .fill { height:100%; border-radius:10px; min-width:12px; background:repeating-linear-gradient(-45deg,rgba(255,255,255,.25) 0 8px,transparent 8px 16px),linear-gradient(90deg,var(--c1),var(--c2));
+    background-size:22px 22px,100% 100%; animation:stripes 1s linear infinite; transition:width .6s cubic-bezier(.2,1,.3,1); }
+  @keyframes stripes { to { background-position:22px 0,0 0; } }
+  .mnum { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#22305a; text-shadow:0 1px 0 rgba(255,255,255,.8); }
+  .mrw { flex:none; }
+  .mreward { display:flex; flex-direction:column; align-items:center; gap:2px; background:#fff6d6; border-radius:14px; padding:6px 10px; color:#8a5a00; box-shadow:inset 0 0 0 2px #ffe08a; }
+  .mreward i.cn { width:24px; height:24px; } .mreward b { font-size:17px; }
+  .pbtn.claim { flex-direction:column; gap:2px; padding:8px 12px; background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#5ef08a,#18b24e); box-shadow:0 4px 0 #0e7a35, 0 0 0 0 rgba(94,240,138,.7); animation:claimP 1.3s ease-out infinite; }
+  .pbtn.claim b { font-size:14px; text-transform:uppercase; letter-spacing:.5px; } .pbtn.claim span { display:flex; align-items:center; gap:4px; font-size:16px; }
+  @keyframes claimP { 0% { transform:scale(1); } 15% { transform:scale(1.08); } 30% { transform:scale(1); } 70% { box-shadow:0 4px 0 #0e7a35, 0 0 0 12px rgba(94,240,138,0); } }
+  .mcardm.done { background:linear-gradient(180deg,#fffbe8,#fff1c2); box-shadow:0 0 0 3px #ffc23a, 0 5px 0 rgba(150,90,0,.3), 0 12px 24px rgba(255,170,0,.35); }
+  .mcardm.done .mic span { animation:wob 1s ease-in-out infinite; }
+  .mcardm.claimed { animation:claimOut .6s ease-in forwards; }
+  @keyframes claimOut { 30% { transform:scale(1.05); } 100% { transform:translateX(120%) rotate(6deg); opacity:0; } }
+  .t-coins { --c1:#ffe36e; --c2:#f2a900; } .t-flips { --c1:#c39bff; --c2:#7b2ff7; } .t-snowmen { --c1:#7fe6ff; --c2:#1aa6c9; }
+  .t-near { --c1:#ff9ac2; --c2:#ff4e8a; } .t-zone { --c1:#7ee88a; --c2:#18a34a; } .t-runs { --c1:#ffb070; --c2:#ff6a1a; }
+  .t-dodges { --c1:#b8c4d6; --c2:#6b7f99; } .t-powers { --c1:#ff8a8a; --c2:#e1173a; } .t-dist { --c1:#6cc6ff; --c2:#2b6fe6; }
+  #msPlay { position:relative; z-index:1; align-self:center; margin:4px 0 2px; min-width:220px; font-size:22px; }
+
+  /* ===== v17: логотип ===== */
+  .logo { position:relative; display:inline-flex; flex-direction:column; align-items:center; line-height:.84; font-family:var(--disp); font-weight:900; letter-spacing:1px;
+    transform:rotate(-4deg); animation:logoIn .9s cubic-bezier(.2,1.6,.4,1) both, logoFloat 3.2s ease-in-out .9s infinite; margin:0 0 4px; user-select:none; }
+  .logo span { display:block; color:transparent; -webkit-background-clip:text; background-clip:text; padding:0 .06em; }
+  .lg1 { font-size:clamp(66px,19vw,118px); background-image:linear-gradient(180deg,#ffffff 0%,#ffffff 42%,#d8f1ff 52%,#8fd0ff 100%);
+    filter:drop-shadow(0 3px 0 #1559c4) drop-shadow(3px 0 0 #1559c4) drop-shadow(-3px 0 0 #1559c4) drop-shadow(0 -3px 0 #1559c4) drop-shadow(0 7px 0 #0b3a8c) drop-shadow(0 14px 18px rgba(0,25,80,.45)); }
+  .lg2 { font-size:clamp(58px,16.5vw,104px); margin-top:-.02em; background-image:linear-gradient(180deg,#fff6a8 0%,#ffd23a 40%,#ff9a1f 70%,#ff5a1f 100%);
+    filter:drop-shadow(0 3px 0 #a3260a) drop-shadow(3px 0 0 #a3260a) drop-shadow(-3px 0 0 #a3260a) drop-shadow(0 -3px 0 #a3260a) drop-shadow(0 7px 0 #6e1400) drop-shadow(0 14px 18px rgba(80,10,0,.4));
+    animation:panic 2.6s ease-in-out 1s infinite; transform-origin:50% 60%; }
+  .lgf { position:absolute; font-style:normal; color:#fff; text-shadow:0 2px 6px rgba(0,60,140,.6); animation:spin 7s linear infinite; pointer-events:none; }
+  .lgf.f1 { font-size:clamp(26px,7vw,44px); top:-.35em; right:-.55em; } .lgf.f2 { font-size:clamp(16px,4vw,26px); bottom:.6em; left:-.9em; animation-duration:9s; animation-direction:reverse; }
+  .lgs { position:absolute; font-style:normal; color:#fff7c2; font-size:clamp(14px,4vw,24px); text-shadow:0 0 8px #fff; animation:twinkle 1.8s ease-in-out infinite; pointer-events:none; }
+  .lgs.s1 { top:12%; left:-.6em; } .lgs.s2 { bottom:8%; right:-.5em; animation-delay:.9s; }
+  @keyframes logoIn { from { transform:rotate(-4deg) scale(.3); opacity:0; } }
+  @keyframes logoFloat { 50% { transform:rotate(-2deg) translateY(-6px); } }
+  @keyframes panic { 0%,70%,100% { transform:none; } 74% { transform:rotate(-3deg) scale(1.04); } 78% { transform:rotate(3deg) scale(1.04); } 82% { transform:rotate(-2deg); } 86% { transform:rotate(1deg); } }
+  @keyframes twinkle { 50% { transform:scale(.4) rotate(45deg); opacity:.3; } }
+  .logo.big .lg1 { font-size:clamp(76px,22vw,150px); } .logo.big .lg2 { font-size:clamp(66px,19vw,132px); }
+  #menu .sub { margin-top:16px; }
+  @media (max-height:560px) { .lg1 { font-size:54px; } .lg2 { font-size:48px; } .logo.big .lg1 { font-size:76px; } .logo.big .lg2 { font-size:66px; } }
+  @media (max-height:420px) { .lg1 { font-size:40px; } .lg2 { font-size:36px; } .lgf, .lgs { display:none; } }
+  @media (prefers-reduced-motion: reduce) { .logo, .lg2, .lgf, .lgs { animation:none !important; } }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -993,7 +1055,7 @@
 </div>
 
 <div class="screen show" id="menu">
-  <h1 data-t="title">Snow Panic</h1>
+  <div class="logo"><span class="lg1">SNOW</span><span class="lg2">PANIC</span><i class="lgf f1">❄</i><i class="lgf f2">❄</i><i class="lgs s1">✦</i><i class="lgs s2">✦</i></div>
   <div class="sub" data-t="subtitle"></div>
   <div class="playrow"><button class="btn" id="btnPlay"><span data-t="playBig"></span></button><button class="btn shopbig" id="btnShop" aria-label="shop"><span class="sic">🛒</span><span data-t="shop"></span><b class="shopdot" id="shopDot"></b></button></div>
   <div class="lvlsub" id="playSub"></div>
@@ -1117,10 +1179,15 @@
 </div>
 
 <div class="screen" id="missionsScr">
-  <div style="--band:var(--pine)" class="card">
-    <h2 data-t="missions"></h2>
-    <div class="ms" id="msList"></div>
-    <button class="btn ghost" id="msBack" data-t="back" style="margin-top:14px"></button>
+  <div class="shopwrap">
+    <div class="shophead">
+      <button class="cback" id="msBack" aria-label="back">‹</button>
+      <div class="shoptitle"><span>🎯</span> <b data-t="missions"></b></div>
+      <div class="shopbal"><i class="cn"></i><span id="msCoins">0</span></div>
+    </div>
+    <div class="mshead" id="msHead"><div class="msmedal">🏆</div><div id="msReady"></div></div>
+    <div class="ms2" id="msList"></div>
+    <button class="btn green" id="msPlay"><span>▶</span> <span data-t="msPlay"></span></button>
   </div>
 </div>
 
@@ -1232,7 +1299,7 @@
     <div id="onNick">
       <label class="fld"><span data-t="nickname"></span><input id="onNickIn" maxlength="14" autocomplete="off" spellcheck="false"></label>
       <div class="rules" id="onRules"></div>
-      <label class="chk"><input type="checkbox" id="onAgree"><span data-t="agreeRules"></span></label>
+      <label class="chk"><input type="checkbox" id="onAgree"><span><span data-t="agreeTo"></span> <a href="#" class="rulelink" data-for="onRules" data-t="rulesLink"></a></span></label>
     </div>
     <div id="onFriend">
       <button class="btn green" id="onCreate" data-t="createRoom"></button>
@@ -1258,7 +1325,7 @@
       <label class="fld"><span data-t="nickname"></span><input id="crNick" maxlength="14" autocomplete="off" spellcheck="false"></label>
       <label class="fld"><span data-t="groupCode"></span><input id="crCode" maxlength="8" autocomplete="off" spellcheck="false" placeholder="9B"></label>
       <div class="rules" id="crRules"></div>
-      <label class="chk"><input type="checkbox" id="crAgree"><span data-t="agreeRules"></span></label>
+      <label class="chk"><input type="checkbox" id="crAgree"><span><span data-t="agreeTo"></span> <a href="#" class="rulelink" data-for="crRules" data-t="rulesLink"></a></span></label>
       <div class="crerr" id="crErr"></div>
       <button class="btn green" id="crJoin" data-t="join"></button>
     </div>
@@ -1283,7 +1350,7 @@
 <div id="loading">…</div>
 <div id="splash" class="on">
   <div class="spsnow"></div>
-  <div class="splogo"><div class="sptop">❄</div><h1 class="sph">Snow Panic</h1><div class="sptag" data-t="subtitle"></div></div>
+  <div class="splogo"><div class="sptop">❄</div><div class="logo big"><span class="lg1">SNOW</span><span class="lg2">PANIC</span><i class="lgf f1">❄</i><i class="lgf f2">❄</i><i class="lgs s1">✦</i><i class="lgs s2">✦</i></div><div class="sptag" data-t="subtitle"></div></div>
   <div class="spbottom"><div class="spbar"><i></i></div><div class="sptap" data-t="tapStart"></div></div>
 </div>
 <div id="nogl">WebGL is not available in this browser.</div>
@@ -3192,7 +3259,7 @@ class Player {
 // Без DOM — тестируется в Node.
 
 const RACE = {
-  len: 1400,
+  len: 2200,   // гонка длиннее обычного заезда: есть время отыграться после падения
   diff: {
     easy: { pace: 0.72, mistake: 0.25, look: 16, boostEvery: 0, boost: 0, catchUp: 0.02, slowAhead: 0.2, rides: ['sled', 'tube', 'board'], world: 0.2, boulders: false, reward: 60, name: 'Rookie Rudy' },
     medium: { pace: 0.92, mistake: 0.09, look: 22, boostEvery: 24, boost: 6, catchUp: 0.07, slowAhead: 0.1, rides: ['board', 'sled', 'tub'], world: 0.42, boulders: true, reward: 130, name: 'Frosty Fran' },
@@ -3913,6 +3980,9 @@ class Sfx {
 const STRINGS = {
   ru: {
     tapStart: 'Нажми, чтобы начать',
+    backInRace: 'Снова в гонке!',
+    agreeTo: 'Я согласен с', rulesLink: 'правилами',
+    msHint: 'Выполняй задания в заездах — получай монеты', msPlay: 'Играть', 
     deals: 'Акции', boostsTab: 'Бусты', oneTime: 'Только один раз', worth: 'Ценность: {n} монет', dealDay: 'Акция дня', bundles: 'Наборы',
     pk_starter: 'Стартовый набор', pkd_starter: 'Сноуборд + Ванна + 2 000 монет + 20 бустов', pk_party: 'Весёлый набор', pkd_party: 'Тележка + Диван + 1 500 монет',
     pk_speed: 'Скоростной набор', pkd_speed: 'Лыжи + Ракетные сани + 2 500 монет', pk_all: 'Всё и сразу', pkd_all: 'Весь транспорт + 10 000 монет + 40 бустов',
@@ -4014,7 +4084,7 @@ const STRINGS = {
     goal_finish: 'Доехать до финиша', goal_coins: 'Собрать {n} монет',
     task_flips: 'Сделать {n} сальто', task_snowmen: 'Сбить {n} снеговиков', task_near: 'Проехать впритирку {n} раз',
     task_powers: 'Подобрать бонусов: {n}', task_dodges: 'Увернуться от валунов: {n}',
-    avSurge: '⚠ ЛАВИНА УСКОРЯЕТСЯ!', avSurgePc: 'Хватай петарду 🎆 или пригнись ↑', avSurgeTouch: 'Хватай петарду 🎆 или пригнись — свайп вниз',
+    avSurge: '⚠ ЛАВИНА УСКОРЯЕТСЯ!', avSurgePc: 'Хватай ракету 🚀 или пригнись ↑', avSurgeTouch: 'Хватай ракету 🚀 или пригнись — свайп вниз',
     avEscape: 'Оторвался!', avCalm: 'Лавина отстала',
     mtn_forest: 'Лесной склон', mtn_pass: 'Каменный перевал', mtn_gorge: 'Ледяное ущелье', mtn_village: 'Окраины деревни', mtn_eve: 'Новогодняя ночь',
     mtnd_forest: 'Ёлки, снеговики и трамплины. Разгоняйся — лавина уже за спиной!',
@@ -4034,6 +4104,9 @@ const STRINGS = {
   },
   en: {
     tapStart: 'Tap to start',
+    backInRace: 'Back in the race!',
+    agreeTo: 'I agree to the', rulesLink: 'rules',
+    msHint: 'Complete them while riding to earn coins', msPlay: 'Play', 
     deals: 'Deals', boostsTab: 'Boosts', oneTime: 'One-time offer', worth: 'Worth {n} coins', dealDay: 'Deal of the day', bundles: 'Bundles',
     pk_starter: 'Starter Pack', pkd_starter: 'Snowboard + Bathtub + 2,000 coins + 20 boosts', pk_party: 'Party Pack', pkd_party: 'Shopping cart + Sofa + 1,500 coins',
     pk_speed: 'Speed Pack', pkd_speed: 'Skis + Rocket sled + 2,500 coins', pk_all: 'Everything Pack', pkd_all: 'All 7 rides + 10,000 coins + 40 boosts',
@@ -4135,7 +4208,7 @@ const STRINGS = {
     goal_finish: 'Reach the finish', goal_coins: 'Collect {n} coins',
     task_flips: 'Do {n} flips', task_snowmen: 'Smash {n} snowmen', task_near: 'Make {n} close calls',
     task_powers: 'Pick up {n} power-ups', task_dodges: 'Dodge {n} boulders',
-    avSurge: '⚠ THE AVALANCHE SPEEDS UP!', avSurgePc: 'Grab a firework 🎆 or duck ↑', avSurgeTouch: 'Grab a firework 🎆 or duck — swipe down',
+    avSurge: '⚠ THE AVALANCHE SPEEDS UP!', avSurgePc: 'Grab a rocket 🚀 or duck ↑', avSurgeTouch: 'Grab a rocket 🚀 or duck — swipe down',
     avEscape: 'Escaped!', avCalm: 'The avalanche falls back',
     mtn_forest: 'Forest Slope', mtn_pass: 'Rocky Pass', mtn_gorge: 'Ice Gorge', mtn_village: 'Village Outskirts', mtn_eve: "New Year's Eve",
     mtnd_forest: 'Trees, snowmen and ramps. Speed up — the avalanche is right behind you!',
@@ -5182,7 +5255,7 @@ const Platform = {
   const aval = new Avalanche();
   aval.mesh = renderer.createMesh(buildAvalanche());
   const MTN_ICON = ['🌲', '🪨', '🧊', '🏘️', '🎄'], MTN_COL = ['#27ae60', '#7f8c8d', '#2f80ed', '#d35400', '#8e44ad'];
-  const MIS_ICON = { dist: '📏', coins: '🪙', flips: '🔄', snowmen: '⛄', near: '💨', zone: '🗺️', runs: '🛷', dodges: '🪨', powers: '🎁' };
+  const MIS_ICON = { dist: '🏁', coins: '🪙', flips: '🔄', snowmen: '⛄', near: '💨', zone: '🗺️', runs: '🛷', dodges: '🪨', powers: '🎁' };
   const TASK_ICON = { flips: '🔄', snowmen: '⛄', near: '💨', powers: '🎁', dodges: '🪨' };
   const FIN_INPUT = { steer: 0, crouch: false, brake: true, flip: 0, takeJump: () => false, takeFlip: () => 0 };
   const boulders = new BoulderSystem();
@@ -5208,7 +5281,7 @@ const Platform = {
   const DIFF_KEYS = ['easy', 'medium', 'hard'];
   const RACE_ZONES = [0, 1, 3, 2, 4];
   const boulderMesh = renderer.createMesh(Models.boulder());
-  const POWER_ICON = { boost: '🎆', spring: '🎈', magnet: '🌀' }, POWER_COL = { boost: '#ff6b35', spring: '#ff4d6d', magnet: '#9d4edd' };
+  const POWER_ICON = { boost: '🚀', spring: '🎈', magnet: '🌀' }, POWER_COL = { boost: '#ff6b35', spring: '#ff4d6d', magnet: '#9d4edd' };
   // Значки активных бонусов: круглые, в стиле игры, кольцо — оставшееся время.
   const POWER_SVG = {
     boost: '<svg viewBox="0 0 24 24"><path d="M12 2c1.8 3.2 5 5.6 5 10.2A5 5 0 0 1 7 12.4c0-2 .9-3.6 2.2-4.8.2 1.8 1 3 2.3 3.4C11 8.2 11.2 5 12 2z"/><path class="in" d="M12 12.5c1 1.2 2 2.2 2 3.6a2 2 0 0 1-4 0c0-1.3.9-2.4 2-3.6z"/></svg>',
@@ -5284,7 +5357,7 @@ const Platform = {
     });
     $('hud').classList.toggle('show', id === null);
     if (['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'story', 'raceScr', 'crewScr', 'challenge', 'shopScr', 'modesScr'].includes(id)) sfx.music.play('menu');
-    $('topbar').style.display = ['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'raceScr'].includes(id) ? 'flex' : 'none';
+    $('topbar').style.display = ['menu', 'garage', 'daily', 'mapScr', 'raceScr'].includes(id) ? 'flex' : 'none';
     refreshMeta();
   }
   // Переход через белую вспышку: fn выполняется, пока экран закрыт.
@@ -6002,24 +6075,37 @@ const Platform = {
   $('gBack').onclick = () => { sfx.click(); player.setRide(save.ride, Meta.upOf(save, save.ride)); show('menu'); };
 
   // --- Задания ---
+  // Задания: яркие карточки по типу, полосы прогресса, «Забрать» с монетами, летящими в счётчик.
   function renderMissions() {
     const list = $('msList'); list.innerHTML = '';
-    for (const m of save.missions) {
-      const d = document.createElement('div'); d.className = 'mi' + (m.done ? ' done' : '');
-      const pct = Math.round((m.prog / m.target) * 100);
-      d.innerHTML = `<div class="ic">${MIS_ICON[m.type] || '🎯'}</div><div class="t"></div><div class="r"></div><div class="bar"><div style="width:${pct}%"></div></div>`;
-      d.querySelector('.t').textContent = m.type === 'zone' ? missionText(m) : `${missionText(m)} (${m.prog}/${m.target})`;
-      const r = d.querySelector('.r');
+    $('msCoins').textContent = save.coins.toLocaleString('en-US');
+    const ready = save.missions.filter((m) => m.done).length;
+    $('msReady').textContent = ready ? T('collectN', { n: ready }) : T('msHint');
+    $('msHead').classList.toggle('ready', ready > 0);
+    save.missions.forEach((m, i) => {
+      const pct = Math.min(100, Math.round((m.prog / m.target) * 100));
+      const d = document.createElement('div'); d.className = `mcardm t-${m.type}` + (m.done ? ' done' : '');
+      d.style.setProperty('--i', i);
+      d.innerHTML = `<div class="mic"><span>${MIS_ICON[m.type] || '🎯'}</span></div><div class="mbody2"><div class="mt"></div>
+        <div class="mbar"><div class="fill" style="width:${pct}%"></div><span class="mnum"></span></div></div><div class="mrw"></div>`;
+      d.querySelector('.mt').textContent = missionText(m);
+      d.querySelector('.mnum').textContent = m.done ? '✓' : m.type === 'zone' ? `${pct}%` : `${Math.min(m.prog, m.target)} / ${m.target}`;
+      const r = d.querySelector('.mrw');
       if (m.done) {
-        const b = document.createElement('button'); b.className = 'btn small green';
-        b.innerHTML = `${T('claim')} <span class="cbal"><i></i>${m.reward}</span>`;
-        b.onclick = () => { const got = Meta.claimMission(save, m.id); if (got) { sfx.coin(); popup(`+${got}`, 'gain'); persist(); renderMissions(); refreshMeta(); } };
+        const b = document.createElement('button'); b.className = 'pbtn claim';
+        b.innerHTML = `<b>${T('claim')}</b><span><i class="cn"></i>${m.reward}</span>`;
+        b.onclick = () => {
+          const got = Meta.claimMission(save, m.id); if (!got) return;
+          sfx.coin(); sfx.trick(); persist(); flyCoins(b, $('msCoins'), 10); d.classList.add('claimed');
+          setTimeout(() => { renderMissions(); refreshMeta(); }, 650);
+        };
         r.appendChild(b);
-      } else r.innerHTML = `<span class="cbal"><i></i>${m.reward}</span>`;
+      } else r.innerHTML = `<div class="mreward"><i class="cn"></i><b>${m.reward}</b></div>`;
       list.appendChild(d);
-    }
+    });
   }
   $('btnMissions').onclick = () => { sfx.unlock(); sfx.click(); show('missionsScr'); renderMissions(); };
+  $('msPlay').onclick = () => { sfx.click(); openModes(); };
   $('msBack').onclick = () => { sfx.click(); show('menu'); };
 
   // --- Сундук ---
@@ -6294,9 +6380,11 @@ const Platform = {
     const c = world.center(player.s);
     online.sendPos({ s: +player.s.toFixed(2), x: +(player.x - c).toFixed(2), h: +Math.max(0, player.y - world.height(player.x, player.s)).toFixed(2), v: +player.v.toFixed(1), vx: +player.vx.toFixed(2), cr: player.alive ? 0 : 1 });
   }
+  // В гонке (с ботом или игроком) падение не заканчивает заезд: встаёшь и едешь дальше — решает финиш.
   function respawnOnline() {
     player.revive(world); aval.pushBack(player, 70);
     state = 'play'; show(null); Platform.gameplayStart();
+    popup(T('backInRace'), 'near');
   }
   function leaveOnline() { clearInterval(quickTimer); quickTimer = null; if (online) online.leave(); online = null; }
   function onStatus(t) { $('onStatus').textContent = t; }
@@ -6421,12 +6509,15 @@ const Platform = {
   };
 
   // Кнопка «‹» в углу карточки на экранах, откуда нужно вернуться: нажимает обычную «назад» экрана.
-  [['missionsScr', 'msBack'], ['raceScr', 'raceBack'], ['onlineScr', 'onBack'], ['crewScr', 'crBack'], ['shareScr', 'shBack']].forEach(([scr, back]) => {
+  [['raceScr', 'raceBack'], ['onlineScr', 'onBack'], ['crewScr', 'crBack'], ['shareScr', 'shBack']].forEach(([scr, back]) => {
     const card = $(scr).querySelector('.card'), b = document.createElement('button');
     b.className = 'cback'; b.setAttribute('aria-label', 'back'); b.textContent = '‹';
     b.onclick = () => $(back).click();
     card.insertBefore(b, card.firstChild);
   });
+
+  // Правила свёрнуты: открываются по ссылке «правила» рядом с галочкой.
+  document.querySelectorAll('.rulelink').forEach((a) => { a.onclick = (e) => { e.preventDefault(); e.stopPropagation(); sfx.click(); $(a.dataset.for).classList.toggle('open'); }; });
 
   // ===================== Выбор режима =====================
   function openModes() {
@@ -6461,7 +6552,7 @@ const Platform = {
 
   // ===================== Бусты перед стартом =====================
   const BOOSTS = {
-    boost: { ic: '🎆', price: BOOST_PRICE.boost },     // ракетный старт: петарда на первые секунды
+    boost: { ic: '🚀', price: BOOST_PRICE.boost },     // ракетный старт: петарда на первые секунды
     shield: { ic: '🛡️', price: BOOST_PRICE.shield },   // +1 удар на заезд
     magnet: { ic: '🌀', price: BOOST_PRICE.magnet },   // магнит на 20 с
     spring: { ic: '🎈', price: BOOST_PRICE.spring },   // шарики (двойной прыжок) на 15 с
@@ -6576,9 +6667,10 @@ const Platform = {
     if (doBuy()) { persist(); sfx.coin(); sfx.trick(); burst(btn, 8, '✨'); renderShop(); refreshMeta(); }
   }
   // Летящие монеты/искры от кнопки к счётчику.
-  function burst(from, n = 10, ch = '🪙') {
+  function burst(from, n = 10, ch = '🪙') { flyCoins(from, $('shopCoins'), n, ch); }
+  function flyCoins(from, to, n = 10, ch = '🪙') {
     const a = from && from.getBoundingClientRect ? from.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
-    const t = $('shopCoins').getBoundingClientRect();
+    const t = to.getBoundingClientRect();
     for (let i = 0; i < n; i++) {
       const c = document.createElement('div'); c.className = 'flycoin'; c.textContent = ch;
       const x0 = a.left + a.width / 2 + (Math.random() - 0.5) * 60, y0 = a.top + a.height / 2 + (Math.random() - 0.5) * 30;
@@ -6587,7 +6679,7 @@ const Platform = {
       c.style.animationDelay = (i * 45) + 'ms';
       document.body.appendChild(c); setTimeout(() => c.remove(), 1200 + i * 45);
     }
-    const sc = $('shopCoins').parentNode; sc.classList.remove('bump'); void sc.offsetWidth; setTimeout(() => sc.classList.add('bump'), 650);
+    const sc = to.parentNode; sc.classList.remove('bump'); void sc.offsetWidth; setTimeout(() => sc.classList.add('bump'), 650);
   }
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; };
   const txt = (tag, cls, text) => { const e = el(tag, cls); e.textContent = text; return e; };
@@ -6971,7 +7063,7 @@ const Platform = {
       if (race) { rival.update(dt, world, player, true); rival.syncBody(dt); if (race.online) netTick(dt); }
       if (ghostRun) ghostRider.update(dt, world);
       updateHud();
-      if (crashTimer > 1.3) { if (race && race.online) respawnOnline(); else if (daily) showDailyEnd(false); else showOver(); }
+      if (crashTimer > (race ? 1.0 : 1.3)) { if (race) respawnOnline(); else if (daily) showDailyEnd(false); else showOver(); }
     } else if (state === 'prep') {
       if (!prepPaused) { prepT -= rawDt; updatePrepRing(); if (prepT <= 0) goRun(); }
       player._animate(dt, 0);
