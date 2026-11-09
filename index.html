@@ -1127,6 +1127,50 @@
   #tags span.bot { background:#5a6b8a; } #tags span.down { background:#e1173a; }
   .hudhearts { letter-spacing:2px; }
   @media (max-height:560px) { .partybar { padding:6px 10px 8px; margin:4px auto; } .pmode span { font-size:18px; } .pm .ic { font-size:18px; } #pReady { font-size:16px; padding:7px 18px; } }
+
+  /* ===== v20: видимые друзья, «Создать лобби», приглашение сверху ===== */
+  .fdock { width:min(94vw,460px); margin:12px auto 0; background:rgba(255,255,255,.9); border-radius:22px; padding:10px 12px 12px; box-shadow:0 0 0 4px rgba(255,255,255,.5), 0 12px 26px rgba(10,40,90,.28); color:#22305a; }
+  .fdock.off { display:none; }
+  .fdhead { display:flex; align-items:center; gap:8px; font-size:15px; }
+  .fdhead b { font-weight:900; } .fdon { flex:1; text-align:left; font-weight:800; font-size:12px; color:#18a34a; }
+  .fdall { border:0; background:#eef3fb; color:#2f5db8; font:inherit; font-weight:900; font-size:12px; border-radius:10px; padding:4px 10px; cursor:pointer; }
+  .fdlist { display:flex; gap:8px; overflow-x:auto; padding:8px 2px 6px; scrollbar-width:none; }
+  .fdlist::-webkit-scrollbar { display:none; }
+  .fdf { position:relative; flex:none; width:64px; border:0; background:none; font:inherit; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; color:#22305a; }
+  .fdf .fdav { position:relative; width:52px; height:52px; border-radius:18px; background:linear-gradient(160deg,#e9e4ff,#cfc3ff); display:flex; align-items:center; justify-content:center; font-size:28px; box-shadow:0 3px 0 rgba(60,30,140,.18); }
+  .fdf .fdav i { position:absolute; right:-3px; bottom:-3px; width:15px; height:15px; border-radius:50%; background:#b8c0cc; border:3px solid #fff; }
+  .fdf.on .fdav { background:linear-gradient(160deg,#d8fbe4,#9de8b6); } .fdf.on .fdav i { background:#2fd06a; } .fdf.busy .fdav i { background:#ffb300; }
+  .fdf.off { opacity:.55; }
+  .fdf b { font-size:12px; font-weight:900; max-width:64px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .fdf small { font-size:10px; font-weight:800; color:#7a87a6; }
+  .fdf.add .fdav { background:#eef3fb; color:#2f5db8; font-size:26px; border:2px dashed #b9c9e4; box-shadow:none; }
+  .fdempty { font-size:12px; font-weight:800; color:#7a87a6; align-self:center; text-align:left; }
+  .lobbybtn { width:100%; margin:4px 0 0; font-size:20px; padding:12px; border-radius:18px;
+    background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#b46cff,#7b2ff7) !important; box-shadow:0 5px 0 #4f17b0, 0 10px 20px rgba(80,20,170,.3) !important; color:#fff; }
+  body.inparty #fDock .lobbybtn { display:none; }
+  @media (max-width:899px) { body.inparty #fDock { display:none; } }
+  @media (min-width:900px) and (min-height:500px) {
+    .fdock { position:absolute; right:18px; top:84px; width:260px; margin:0; z-index:6; max-height:calc(100vh - 110px); display:flex; flex-direction:column; }
+    .fdlist { flex-direction:column; overflow-y:auto; overflow-x:hidden; }
+    .fdf { width:100%; flex-direction:row; gap:10px; padding:4px; border-radius:14px; text-align:left; }
+    .fdf:hover { background:#f2f5fb; } .fdf b { max-width:none; flex:1; font-size:14px; } .fdf .fdav { width:44px; height:44px; font-size:24px; }
+    .fdf small { font-size:11px; }
+  }
+  @media (max-height:560px) { .fdock { display:none; } }
+  #menu:not(.show) ~ #fDock, body:not(.menuon) #fDock { }
+  /* приглашение — уведомление сверху */
+  #inviteBox { top:calc(10px + env(safe-area-inset-top)); bottom:auto; transform:translate(-50%,-180%); z-index:80; }
+  #inviteBox.on { transform:translate(-50%,0); }
+  .ibx { box-shadow:0 0 0 3px #b46cff, 0 16px 34px rgba(30,0,60,.4); border-radius:22px 22px 8px 8px; }
+  .ibx .itx small { display:block; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:#7b2ff7; }
+  .ibok, .ibno { flex:none; width:48px; height:48px; border-radius:50%; border:0; cursor:pointer; font-size:26px; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center; transition:transform .1s; }
+  .ibok { background:linear-gradient(180deg,#5ef08a,#18b24e); box-shadow:0 4px 0 #0e7a35; animation:claimP 1.3s ease-out infinite; }
+  .ibno { background:linear-gradient(180deg,#ff8a8a,#e1173a); box-shadow:0 4px 0 #a00d27; }
+  .ibok:active, .ibno:active { transform:translateY(3px); }
+  .ibbar { height:5px; background:rgba(255,255,255,.6); border-radius:0 0 8px 8px; overflow:hidden; margin:0 10px; }
+  .ibbar i { display:block; height:100%; width:100%; background:#b46cff; transform-origin:left; }
+  #inviteBox.on .ibbar i { animation:ibtime 25s linear forwards; }
+  @keyframes ibtime { to { transform:scaleX(0); } }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1178,6 +1222,11 @@
     <button class="tile t-gar" id="btnGarage"><b>🛷</b><div data-t="garage"></div><span id="tileRide"></span></button>
     <button class="tile t-mis" id="btnMissions"><b>🎯</b><div data-t="missions"></div><span id="tileMis"></span><div class="badge" id="misBadge"></div></button>
     <button class="tile t-chest" id="btnChest"><b>🎁</b><div data-t="chest"></div><span id="tileChest"></span></button>
+  </div>
+  <div class="fdock" id="fDock">
+    <div class="fdhead"><b>👥 <span data-t="friends"></span></b><span class="fdon" id="fdOnline"></span><button class="fdall" id="fdAll" data-t="all"></button></div>
+    <div class="fdlist" id="fdList"></div>
+    <button class="btn lobbybtn" id="btnLobby"><span>🎮</span> <span data-t="createLobby"></span></button>
   </div>
   <div class="hint" id="controls" hidden></div>
 </div>
@@ -1284,7 +1333,7 @@
   <div class="shopwrap">
     <div class="shophead">
       <button class="cback" id="frBack" aria-label="back">‹</button>
-      <div class="shoptitle"><span>👥</span> <b data-t="friends"></b></div>
+      <div class="shoptitle"><span>👥</span> <b id="frTitle"></b></div>
       <div class="shopbal"><i class="ondot"></i><span id="frOnline">0</span></div>
     </div>
     <div class="frnick" id="frNickRow">
@@ -1319,7 +1368,7 @@
   </div>
 </div>
 
-<div id="inviteBox"><div class="ibx"><span class="iic" id="ibIcon">🪢</span><div class="itx"><b id="ibNick"></b><span id="ibText"></span></div><button class="btn green slimb" id="ibJoin" data-t="joinBtn"></button><button class="icon mini" id="ibNo" aria-label="decline">✕</button></div></div>
+<div id="inviteBox"><div class="ibx"><span class="iic" id="ibIcon">🪢</span><div class="itx"><small data-t="lobbyInvite"></small><b id="ibNick"></b><span id="ibText"></span></div><button class="ibok" id="ibJoin" aria-label="accept">✓</button><button class="ibno" id="ibNo" aria-label="decline">✕</button></div><div class="ibbar"><i id="ibBar"></i></div></div>
 
 <div class="screen" id="raceEnd">
   <div class="card" style="--band:var(--gold)">
@@ -4353,6 +4402,7 @@ class Sfx {
 const STRINGS = {
   ru: {
     tapStart: 'Нажми, чтобы начать',
+    all: 'Все', createLobby: 'Создать лобби', lobbyInvite: 'Приглашение в лобби', inviteTitle: 'Позови друзей', addFriendsCta: 'Добавь друзей по коду', fOnlineN: '{n} в сети',
     lobby: 'Лобби', pmRace: 'Гонка', pmRope: 'Связка', pmRopeN: '2–4 игрока', invite: 'Позвать', newTag: 'НОВОЕ', ropeTeam: 'Связка', ropeSub: 'До 4 райдеров на одной резинке. Не разводите её вокруг ёлок!',
     withBots: 'С ботами', withFriends: 'С друзьями', friends: 'Друзья', yourCode: 'Твой код:', addFriend: 'В друзья', joinBtn: 'Играть', save: 'Сохранить',
     readyBtn: 'Готов!', notReady: 'Отменить', waitReady: 'Ждём, когда все нажмут «Готов»', inviteMore: 'Позови ещё {n}', tooMany: 'В этом режиме максимум {n}',
@@ -4487,6 +4537,7 @@ const STRINGS = {
   },
   en: {
     tapStart: 'Tap to start',
+    all: 'All', createLobby: 'Create lobby', lobbyInvite: 'Lobby invite', inviteTitle: 'Invite friends', addFriendsCta: 'Add friends by code', fOnlineN: '{n} online',
     lobby: 'Lobby', pmRace: 'Race', pmRope: 'Rope Team', pmRopeN: '2–4 players', invite: 'Invite', newTag: 'NEW', ropeTeam: 'Rope Team', ropeSub: 'Up to 4 riders on one bungee rope. Don’t split around trees!',
     withBots: 'With bots', withFriends: 'With friends', friends: 'Friends', yourCode: 'Your code:', addFriend: 'Add friend', joinBtn: 'Play', save: 'Save',
     readyBtn: 'Ready!', notReady: 'Cancel', waitReady: 'Waiting for everyone to press Ready', inviteMore: 'Invite {n} more', tooMany: 'This mode allows {n} max',
@@ -7243,15 +7294,49 @@ const Platform = {
     const on = hub ? save.friends.filter((f) => hub.online[f.oid]).length : 0;
     $('friendsOn').textContent = friendReqs.length ? '!' : on ? on : '';
     $('btnFriends').style.display = crew.enabled ? '' : 'none';
+    renderDock();
   }
-  function openFriends() { sfx.unlock(); sfx.click(); toMenuThen(() => { show('friendsScr'); renderFriends(); }); }
-  $('btnFriends').onclick = openFriends;
+  // Друзья прямо на главном экране: кто в сети (зелёная точка), тап — позвать в лобби.
+  function renderDock() {
+    const dock = $('fDock');
+    dock.classList.toggle('off', !crew.enabled);
+    if (!crew.enabled) return;
+    const online = hub ? hub.online : {}, fl = Friends.list(save.friends, online);
+    const nOn = fl.filter((f) => f.on).length;
+    $('fdOnline').textContent = nOn ? T('fOnlineN', { n: nOn }) : '';
+    const box = $('fdList'); box.innerHTML = '';
+    for (const f of fl.slice(0, 12)) {
+      const st = f.on ? f.on.st : null;
+      const b = document.createElement('button');
+      b.className = 'fdf' + (st === 'menu' ? ' on' : st ? ' on busy' : ' off');
+      b.innerHTML = `<span class="fdav">${RIDE_ICON[(f.on && f.on.ride) || f.ride] || '🛷'}<i></i></span><b></b><small>${st === 'menu' ? T('fOnline') : st === 'party' ? T('fLobby') : st === 'play' ? T('fPlaying') : T('fOffline')}</small>`;
+      b.querySelector('b').textContent = f.nick;
+      b.onclick = () => { sfx.click(); if (f.on && st !== 'play') inviteFriend(f); else openFriends(); };
+      box.appendChild(b);
+    }
+    const add = document.createElement('button'); add.className = 'fdf add';
+    add.innerHTML = `<span class="fdav">＋</span><b>${T('addFriend')}</b>`;
+    add.onclick = () => openFriends();
+    box.appendChild(add);
+    if (!fl.length) { const e = document.createElement('div'); e.className = 'fdempty'; e.textContent = T('addFriendsCta'); box.appendChild(e); }
+  }
+  let friendsMode = 'list';
+  function openFriends(mode = 'list') { sfx.unlock(); sfx.click(); friendsMode = mode; toMenuThen(() => { show('friendsScr'); renderFriends(); }); }
+  $('btnFriends').onclick = () => openFriends();
+  $('fdAll').onclick = () => openFriends();
+  // «Создать лобби»: лобби с тобой во главе и сразу список друзей, кого позвать.
+  $('btnLobby').onclick = async () => {
+    sfx.unlock(); sfx.click();
+    if (!socialOk()) { openFriends('invite'); return; }
+    const p = await openParty(); if (p) openFriends('invite');
+  };
   $('frBack').onclick = () => { sfx.click(); show('menu'); };
   $('frNickGo').onclick = () => {
     const n = Nick.clean($('frNickIn').value);
     if (!Nick.ok(n)) { $('frNickErr').textContent = T('badNick'); return; }
     if (!$('frAgree').checked) { $('frNickErr').textContent = T('mustAgree'); return; }
-    save.nick = n; save.onlineTos = true; persist(); sfx.click(); hubOn(); renderFriends();
+    save.nick = n; save.onlineTos = true; persist(); sfx.click(); hubOn();
+    if (friendsMode === 'invite' && !party) openParty().then(() => { show('friendsScr'); renderFriends(); }); else renderFriends();
   };
   $('frCopy').onclick = async () => { try { await navigator.clipboard.writeText(Friends.code(meOid())); toast(T('copied')); } catch (e) { /* ignore */ } };
   $('frAdd').onclick = () => {
@@ -7265,6 +7350,7 @@ const Platform = {
   };
   function renderFriends() {
     const ok = socialOk();
+    $('frTitle').textContent = friendsMode === 'invite' && party ? T('inviteTitle') : T('friends');
     $('frNickRow').style.display = ok ? 'none' : 'flex'; $('frMain').style.display = ok ? '' : 'none';
     $('frRules').textContent = T('crewRules');
     if (!ok) { $('frNickIn').value = save.nick || ''; $('frAgree').checked = !!save.onlineTos; $('frOnline').textContent = '–'; return; }
