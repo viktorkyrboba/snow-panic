@@ -1402,7 +1402,7 @@
     <div class="frnick" id="frNickRow">
       <div class="frlbl" data-t="nickname"></div>
       <div class="fradd"><input id="frNickIn" maxlength="14" autocomplete="off" spellcheck="false"><button class="btn green slimb" id="frNickGo" data-t="save"></button></div>
-      <label class="chk"><input type="checkbox" id="frAgree"><span><span data-t="agreeTo"></span> <a href="#" class="rulelink" data-for="frRules" data-t="rulesLink"></a></span></label>
+      <label class="chk"><input type="checkbox" id="frAgree"><span><span data-t="agreeTo"></span> <a href="#" class="rulelink" data-for="frRules" data-t="rulesLink"></a> <span data-t="andW"></span> <a href="#" class="rulelink pplink" target="_blank" rel="noopener" data-t="privacyLink"></a></span></label>
       <div class="rules" id="frRules"></div>
       <div class="ferr" id="frNickErr"></div>
     </div>
@@ -1579,7 +1579,7 @@
     <div id="onNick">
       <label class="fld"><span data-t="nickname"></span><input id="onNickIn" maxlength="14" autocomplete="off" spellcheck="false"></label>
       <div class="rules" id="onRules"></div>
-      <label class="chk"><input type="checkbox" id="onAgree"><span><span data-t="agreeTo"></span> <a href="#" class="rulelink" data-for="onRules" data-t="rulesLink"></a></span></label>
+      <label class="chk"><input type="checkbox" id="onAgree"><span><span data-t="agreeTo"></span> <a href="#" class="rulelink" data-for="onRules" data-t="rulesLink"></a> <span data-t="andW"></span> <a href="#" class="rulelink pplink" target="_blank" rel="noopener" data-t="privacyLink"></a></span></label>
     </div>
     <div id="onFriend">
       <button class="btn green" id="onCreate" data-t="createRoom"></button>
@@ -4488,7 +4488,7 @@ const STRINGS = {
     again: 'Ещё раз', toLobby: 'В лобби', reasonRope: 'Резинка выстрелила рогаткой!', ropeSnag: 'Резинка зацепилась! Съезжайтесь!', ropeFling: 'Рогатка! −1 ❤️', ropeFree: 'Отцепились!',
     teamBots: 'Связка с ботами', teammate: 'Напарник', heartLost: '−1 ❤️', avTeam: 'Лавина накрыла: {name}',
     backInRace: 'Снова в гонке!', rivalCaught: 'Лавина накрыла: {name}!', raceNoQuit: 'Это гонка — выйти можно только после финиша!',
-    agreeTo: 'Я согласен с', rulesLink: 'правилами',
+    agreeTo: 'Я согласен с', rulesLink: 'правилами', andW: 'и', privacyLink: 'политикой конфиденциальности',
     msHint: 'Выполняй задания в заездах — получай монеты', msPlay: 'Играть', 
     deals: 'Акции', boostsTab: 'Бусты', oneTime: 'Только один раз', worth: 'Ценность: {n} монет', dealDay: 'Акция дня', bundles: 'Наборы',
     pk_starter: 'Стартовый набор', pkd_starter: 'Сноуборд + Ванна + 2 000 монет + 20 бустов', pk_party: 'Весёлый набор', pkd_party: 'Тележка + Диван + 1 500 монет',
@@ -4625,7 +4625,7 @@ const STRINGS = {
     again: 'Again', toLobby: 'Back to lobby', reasonRope: 'The rope slingshotted you!', ropeSnag: 'Rope snagged! Get together!', ropeFling: 'Slingshot! −1 ❤️', ropeFree: 'Rope is free!',
     teamBots: 'Rope team with bots', teammate: 'Teammate', heartLost: '−1 ❤️', avTeam: 'The avalanche got {name}',
     backInRace: 'Back in the race!', rivalCaught: 'The avalanche got {name}!', raceNoQuit: "It's a race — you can leave only after the finish!",
-    agreeTo: 'I agree to the', rulesLink: 'rules',
+    agreeTo: 'I agree to the', rulesLink: 'rules', andW: 'and', privacyLink: 'Privacy Policy',
     msHint: 'Complete them while riding to earn coins', msPlay: 'Play', 
     deals: 'Deals', boostsTab: 'Boosts', oneTime: 'One-time offer', worth: 'Worth {n} coins', dealDay: 'Deal of the day', bundles: 'Bundles',
     pk_starter: 'Starter Pack', pkd_starter: 'Snowboard + Bathtub + 2,000 coins + 20 boosts', pk_party: 'Party Pack', pkd_party: 'Shopping cart + Sofa + 1,500 coins',
@@ -7186,7 +7186,10 @@ const Platform = {
   });
 
   // Правила свёрнуты: открываются по ссылке «правила» рядом с галочкой.
-  document.querySelectorAll('.rulelink').forEach((a) => { a.onclick = (e) => { e.preventDefault(); e.stopPropagation(); sfx.click(); $(a.dataset.for).classList.toggle('open'); }; });
+  // Политика конфиденциальности — на сайте игры (разрешено и на CrazyGames).
+  const PRIVACY_URL = ((typeof BUILD !== 'undefined' && BUILD.shareBase) || 'https://viktorkyrboba.github.io/snow-panic/').replace(/\/?$/, '/') + 'privacy.html';
+  document.querySelectorAll('.pplink').forEach((a) => { a.href = PRIVACY_URL; a.onclick = (e) => { e.stopPropagation(); }; });
+  document.querySelectorAll('.rulelink:not(.pplink)').forEach((a) => { a.onclick = (e) => { e.preventDefault(); e.stopPropagation(); sfx.click(); $(a.dataset.for).classList.toggle('open'); }; });
 
   // ===================== Режим «Связка» =====================
   // До 4 райдеров на резинках. С ботами — всё считается тут; онлайн — каждый считает свою физику,
