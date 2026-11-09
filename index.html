@@ -7709,7 +7709,7 @@ const Platform = {
   function drawShowroom(tagList) {
     // на заставке витрины нет — только на главном экране
     const sp = document.getElementById('splash');
-    if (!wideMenu() || party || screen !== 'menu' || (sp && sp.isConnected && !sp.classList.contains('out') && sp.classList.contains('on'))) return;
+    if (!wideMenu() || party || screen !== 'menu' || (sp && sp.isConnected)) return;
     showRides.forEach((r, i) => {
       const b = showBodies[i], x = player.x + (i ? 6.2 : -6.2);
       b.s = 3.2; b.x = x; b.y = world.height(x, b.s) + 0.15 + Math.sin(now * 1.6 + i) * 0.12; b.alive = true; b.grounded = true;
