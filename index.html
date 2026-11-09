@@ -7622,7 +7622,7 @@ const Platform = {
   function renderPromo() {
     if (!wideMenu()) return;
     // герой: стартовый набор, иначе следующий некупленный набор, иначе мега-ящик бустов
-    const pk = SHOP.packs.find((p) => !save.bought.includes(p.id));
+    const pk = moneyShop() && SHOP.packs.find((p) => !save.bought.includes(p.id));
     const hero = $('pcHero');
     if (pk) {
       $('pcHeroTag').textContent = pk.id === 'pack_starter' ? T('oneTime') : T('bundles');
@@ -7665,7 +7665,7 @@ const Platform = {
   }
   const TICKS = [
     () => ({ t: T('tk1'), go: () => { openModes(); setTimeout(() => { const c = document.querySelector('.c-rope'); c && c.scrollIntoView({ inline: 'center', behavior: 'smooth' }); }, 350); } }),
-    () => { const st = SHOP.packs[0]; return save.bought.includes(st.id) ? null : { t: T('tk2', { n: SHOP.packOff(st, save.owned) }), go: () => openShop('deals') }; },
+    () => { const st = SHOP.packs[0]; return (!moneyShop() || save.bought.includes(st.id)) ? null : { t: T('tk2', { n: SHOP.packOff(st, save.owned) }), go: () => openShop('deals') }; },
     () => (crew.enabled ? { t: T('tk3'), go: () => $('btnLobby').click() } : null),
     () => ({ t: T('tk4'), go: () => startDaily() }),
   ];
@@ -7809,6 +7809,9 @@ const Platform = {
   $('shopBack').onclick = () => { sfx.click(); show('menu'); };
   for (const t of SHOP_TABS) $('shTab' + t[0].toUpperCase() + t.slice(1)).onclick = () => { if (shopTab === t) return; sfx.click(); shopTab = t; buyArm = null; renderShop(); $('shopList').scrollTop = 0; };
   // Цена за реальные деньги: из магазина площадки, иначе — рекомендованная в $ (покупка — в приложении).
+  // Платные наборы видны там, где их можно купить (Play/Яндекс), и на нашем сайте как ссылка на приложение.
+  // На CrazyGames ссылаться на другие магазины нельзя, а своих покупок нет — там только монеты.
+  const moneyShop = () => Platform.iapAvailable || Platform.externalLinks;
   function moneyPrice(id) {
     const p = Platform.iapAvailable && Platform.product(id);
     if (p) return { text: String(p.price), icon: p.icon, live: true };
@@ -7862,6 +7865,7 @@ const Platform = {
   const section = (box, title) => box.appendChild(txt('div', 'shead', title));
 
   function renderShop() {
+    if (shopTab === 'coins' && !moneyShop()) shopTab = 'deals';
     for (const t of SHOP_TABS) $('shTab' + t[0].toUpperCase() + t.slice(1)).classList.toggle('on', shopTab === t);
     $('shopCoins').textContent = nf(save.coins);
     const invN = Object.values(save.inv).reduce((a, b) => a + b, 0);
@@ -7869,7 +7873,8 @@ const Platform = {
     const box = $('shopList'); box.innerHTML = ''; box.className = 'shopbody t-' + shopTab; $('shopNote').textContent = '';
     ({ deals: shopDeals, rides: shopRides, boosts: shopBoosts, coins: shopCoins })[shopTab](box);
     [...box.children].forEach((c, i) => c.style.setProperty('--i', Math.min(i, 10)));
-    if (shopTab === 'coins' || shopTab === 'deals') $('shopNote').textContent = Platform.iapAvailable ? T('packNote', { p: Platform.iapProvider }) : T('getApp');
+    $('shTabCoins').style.display = moneyShop() ? '' : 'none';
+    if (moneyShop() && (shopTab === 'coins' || shopTab === 'deals')) $('shopNote').textContent = Platform.iapAvailable ? T('packNote', { p: Platform.iapProvider }) : T('getApp');
   }
   function packContents(pk) {
     const row = el('div', 'pkitems');
@@ -7881,7 +7886,7 @@ const Platform = {
   }
   function shopDeals(box) {
     const starter = SHOP.packs.find((p) => p.id === 'pack_starter');
-    if (!save.bought.includes(starter.id)) {
+    if (moneyShop() && !save.bought.includes(starter.id)) {
       const h = el('div', 'hero h-starter', '<div class="burst"></div><div class="shine"></div>');
       h.appendChild(txt('div', 'hribbon', T('oneTime')));
       h.appendChild(txt('div', 'htitle', T('pk_starter')));
@@ -7916,6 +7921,7 @@ const Platform = {
       box.appendChild(c);
     }
     freeCards(box, true);
+    if (!moneyShop()) return;
     section(box, `🎁 ${T('bundles')}`);
     for (const pk of SHOP.packs) if (pk.id !== 'pack_starter') box.appendChild(packCard(pk));
   }
@@ -7987,7 +7993,7 @@ const Platform = {
           if (ok) { player.setRide(id, Meta.upOf(save, id)); popup(`${T('bought')} ${rideName(id)}`, 'gain'); }
           return ok;
         })));
-        const pk = SHOP.packs.find((p) => p.id !== 'pack_all' && p.rides.includes(id) && !save.bought.includes(p.id));
+        const pk = moneyShop() && SHOP.packs.find((p) => p.id !== 'pack_all' && p.rides.includes(id) && !save.bought.includes(p.id));
         if (pk) { const h = txt('button', 'inpack', `${PACK_ART[pk.theme]} ${T('inPack', { p: T('pk_' + pk.theme) })}`); h.onclick = (e) => { e.stopPropagation(); shopTab = 'deals'; renderShop(); }; c.appendChild(h); }
       }
       c.onclick = () => c.querySelector('.pbtn').click();
