@@ -956,6 +956,7 @@
   #shopScr .ccard.c2 { background:linear-gradient(180deg,#fffaf0,#ffe9c2) !important; box-shadow:0 0 0 2px #ffc23a, 0 5px 0 rgba(150,80,0,.35) !important; }
   .ccard .shine { border-radius:22px; }
   /* летящие монеты */
+  .flycoin i.cn { width:26px; height:26px; display:block; }
   .flycoin { position:fixed; z-index:200; font-size:26px; pointer-events:none; margin:-13px 0 0 -13px; animation:fly .9s cubic-bezier(.5,-0.4,.6,1) both; }
   @keyframes fly { 0% { transform:translate(0,0) scale(.4); opacity:0; } 15% { transform:translate(0,-30px) scale(1.2); opacity:1; } 100% { transform:translate(var(--dx),var(--dy)) scale(.6); opacity:.9; } }
   .pitem.have { box-shadow:0 0 0 2px #8a4dff, 0 3px 0 rgba(0,0,0,.2) !important; }
@@ -971,7 +972,7 @@
   .mshead { position:relative; z-index:1; display:flex; align-items:center; gap:10px; background:rgba(0,40,30,.25); border-radius:20px; padding:10px 14px; color:#fff; font-weight:900; font-size:15px; text-align:left; }
   .msmedal { font-size:34px; animation:wob 2.4s ease-in-out infinite; }
   .mshead.ready { background:linear-gradient(180deg,#ffe36e,#ffb300); color:#6a3a00; box-shadow:0 4px 0 #c47f00; }
-  .ms2 { position:relative; z-index:1; flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding:14px 2px 14px; }
+  .ms2 { position:relative; z-index:1; flex:1; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; padding:14px 2px 14px; }
   .mcardm { --c1:#5cc4ff; --c2:#1f86e0; position:relative; display:flex; align-items:center; gap:12px; background:#fff; border-radius:22px; padding:12px; text-align:left;
     box-shadow:0 5px 0 rgba(0,40,30,.25), 0 12px 22px rgba(0,40,30,.25); animation:shopIn .45s cubic-bezier(.2,1.3,.4,1) both; animation-delay:calc(var(--i,0) * 80ms); }
   .mcardm .mic { flex:none; width:62px; height:62px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:34px;
@@ -7847,7 +7848,7 @@ const Platform = {
     const a = from && from.getBoundingClientRect ? from.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
     const t = to.getBoundingClientRect();
     for (let i = 0; i < n; i++) {
-      const c = document.createElement('div'); c.className = 'flycoin'; c.textContent = ch;
+      const c = document.createElement('div'); c.className = 'flycoin'; if (ch === '🪙') c.innerHTML = '<i class="cn"></i>'; else c.textContent = ch;
       const x0 = a.left + a.width / 2 + (Math.random() - 0.5) * 60, y0 = a.top + a.height / 2 + (Math.random() - 0.5) * 30;
       c.style.left = x0 + 'px'; c.style.top = y0 + 'px';
       c.style.setProperty('--dx', (t.left + t.width / 2 - x0) + 'px'); c.style.setProperty('--dy', (t.top + t.height / 2 - y0) + 'px');
