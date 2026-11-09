@@ -1109,6 +1109,7 @@
   .pm .crown { position:absolute; top:-8px; font-size:14px; }
   .pnote2 { font-size:12px; font-weight:800; color:#7a87a6; text-align:center; margin:6px 0 2px; min-height:15px; }
   .prow { display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:wrap; }
+  #pInvite.hot { background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#b46cff,#7b2ff7); color:#fff; box-shadow:0 4px 0 #4f17b0; text-shadow:none; }
   #pReady { font-size:20px; padding:10px 26px; margin:0; }
   #pReady.on { background:linear-gradient(180deg,#e9eef5,#cfd9e6); color:#22305a; text-shadow:none; box-shadow:0 5px 0 #a8b6c8; }
   /* приглашение */
@@ -1171,6 +1172,20 @@
   .ibbar i { display:block; height:100%; width:100%; background:#b46cff; transform-origin:left; }
   #inviteBox.on .ibbar i { animation:ibtime 25s linear forwards; }
   @keyframes ibtime { to { transform:scaleX(0); } }
+
+  .lobbyrow { display:grid; grid-template-columns:1.25fr 1fr; gap:8px; margin-top:4px; }
+  .lobbyrow .lobbybtn { margin:0; font-size:16px; padding:12px 6px; width:auto; min-width:0; white-space:nowrap; }
+  .lobbybtn.join { background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#4fd6e0,#11a2b0) !important; box-shadow:0 5px 0 #0b7a85, 0 10px 20px rgba(0,90,100,.25) !important; }
+  body.inparty #fDock .lobbyrow { display:none; }
+  @media (min-width:900px) and (min-height:500px) { .lobbyrow { grid-template-columns:1fr; } }
+  #joinBox { position:fixed; inset:0; z-index:85; display:none; align-items:center; justify-content:center; background:rgba(10,20,50,.45); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); }
+  #joinBox.on { display:flex; }
+  .jbx { width:min(90vw,360px); background:#fff; border-radius:26px; padding:18px; color:#22305a; box-shadow:0 20px 50px rgba(0,0,40,.4); animation:cardIn .4s cubic-bezier(.2,1.3,.4,1) both; text-align:center; }
+  .jbt { font-family:var(--disp); font-size:24px; font-weight:900; } .jbs { font-size:13px; font-weight:700; color:#7a87a6; margin:4px 0 12px; }
+  #jbCode { width:100%; border:2px solid #cfdcec; border-radius:16px; padding:12px; font:inherit; font-weight:900; font-size:28px; letter-spacing:6px; text-align:center; text-transform:uppercase; color:#4c2fb8; }
+  #jbErr { color:#e1173a; text-shadow:none; }
+  .jbrow { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; } .jbrow .btn { margin:0; }
+  .frow .pbtn.join2 { background:linear-gradient(180deg,#4fd6e0,#11a2b0); box-shadow:0 4px 0 #0b7a85; }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1226,7 +1241,7 @@
   <div class="fdock" id="fDock">
     <div class="fdhead"><b>👥 <span data-t="friends"></span></b><span class="fdon" id="fdOnline"></span><button class="fdall" id="fdAll" data-t="all"></button></div>
     <div class="fdlist" id="fdList"></div>
-    <button class="btn lobbybtn" id="btnLobby"><span>🎮</span> <span data-t="createLobby"></span></button>
+    <div class="lobbyrow"><button class="btn lobbybtn" id="btnLobby"><span>🎮</span> <span data-t="createLobby"></span></button><button class="btn lobbybtn join" id="btnJoinLobby"><span>🔑</span> <span data-t="joinLobby"></span></button></div>
   </div>
   <div class="hint" id="controls" hidden></div>
 </div>
@@ -1368,6 +1383,13 @@
   </div>
 </div>
 
+<div id="joinBox"><div class="jbx">
+  <div class="jbt">🔑 <span data-t="joinLobby"></span></div>
+  <div class="jbs" data-t="joinLobbyHint"></div>
+  <input id="jbCode" maxlength="6" autocomplete="off" spellcheck="false" placeholder="ABC123">
+  <div class="ferr" id="jbErr"></div>
+  <div class="jbrow"><button class="btn ghost slimb" id="jbCancel" data-t="cancel"></button><button class="btn green slimb" id="jbGo" data-t="joinBtn"></button></div>
+</div></div>
 <div id="inviteBox"><div class="ibx"><span class="iic" id="ibIcon">🪢</span><div class="itx"><small data-t="lobbyInvite"></small><b id="ibNick"></b><span id="ibText"></span></div><button class="ibok" id="ibJoin" aria-label="accept">✓</button><button class="ibno" id="ibNo" aria-label="decline">✕</button></div><div class="ibbar"><i id="ibBar"></i></div></div>
 
 <div class="screen" id="raceEnd">
@@ -4402,8 +4424,9 @@ class Sfx {
 const STRINGS = {
   ru: {
     tapStart: 'Нажми, чтобы начать',
+    joinLobby: 'Войти в лобби', joinLobbyHint: 'Введи код лобби — он есть у хозяина вверху лобби', cancel: 'Отмена', badLobby: 'Код лобби — 6 символов', lobbyNone: 'Такого лобби нет', joinOne: 'Войти',
     all: 'Все', createLobby: 'Создать лобби', lobbyInvite: 'Приглашение в лобби', inviteTitle: 'Позови друзей', addFriendsCta: 'Добавь друзей по коду', fOnlineN: '{n} в сети',
-    lobby: 'Лобби', pmRace: 'Гонка', pmRope: 'Связка', pmRopeN: '2–4 игрока', invite: 'Позвать', newTag: 'НОВОЕ', ropeTeam: 'Связка', ropeSub: 'До 4 райдеров на одной резинке. Не разводите её вокруг ёлок!',
+    lobby: 'Лобби', pmRace: 'Гонка', pmRope: 'Связка', pmRopeN: '2–4 игрока', invite: 'Позвать друзей', inviteOne: 'Позвать', newTag: 'НОВОЕ', ropeTeam: 'Связка', ropeSub: 'До 4 райдеров на одной резинке. Не разводите её вокруг ёлок!',
     withBots: 'С ботами', withFriends: 'С друзьями', friends: 'Друзья', yourCode: 'Твой код:', addFriend: 'В друзья', joinBtn: 'Играть', save: 'Сохранить',
     readyBtn: 'Готов!', notReady: 'Отменить', waitReady: 'Ждём, когда все нажмут «Готов»', inviteMore: 'Позови ещё {n}', tooMany: 'В этом режиме максимум {n}',
     hostPicks: 'Режим выбирает {name}', youHost: 'Ты хозяин лобби — выбери режим', fOnline: 'в сети', fOffline: 'не в сети', fPlaying: 'играет', fLobby: 'в лобби',
@@ -4537,8 +4560,9 @@ const STRINGS = {
   },
   en: {
     tapStart: 'Tap to start',
+    joinLobby: 'Join lobby', joinLobbyHint: 'Enter the lobby code — the host sees it at the top of the lobby', cancel: 'Cancel', badLobby: 'Lobby code is 6 characters', lobbyNone: 'No such lobby', joinOne: 'Join',
     all: 'All', createLobby: 'Create lobby', lobbyInvite: 'Lobby invite', inviteTitle: 'Invite friends', addFriendsCta: 'Add friends by code', fOnlineN: '{n} online',
-    lobby: 'Lobby', pmRace: 'Race', pmRope: 'Rope Team', pmRopeN: '2–4 players', invite: 'Invite', newTag: 'NEW', ropeTeam: 'Rope Team', ropeSub: 'Up to 4 riders on one bungee rope. Don’t split around trees!',
+    lobby: 'Lobby', pmRace: 'Race', pmRope: 'Rope Team', pmRopeN: '2–4 players', invite: 'Invite friends', inviteOne: 'Invite', newTag: 'NEW', ropeTeam: 'Rope Team', ropeSub: 'Up to 4 riders on one bungee rope. Don’t split around trees!',
     withBots: 'With bots', withFriends: 'With friends', friends: 'Friends', yourCode: 'Your code:', addFriend: 'Add friend', joinBtn: 'Play', save: 'Save',
     readyBtn: 'Ready!', notReady: 'Cancel', waitReady: 'Waiting for everyone to press Ready', inviteMore: 'Invite {n} more', tooMany: 'This mode allows {n} max',
     hostPicks: '{name} picks the mode', youHost: 'You host the lobby — pick a mode', fOnline: 'online', fOffline: 'offline', fPlaying: 'playing', fLobby: 'in a lobby',
@@ -7324,11 +7348,27 @@ const Platform = {
   function openFriends(mode = 'list') { sfx.unlock(); sfx.click(); friendsMode = mode; toMenuThen(() => { show('friendsScr'); renderFriends(); }); }
   $('btnFriends').onclick = () => openFriends();
   $('fdAll').onclick = () => openFriends();
+  // «Войти в лобби» по коду (код виден у всех вверху лобби).
+  $('btnJoinLobby').onclick = () => {
+    sfx.unlock(); sfx.click();
+    if (!socialOk()) { openFriends('invite'); return; }
+    $('jbCode').value = ''; $('jbErr').textContent = ''; $('joinBox').classList.add('on'); setTimeout(() => $('jbCode').focus(), 50);
+  };
+  $('jbCancel').onclick = () => { sfx.click(); $('joinBox').classList.remove('on'); };
+  $('jbGo').onclick = async () => {
+    const code = Friends.clean($('jbCode').value);
+    if (code.length !== PARTY.codeLen) { $('jbErr').textContent = T('badLobby'); return; }
+    sfx.click(); $('joinBox').classList.remove('on');
+    if (party && party.code !== code) leaveParty();
+    const p = await openParty(code);
+    // пустое лобби = такого нет: ждём, увидим ли кого-то кроме себя
+    if (p) setTimeout(() => { if (party === p && p.members.length < 2) { toast(T('lobbyNone')); leaveParty(); } }, 4000);
+  };
   // «Создать лобби»: лобби с тобой во главе и сразу список друзей, кого позвать.
   $('btnLobby').onclick = async () => {
     sfx.unlock(); sfx.click();
     if (!socialOk()) { openFriends('invite'); return; }
-    const p = await openParty(); if (p) openFriends('invite');
+    await openParty();   // лобби на главном экране: режим, «Готов», «Позвать» — список друзей только по кнопке
   };
   $('frBack').onclick = () => { sfx.click(); show('menu'); };
   $('frNickGo').onclick = () => {
@@ -7336,7 +7376,7 @@ const Platform = {
     if (!Nick.ok(n)) { $('frNickErr').textContent = T('badNick'); return; }
     if (!$('frAgree').checked) { $('frNickErr').textContent = T('mustAgree'); return; }
     save.nick = n; save.onlineTos = true; persist(); sfx.click(); hubOn();
-    if (friendsMode === 'invite' && !party) openParty().then(() => { show('friendsScr'); renderFriends(); }); else renderFriends();
+    if (friendsMode === 'invite' && !party) openParty(); else renderFriends();
   };
   $('frCopy').onclick = async () => { try { await navigator.clipboard.writeText(Friends.code(meOid())); toast(T('copied')); } catch (e) { /* ignore */ } };
   $('frAdd').onclick = () => {
@@ -7377,8 +7417,12 @@ const Platform = {
       const d = document.createElement('div'); d.className = 'frow' + (st === 'menu' ? ' on' : st ? ' busy' : ''); d.style.setProperty('--i', i);
       d.innerHTML = `<span class="fav">${RIDE_ICON[(f.on && f.on.ride) || f.ride] || '🛷'}<i></i></span><span class="fnm"><b></b><small>${st === 'menu' ? T('fOnline') : st === 'party' ? T('fLobby') : st === 'play' ? T('fPlaying') : T('fOffline')}</small></span>`;
       d.querySelector('b').textContent = f.nick;
-      const inv = document.createElement('button'); inv.className = 'pbtn inv' + (f.on && st !== 'play' ? '' : ' dis'); inv.textContent = T('invite');
+      const inv = document.createElement('button'); inv.className = 'pbtn inv' + (f.on && st !== 'play' ? '' : ' dis'); inv.textContent = T('inviteOne');
       inv.onclick = () => inviteFriend(f);
+      if (st === 'party' && f.on.code && (!party || party.code !== f.on.code)) {
+        inv.className = 'pbtn join2'; inv.textContent = T('joinOne');
+        inv.onclick = () => { if (party) leaveParty(); show('menu'); openParty(f.on.code); };
+      }
       const x = document.createElement('button'); x.className = 'xbtn'; x.textContent = '✕';
       x.onclick = () => { if (x.dataset.arm) { save.friends = save.friends.filter((q) => q.oid !== f.oid); persist(); renderFriends(); } else { x.dataset.arm = 1; x.textContent = '🗑️'; } };
       d.append(inv, x); list.appendChild(d);
@@ -7486,7 +7530,7 @@ const Platform = {
         d.className = 'pm' + (m.ready ? ' ready' : '');
         d.innerHTML = `${i === 0 ? '<span class="crown">👑</span>' : ''}<span class="ic">${RIDE_ICON[m.ride] || '🛷'}</span><b></b><span class="rd">${m.ready ? '✓ ' + T('readyBtn') : '…'}</span>`;
         d.querySelector('b').textContent = m.oid === meOid() ? `${Nick.clean(m.nick)} ★` : Nick.clean(m.nick);
-      } else if (i < cap) { d.className = 'pm empty'; d.innerHTML = '<span class="ic">➕</span>'; d.onclick = openFriends; }
+      } else if (i < cap) { d.className = 'pm empty'; d.innerHTML = '<span class="ic">➕</span>'; d.onclick = () => openFriends('invite'); }
       else { d.className = 'pm empty locked'; d.innerHTML = '<span class="ic">🔒</span>'; }
       box.appendChild(d);
     }
@@ -7495,10 +7539,11 @@ const Platform = {
     $('pReady').textContent = party.ready ? T('notReady') : T('readyBtn');
     $('pReady').classList.toggle('on', party.ready);
     $('pInvite').style.display = n < cap ? '' : 'none';
+    $('pInvite').classList.toggle('hot', n < 2);
   }
   document.querySelectorAll('#pModes .pmode').forEach((b) => { b.onclick = () => { if (party && party.setMode(b.dataset.m)) { sfx.click(); renderParty(); } }; });
   $('pReady').onclick = () => { if (!party) return; sfx.click(); party.setReady(!party.ready); renderParty(); };
-  $('pInvite').onclick = openFriends;
+  $('pInvite').onclick = () => openFriends('invite');
   $('pLeave').onclick = () => { sfx.click(); leaveParty(); };
   $('mRopeBots').onclick = () => startTeamBots(4);
   $('mRopeFriends').onclick = async () => { sfx.click(); const p = await openParty(null, 'rope'); if (p) { p.setMode('rope'); openFriends(); } };
