@@ -5380,22 +5380,47 @@ const Match = {
 class RemoteRider {
   constructor(body) { this.body = body; this.buf = []; this.reset(); }
   reset(world, side = 1) {
-    this.buf = []; this.finished = false; this.finishT = 0; this.left = false; this.crashed = false; this.t = 0;
+    this.buf = []; this.off = null; this.jit = null; this.ds = null; this.du = null; this.dl = null; this.finished = false; this.finishT = 0; this.left = false; this.crashed = false; this.t = 0;
     this.s = 2; this.x = world ? world.center(2) + side * RACE.laneOffset : 0; this.y = world ? world.height(this.x, 2) : 0;
     this.v = 0; this.vx = 0; this.air = 0; this.ride = this.ride || 'sled';
   }
-  // Snapshot from the network: { s, x (offset from track centre), h (height above ground), v, vx, cr (crashed) }.
-  push(p, now) { this.buf.push({ ...p, at: now }); if (this.buf.length > 30) this.buf.shift(); }
-  // Draw ~120 ms in the past so there are two snapshots to interpolate between.
+  // Snapshot from the network: { s, x (offset from track centre), h (height above ground), v, vx, cr (crashed), t (sender clock, ms) }.
+  // Время снимка берём по часам отправителя (t) + оценка сдвига часов: пакеты, пришедшие пачкой, не слипаются.
+  push(p, now) {
+    let at = now;
+    if (typeof p.t === 'number') {
+      const off = now - p.t;   // сдвиг часов + задержка сети
+      if (this.off == null || off < this.off) this.off = off; else this.off += (off - this.off) * 0.02;   // держимся у минимальной задержки, медленно подстраиваемся
+      const late = off - this.off;   // насколько этот пакет опоздал относительно лучшего
+      this.jit = this.jit == null ? late : this.jit + (late - this.jit) * (late > this.jit ? 0.3 : 0.03);
+      at = p.t + this.off;
+      if (this.buf.length && at <= this.buf[this.buf.length - 1].at) return;   // старый/повторный пакет
+    }
+    this.buf.push({ ...p, at }); if (this.buf.length > 40) this.buf.shift();
+  }
+  // Рисуем чуть в прошлом (2 интервала + разброс задержки), чтобы между снимками было что интерполировать;
+  // если снимки кончились (подвисла сеть) — продолжаем движение по скорости до 0.6 с, без замираний.
   update(dt, world, player, running, now = performance.now()) {
     this.t += dt;
     if (!world || !this.buf.length) return;
-    const tt = now - 120, b = this.buf;
-    let a = b[0], c = b[b.length - 1];
-    for (let i = b.length - 1; i > 0; i--) if (b[i - 1].at <= tt) { a = b[i - 1]; c = b[i]; break; }
-    const k = c.at > a.at ? clamp((tt - a.at) / (c.at - a.at), 0, 1.5) : 1;
-    const s = a.s + (c.s - a.s) * k, u = a.x + (c.x - a.x) * k, h = Math.max(0, a.h + (c.h - a.h) * k);
-    this.s = s; this.x = world.center(s) + u; this.y = world.height(this.x, s) + h;
+    const b = this.buf, want = clamp(2 * 1000 / NET.hz + 2 * (this.jit || 0), 150, 450);
+    // задержку меняем плавно (время соперника идёт со скоростью 0.75–1.25×), иначе он дёргается при перестройке
+    this.dl = this.dl == null ? want : this.dl + clamp(want - this.dl, -250 * dt, 250 * dt);
+    const tt = now - this.dl;
+    let s, u, h, c = b[b.length - 1];
+    if (tt >= c.at) {
+      const e = Math.min(tt - c.at, 600) / 1000;
+      s = c.s + (c.v || 0) * e; u = c.x + (c.vx || 0) * e * 0.5; h = Math.max(0, c.h - 9 * e * e);
+    } else {
+      let a = b[0]; c = b[0];
+      for (let i = b.length - 1; i > 0; i--) if (b[i - 1].at <= tt) { a = b[i - 1]; c = b[i]; break; }
+      const k = c.at > a.at ? clamp((tt - a.at) / (c.at - a.at), 0, 1) : 1;
+      s = a.s + (c.s - a.s) * k; u = a.x + (c.x - a.x) * k; h = Math.max(0, a.h + (c.h - a.h) * k);
+    }
+    // Плавная доводка: небольшие поправки сглаживаем, большие (респаун) — сразу.
+    if (this.ds == null || Math.abs(s - this.ds) > 12 || Math.abs(u - this.du) > 6) { this.ds = s; this.du = u; }
+    else { this.ds = damp(this.ds, s, 18, dt); this.du = damp(this.du, u, 18, dt); }
+    this.s = this.ds; this.x = world.center(this.ds) + this.du; this.y = world.height(this.x, this.ds) + h;
     this.v = c.v || 0; this.vx = c.vx || 0; this.air = h; this.crashed = !!c.cr;
   }
   syncBody(dt) {
@@ -7022,7 +7047,7 @@ const Platform = {
     if (netT < 1 / NET.hz || !online) return;
     netT = 0;
     const c = world.center(player.s);
-    online.sendPos({ s: +player.s.toFixed(2), x: +(player.x - c).toFixed(2), h: +Math.max(0, player.y - world.height(player.x, player.s)).toFixed(2), v: +player.v.toFixed(1), vx: +player.vx.toFixed(2), cr: player.alive ? 0 : 1 });
+    online.sendPos({ s: +player.s.toFixed(2), x: +(player.x - c).toFixed(2), h: +Math.max(0, player.y - world.height(player.x, player.s)).toFixed(2), v: +player.v.toFixed(1), vx: +player.vx.toFixed(2), cr: player.alive ? 0 : 1, t: Math.round(performance.now()) });
   }
   // В гонке (с ботом или игроком) падение не заканчивает заезд: встаёшь и едешь дальше — решает финиш.
   function respawnOnline() {
