@@ -1056,6 +1056,77 @@
     .invbar { max-width:760px; margin:4px auto 0; } .pbtn { font-size:19px; padding:10px 16px; }
     #shopScr .shopnote { font-size:13px; }
   }
+
+  /* ===== v19: друзья, лобби, «Связка» ===== */
+  .frbtn { position:relative; }
+  .fdot { position:absolute; top:-4px; right:-4px; min-width:18px; height:18px; border-radius:9px; background:#2fd06a; color:#fff; font-size:11px; line-height:18px; font-weight:900; padding:0 4px; box-shadow:0 2px 4px rgba(0,0,0,.25); }
+  .fdot:empty { display:none; }
+  #friendsScr { padding:0; align-items:stretch; justify-content:stretch; background:radial-gradient(120% 70% at 50% 0%, #ff9ad1 0%, #b05cf0 45%, #4c2fb8 100%); }
+  #friendsScr .shopwrap { max-width:620px; }
+  #friendsScr .shoptitle { text-shadow:0 3px 0 #4a1f8a, 0 8px 18px rgba(30,0,60,.4); }
+  i.ondot { display:inline-block; width:12px; height:12px; border-radius:50%; background:#2fd06a; box-shadow:0 0 0 3px rgba(47,208,106,.35); }
+  .frme, .frnick { position:relative; z-index:1; background:rgba(255,255,255,.16); color:#fff; border-radius:18px; padding:10px 14px; font-weight:800; display:flex; align-items:center; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .frnick { flex-direction:column; align-items:stretch; } .frlbl { text-align:left; }
+  .frnick .chk { color:#fff; } .frnick .rules { color:#fff; background:rgba(0,0,0,.2); border:0; }
+  .frme b { font-size:24px; letter-spacing:3px; background:#fff; color:#4c2fb8; border-radius:10px; padding:2px 10px; }
+  .icon.mini { width:36px; height:36px; font-size:16px; }
+  .fradd { position:relative; z-index:1; display:flex; gap:8px; margin-top:10px; }
+  .fradd input { flex:1; min-width:0; border:0; border-radius:14px; padding:10px 14px; font:inherit; font-weight:900; font-size:18px; letter-spacing:2px; text-transform:uppercase; color:#2a1d6e; box-shadow:inset 0 2px 4px rgba(0,0,0,.12); }
+  #frNickIn { text-transform:none; letter-spacing:0; }
+  .btn.slimb { font-size:15px; padding:9px 14px; margin:0; min-width:0; border-radius:14px; }
+  .ferr { position:relative; z-index:1; color:#fff; font-weight:800; font-size:13px; min-height:16px; margin-top:4px; text-shadow:0 1px 2px rgba(0,0,0,.3); }
+  .frreq { position:relative; z-index:1; display:flex; flex-direction:column; gap:8px; }
+  .frlist { padding-top:6px; }
+  .frow { position:relative; display:flex; align-items:center; gap:10px; background:#fff; border-radius:18px; padding:10px 12px; box-shadow:0 4px 0 rgba(40,0,80,.2), 0 10px 18px rgba(40,0,80,.2); animation:shopIn .4s cubic-bezier(.2,1.3,.4,1) both; animation-delay:calc(var(--i,0) * 50ms); color:#22305a; text-align:left; }
+  .frow .fav { position:relative; width:48px; height:48px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:28px; background:linear-gradient(160deg,#e9e4ff,#cfc3ff); flex:none; }
+  .frow .fav i { position:absolute; right:-3px; bottom:-3px; width:14px; height:14px; border-radius:50%; background:#b8c0cc; border:3px solid #fff; }
+  .frow.on .fav i { background:#2fd06a; } .frow.busy .fav i { background:#ffb300; }
+  .frow .fnm { flex:1; min-width:0; } .frow .fnm b { display:block; font-size:16px; font-weight:900; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .frow .fnm small { font-size:12px; font-weight:800; opacity:.65; }
+  .frow.req { background:linear-gradient(180deg,#fffbe8,#fff1c2); box-shadow:0 0 0 3px #ffc23a, 0 4px 0 rgba(150,90,0,.25); }
+  .frow .pbtn { font-size:14px; padding:8px 12px; }
+  .frow .pbtn.inv { background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),linear-gradient(180deg,#b46cff,#7b2ff7); box-shadow:0 4px 0 #4f17b0; }
+  .frow .pbtn.dis { filter:saturate(0); opacity:.5; }
+  .frow .xbtn { border:0; background:none; font-size:16px; opacity:.4; cursor:pointer; padding:4px; }
+  .frempty { color:#fff; font-weight:800; text-align:center; padding:20px 10px; opacity:.9; }
+  /* лобби на главном экране */
+  .partybar { display:none; width:min(94vw,460px); margin:10px auto 6px; background:rgba(255,255,255,.92); border-radius:24px; padding:10px 12px 12px; box-shadow:0 0 0 4px rgba(255,255,255,.5), 0 14px 30px rgba(10,40,90,.3); color:#22305a; }
+  body.inparty .partybar { display:block; animation:shopIn .4s cubic-bezier(.2,1.3,.4,1) both; }
+  body.inparty #menu .playrow, body.inparty #menu .sub, body.inparty #playSub, body.inparty #menu .tiles { display:none !important; }
+  body.inparty #menu { justify-content:flex-start; }
+  .phead2 { display:flex; justify-content:space-between; align-items:center; font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:1px; color:#7a87a6; }
+  .phead2 b { font-size:14px; letter-spacing:2px; color:#4c2fb8; background:#efeaff; border-radius:8px; padding:1px 8px; }
+  .pmodes { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0; }
+  .pmode { border:0; cursor:pointer; font:inherit; border-radius:16px; padding:8px 6px; background:#eef3fb; color:#22305a; display:flex; flex-direction:column; align-items:center; gap:1px; box-shadow:inset 0 0 0 2px #dde6f3; transition:transform .15s; }
+  .pmode span { font-size:24px; } .pmode b { font-size:14px; font-weight:900; } .pmode small { font-size:11px; font-weight:800; opacity:.65; }
+  .pmode.on { background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 55%),linear-gradient(180deg,#ffd84d,#ffa400); color:#5a3000; box-shadow:0 4px 0 #c47800; }
+  .pmode:disabled { cursor:default; } .pmode:not(.on):disabled { opacity:.55; }
+  .pmembers { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .pm { position:relative; border-radius:14px; padding:6px 2px 5px; background:#f3f6fb; display:flex; flex-direction:column; align-items:center; font-size:11px; font-weight:900; min-width:0; }
+  .pm .ic { font-size:24px; line-height:1.1; } .pm b { max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; padding:0 3px; }
+  .pm.ready { background:#e3f9ea; box-shadow:inset 0 0 0 2px #2fd06a; } .pm .rd { font-size:10px; color:#7a87a6; } .pm.ready .rd { color:#18a34a; }
+  .pm.empty { background:transparent; box-shadow:inset 0 0 0 2px dashed #dde6f3; border:2px dashed #cfdbec; color:#a7b4c9; justify-content:center; }
+  .pm.locked { opacity:.35; }
+  .pm .crown { position:absolute; top:-8px; font-size:14px; }
+  .pnote2 { font-size:12px; font-weight:800; color:#7a87a6; text-align:center; margin:6px 0 2px; min-height:15px; }
+  .prow { display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:wrap; }
+  #pReady { font-size:20px; padding:10px 26px; margin:0; }
+  #pReady.on { background:linear-gradient(180deg,#e9eef5,#cfd9e6); color:#22305a; text-shadow:none; box-shadow:0 5px 0 #a8b6c8; }
+  /* приглашение */
+  #inviteBox { position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom)); transform:translate(-50%,160%); z-index:60; transition:transform .45s cubic-bezier(.2,1.4,.4,1); width:min(94vw,440px); }
+  #inviteBox.on { transform:translate(-50%,0); }
+  .ibx { display:flex; align-items:center; gap:10px; background:#fff; border-radius:20px; padding:10px 12px; box-shadow:0 0 0 3px #b46cff, 0 16px 30px rgba(30,0,60,.35); }
+  .ibx .iic { font-size:30px; animation:wob 1.2s ease-in-out infinite; } .ibx .itx { flex:1; text-align:left; color:#22305a; font-weight:800; font-size:13px; line-height:1.2; } .ibx .itx b { display:block; font-size:16px; }
+  /* «Связка»: карточка режима и конец заезда */
+  .c-rope .mart { background:linear-gradient(160deg,#ff9ad1,#b05cf0); }
+  .c-rope .rider { position:absolute; font-size:34px; animation:bob 2s ease-in-out infinite; }
+  .c-rope .rr1 { left:16%; top:32%; } .c-rope .rr2 { left:44%; top:44%; animation-delay:.3s; } .c-rope .rr3 { left:70%; top:30%; animation-delay:.6s; }
+  .ropeart { position:absolute; left:22%; right:22%; top:52%; height:22px; border-bottom:4px solid #ffe36e; border-radius:0 0 50% 50%; filter:drop-shadow(0 2px 0 rgba(0,0,0,.2)); }
+  .mtag.new { background:#ff2d55; color:#fff; }
+  .tehearts { font-size:36px; letter-spacing:4px; margin-bottom:4px; }
+  #tags span { position:fixed; left:0; top:0; z-index:30; pointer-events:none; background:#7b2ff7; color:#fff; font-weight:900; font-size:12px; padding:3px 8px; border-radius:10px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,.25); }
+  #tags span.bot { background:#5a6b8a; } #tags span.down { background:#e1173a; }
+  .hudhearts { letter-spacing:2px; }
+  @media (max-height:560px) { .partybar { padding:6px 10px 8px; margin:4px auto; } .pmode span { font-size:18px; } .pm .ic { font-size:18px; } #pReady { font-size:16px; padding:7px 18px; } }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1081,18 +1152,25 @@
 </div>
 <div id="pops"></div>
 <div id="count"></div>
-<div id="rivalTag"></div>
+<div id="rivalTag"></div><div id="tags"></div>
 <div id="clipBar"><button id="clipRec" aria-label="record">⏺</button><span id="clipTime"></span><button id="clipExit" aria-label="exit clip mode">✕</button></div>
 <div id="clipFrame"></div>
 
 <div class="topbar" id="topbar">
   <div class="coin"><i></i><span id="balance">0</span></div>
-  <div style="display:flex;gap:8px"><button class="icon" id="btnMusic" aria-label="music">🎵</button><button class="icon" id="btnSound" aria-label="sound">🔊</button></div>
+  <div style="display:flex;gap:8px"><button class="icon frbtn" id="btnFriends" aria-label="friends">👥<b class="fdot" id="friendsOn"></b></button><button class="icon" id="btnMusic" aria-label="music">🎵</button><button class="icon" id="btnSound" aria-label="sound">🔊</button></div>
 </div>
 
 <div class="screen show" id="menu">
   <div class="logo"><span class="lg1">SNOW</span><span class="lg2">PANIC</span><i class="lgf f1">❄</i><i class="lgf f2">❄</i><i class="lgs s1">✦</i><i class="lgs s2">✦</i></div>
   <div class="sub" data-t="subtitle"></div>
+  <div class="partybar" id="partyBar">
+    <div class="phead2"><span data-t="lobby"></span><b id="pCode"></b></div>
+    <div class="pmodes" id="pModes"><button class="pmode on" data-m="race"><span>🏁</span><b data-t="pmRace"></b><small>1 × 1</small></button><button class="pmode" data-m="rope"><span>🪢</span><b data-t="pmRope"></b><small data-t="pmRopeN"></small></button></div>
+    <div class="pmembers" id="pMembers"></div>
+    <div class="pnote2" id="pNote"></div>
+    <div class="prow"><button class="btn green" id="pReady"></button><button class="btn ghost slimb" id="pInvite">➕ <span data-t="invite"></span></button><button class="btn ghost slimb" id="pLeave" data-t="leave"></button></div>
+  </div>
   <div class="playrow"><button class="btn" id="btnPlay"><span data-t="playBig"></span></button><button class="btn shopbig" id="btnShop" aria-label="shop"><span class="sic">🛒</span><span data-t="shop"></span><b class="shopdot" id="shopDot"></b></button></div>
   <div class="lvlsub" id="playSub"></div>
   <div class="tiles">
@@ -1126,6 +1204,11 @@
       <div class="mart"><span class="piste blue"></span><span class="chk"></span><span class="big">🤖</span><span class="bolt">⚡</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
       <div class="mbody"><b data-t="raceBots"></b><span class="msub" id="mBotsSub"></span>
         <div class="mbtns"><button class="btn" id="btnRace">🏁 <span data-t="chooseRival"></span></button></div></div>
+    </div>
+    <div class="mcard c-rope">
+      <div class="mart"><span class="mtag new" data-t="newTag"></span><span class="rider rr1">🛟</span><span class="ropeart"></span><span class="rider rr2">🛷</span><span class="rider rr3">🏂</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
+      <div class="mbody"><b data-t="ropeTeam"></b><span class="msub" data-t="ropeSub"></span>
+        <div class="mbtns"><button class="btn" id="mRopeBots">🤖 <span data-t="withBots"></span></button><button class="btn ghost" id="mRopeFriends">👥 <span data-t="withFriends"></span></button></div></div>
     </div>
     <div class="mcard c-endless">
       <div class="mart"><span class="piste black"></span><div class="wave"></div><span class="big inf">∞</span><svg class="hill" viewBox="0 0 280 60" preserveAspectRatio="none"><path d="M0 60V34Q70 6 140 26T280 18V60z" fill="#fff"/><path d="M0 60V44Q90 22 170 40T280 34V60z" fill="#e6f1fb"/></svg></div>
@@ -1196,6 +1279,48 @@
   </div>
 </div>
 
+
+<div class="screen" id="friendsScr">
+  <div class="shopwrap">
+    <div class="shophead">
+      <button class="cback" id="frBack" aria-label="back">‹</button>
+      <div class="shoptitle"><span>👥</span> <b data-t="friends"></b></div>
+      <div class="shopbal"><i class="ondot"></i><span id="frOnline">0</span></div>
+    </div>
+    <div class="frnick" id="frNickRow">
+      <div class="frlbl" data-t="nickname"></div>
+      <div class="fradd"><input id="frNickIn" maxlength="14" autocomplete="off" spellcheck="false"><button class="btn green slimb" id="frNickGo" data-t="save"></button></div>
+      <label class="chk"><input type="checkbox" id="frAgree"><span><span data-t="agreeTo"></span> <a href="#" class="rulelink" data-for="frRules" data-t="rulesLink"></a></span></label>
+      <div class="rules" id="frRules"></div>
+      <div class="ferr" id="frNickErr"></div>
+    </div>
+    <div class="frmain" id="frMain">
+      <div class="frme"><span data-t="yourCode"></span> <b id="frCode"></b><button class="icon mini" id="frCopy" aria-label="copy">📋</button></div>
+      <div class="fradd"><input id="frCodeIn" maxlength="6" autocomplete="off" spellcheck="false" placeholder="ABC123"><button class="btn green slimb" id="frAdd">➕ <span data-t="addFriend"></span></button></div>
+      <div class="ferr" id="frErr"></div>
+      <div class="frreq" id="frReq"></div>
+      <div class="ms2 frlist" id="frList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="teamEnd">
+  <div class="card" style="--band:var(--glacier)">
+    <div class="tehearts" id="teHearts"></div>
+    <div class="wtitle" id="teTitle"></div>
+    <div class="wsub" id="teSub"></div>
+    <div class="stats">
+      <div class="stat"><b id="teDist"></b><span data-t="distance"></span></div>
+      <div class="stat"><b id="teTime"></b><span data-t="raceTime"></span></div>
+      <div class="stat"><b id="teCoins"></b><span data-t="coins"></span></div>
+    </div>
+    <button class="btn green" id="teAgain"></button>
+    <button class="btn ghost" id="teMenu" data-t="menu"></button>
+  </div>
+</div>
+
+<div id="inviteBox"><div class="ibx"><span class="iic" id="ibIcon">🪢</span><div class="itx"><b id="ibNick"></b><span id="ibText"></span></div><button class="btn green slimb" id="ibJoin" data-t="joinBtn"></button><button class="icon mini" id="ibNo" aria-label="decline">✕</button></div></div>
+
 <div class="screen" id="raceEnd">
   <div class="card" style="--band:var(--gold)">
     <div class="rplace" id="rePlace"></div>
@@ -1207,7 +1332,7 @@
       <div class="stat"><b id="reCoins"></b><span data-t="coins"></span></div>
     </div>
     <div id="reNote"></div>
-    <div class="onrep" id="reOnline"><button class="link" id="reReport" data-t="reportName"></button><button class="link" id="reBlock" data-t="block"></button></div>
+    <div class="onrep" id="reOnline"><button class="link" id="reReport" data-t="reportName"></button><button class="link" id="reBlock" data-t="block"></button><button class="link" id="reFriend" data-t="addFriend"></button></div>
     <button class="btn green" id="reAgain" data-t="rematch"></button>
     <button class="btn ghost shareb" id="reShare">📤 <span data-t="shareResult"></span></button>
     <div class="row2"><button class="btn ghost" id="reDiff" data-t="difficulty"></button><button class="btn ghost" id="reMenu" data-t="menu"></button></div>
@@ -2969,7 +3094,7 @@ class Player {
     Object.assign(this, {
       hits: this.cfg.hp, lastNearS: -99,
       x, s: 2, y: 0, vy: 0, v: 6, vx: 0,
-      grounded: true, onRamp: null, onIce: false,
+      grounded: true, onRamp: null, onIce: false, pull: null, flung: false, flingSpin: 0,
       yaw: 0, yawVel: 0, pitch: 0, roll: 0,
       airYaw: 0, airPitch: 0, airTime: 0, doubleUsed: false, autoFlip: 0,
       crouching: false, crouchAmt: 0,
@@ -3039,7 +3164,9 @@ class Player {
         events.push({ type: 'djump' });
       }
       // В воздухе ← → смещают в сторону с наклоном, как на земле (без вращения на месте).
-      this.vx = damp(this.vx, steer * c.steer * 0.85, c.steerResp * 0.7, dt);
+      // Выстрелило резинкой — летишь кувырком, руль не помогает.
+      if (this.flung) { this.pitch += this.flingSpin * dt; this.yaw += this.flingSpin * 0.5 * dt; }
+      else this.vx = damp(this.vx, steer * c.steer * 0.85, c.steerResp * 0.7, dt);
       this.yaw = damp(wrapAngle(this.yaw), 0, 3, dt);
       // Сальто: клавиши — пока держишь; свайп — автоматически ровно один оборот.
       const fs = input.takeFlip ? input.takeFlip() : (input.flipSwipe || 0);
@@ -3054,10 +3181,15 @@ class Player {
       this.airTime += dt;
     }
 
+    // Внешняя сила (резинка в режиме «Связка»): тянет вбок и вперёд/назад.
+    if (this.pull && !this.flung) {
+      this.vx += this.pull.x * dt * (this.grounded ? 1 : 0.5);
+      this.v = Math.max(4, this.v + this.pull.s * dt * (this.grounded ? 1 : 0.5));
+    }
     this.bank = damp(this.bank, -this.vx * 0.03, 6, dt);
     this.x += this.vx * dt;
     // Граница трассы — линия флажков с сеткой: дальше не уехать, отталкивает обратно.
-    const u = this.x - world.center(this.s), lim = TRACK.HALF + 0.9 - c.radius * 0.5;
+    const u = this.x - world.center(this.s), lim = this.flung ? TRACK.HALF + 9 : TRACK.HALF + 0.9 - c.radius * 0.5;   // выстреленного уносит за флажки
     if (Math.abs(u) > lim) {
       const side = Math.sign(u);
       this.x = world.center(this.s) + side * lim;
@@ -3134,7 +3266,15 @@ class Player {
     this.airYaw = 0; this.airPitch = 0; this.airTime = 0;
   }
 
+  // Резинка-рогатка выстрелила: подбрасывает вверх и в сторону, при падении — авария.
+  fling(vx, vy) {
+    if (!this.alive) return;
+    this._takeoff(vy); this.vx = vx; this.flung = true; this.flingSpin = (Math.random() < 0.5 ? -1 : 1) * 9;
+    this.v *= 0.7;
+  }
+
   _land(events) {
+    if (this.flung) { this.flung = false; this.flingSpin = 0; this.grounded = true; this.crash('rope', events); return; }
     this.bobV -= clamp(Math.abs(this.vy) * 0.35, 0.5, 4);   // приседает от удара и пружинит обратно
     this.grounded = true; this.autoFlip = 0;
     const p = wrapAngle(this.pitch);
@@ -3253,6 +3393,7 @@ class Player {
   }
 
   revive(world) {
+    this.flung = false; this.flingSpin = 0;
     this.alive = true; this.invuln = 2.5; this.grounded = true; this.onRamp = null;
     this.x = world.center(this.s); this.vx = 0; this.v = Math.max(this.v, 14);
     this.pitch = 0; this.roll = 0; this.y = world.height(this.x, this.s);
@@ -3444,6 +3585,158 @@ class Rival {
   }
 }
 
+// --- rope.js ---
+// Режим «Связка»: до 4 райдеров соединены резинками по цепочке (1–2–3–4).
+// Резинка тянет только при растяжении (как эспандер), гасит колебания, может зацепиться за ёлку или камень:
+// тогда она огибает препятствие, и если команда продолжает разъезжаться — натягивается до предела
+// и выстреливает связанных райдеров в сторону («рогатка»). Без DOM — тестируется в Node.
+
+const ROPE = {
+  rest: 6.5,        // длина без натяжения, м
+  stiff: 7.5,       // жёсткость: м/с² на метр растяжения
+  damp: 2.2,        // гашение по скорости растяжения
+  maxPull: 34,      // предел ускорения от одной резинки, м/с²
+  snapLen: 15,      // длина вокруг препятствия, при которой связку выстреливает
+  snagTypes: { tree: 1, rock: 1 },
+  flingSide: 15,    // м/с вбок при выстреле
+  flingUp: 8.5,     // м/с вверх
+  hearts: 3,
+  len: 1600,        // длина трассы до финиша
+  worldDiff: 0.12,  // препятствий меньше, чем в гонке: главная опасность — резинка
+  reviveT: 1.4,
+  slots: [-3.6, -1.2, 1.2, 3.6],   // строй поперёк трассы (для 4)
+};
+
+// Одна резинка между двумя райдерами. Тела: { x, s, v, vx, y, alive }.
+class RopeLink {
+  constructor(i) { this.i = i; this.snag = null; this.side = 0; this.len = 0; this.prevLen = 0; this.T = 0; this.cool = 0; }
+  reset() { this.slackT = 0; this.snag = null; this.side = 0; this.len = 0; this.prevLen = 0; this.T = 0; this.cool = 0; }
+}
+
+const Rope = {
+  // Места в строю для n райдеров (по центру трассы).
+  slotsFor(n) { return n <= 1 ? [0] : n === 2 ? [-1.8, 1.8] : n === 3 ? [-3, 0, 3] : ROPE.slots.slice(); },
+  // Знак: с какой стороны от прямой A→B лежит точка P.
+  side(ax, as, bx, bs, px, ps) { return Math.sign((bx - ax) * (ps - as) - (bs - as) * (px - ax)) || 1; },
+  // Расстояние от точки до отрезка (в плоскости x–s).
+  segDist(ax, as, bx, bs, px, ps) {
+    const dx = bx - ax, ds = bs - as, L2 = dx * dx + ds * ds;
+    const t = L2 ? clamp(((px - ax) * dx + (ps - as) * ds) / L2, 0, 1) : 0;
+    return Math.hypot(ax + dx * t - px, as + ds * t - ps);
+  },
+
+  // Шаг физики для пары связанных тел. Возвращает силы {a:{x,s}, b:{x,s}} и, возможно, событие выстрела.
+  step(link, A, B, obstacles, dt) {
+    if (link.cool > 0) link.cool -= dt;
+    // 1) Зацеп: резинка проходит сквозь ёлку/камень между райдерами — теперь она её огибает.
+    if (!link.snag && link.cool <= 0 && A.alive && B.alive) {
+      const s0 = Math.min(A.s, B.s) - 1, s1 = Math.max(A.s, B.s) + 1;
+      for (const o of obstacles) {
+        if (o.s < s0) continue;
+        if (o.s > s1) break;
+        if (o.off || !ROPE.snagTypes[o.kind]) continue;
+        const core = o.r * 0.55;
+        // Препятствие у самого райдера — это удар, не зацеп.
+        if (Math.hypot(A.x - o.x, A.s - o.s) < o.r + 0.6 || Math.hypot(B.x - o.x, B.s - o.s) < o.r + 0.6) continue;
+        if (Rope.segDist(A.x, A.s, B.x, B.s, o.x, o.s) < core) {
+          link.snag = o; link.side = Rope.side(A.x, A.s, B.x, B.s, o.x, o.s);
+          return { ...Rope._force(link, A, B, dt), ev: { type: 'snag', o } };
+        }
+      }
+    }
+    // 2) Отцеп: препятствие оказалось с другой стороны резинки (распрямилась) — или райдеры
+    //    съехались вплотную, резинка провисла и соскользнула. Это и есть спасение от «рогатки».
+    if (link.snag) {
+      const o = link.snag, close = Math.hypot(A.x - B.x, A.s - B.s) < ROPE.rest * 0.75;
+      link.slackT = close ? (link.slackT || 0) + dt : 0;
+      if (o.off || Rope.side(A.x, A.s, B.x, B.s, o.x, o.s) !== link.side || link.slackT > 0.3) { link.snag = null; link.cool = 0.6; link.slackT = 0; return { ...Rope._force(link, A, B, dt), ev: { type: 'unsnag' } }; }
+    }
+    const f = Rope._force(link, A, B, dt);
+    // 3) Рогатка: зацепившаяся резинка растянута до предела — выстреливает обоих.
+    if (link.snag && link.len > ROPE.snapLen && A.alive && B.alive) {
+      const o = link.snag; link.snag = null; link.cool = 2.5;
+      const out = (p) => ({ x: Math.sign(p.x - o.x || 1) * ROPE.flingSide, up: ROPE.flingUp });
+      return { ...f, ev: { type: 'fling', o, a: out(A), b: out(B) } };
+    }
+    return f;
+  },
+
+  // Натяжение: тянет только растянутая резинка, к точке зацепа (или прямо к соседу).
+  _force(link, A, B, dt) {
+    const P = link.snag ? { x: link.snag.x, s: link.snag.s } : null;
+    const la = P ? Math.hypot(P.x - A.x, P.s - A.s) : Math.hypot(B.x - A.x, B.s - A.s);
+    const lb = P ? Math.hypot(B.x - P.x, B.s - P.s) : la;
+    link.prevLen = link.len || (P ? la + lb : la);
+    link.len = P ? la + lb + link.snag.r * 0.5 : la;
+    const rate = dt > 0 ? (link.len - link.prevLen) / dt : 0;
+    const ext = link.len - ROPE.rest;
+    let T = ext > 0 ? ROPE.stiff * ext + ROPE.damp * rate : 0;
+    T = clamp(T, 0, ROPE.maxPull); link.T = T;
+    const zero = { a: { x: 0, s: 0 }, b: { x: 0, s: 0 } };
+    if (!T) return zero;
+    const ta = P || B, tb = P || A;
+    const da = Math.max(1e-3, Math.hypot(ta.x - A.x, ta.s - A.s)), db = Math.max(1e-3, Math.hypot(tb.x - B.x, tb.s - B.s));
+    return { a: { x: T * (ta.x - A.x) / da, s: T * (ta.s - A.s) / da }, b: { x: T * (tb.x - B.x) / db, s: T * (tb.s - B.s) / db } };
+  },
+
+  // Точки резинки для отрисовки: провисает, когда не натянута; огибает зацеп.
+  points(link, A, B, yAt, n = 8) {
+    const pts = [];
+    const seg = (P, Q, sagMax) => {
+      const L = Math.hypot(Q.x - P.x, Q.s - P.s);
+      const sag = Math.max(0, sagMax - L * 0.06) * clamp(1 - link.T / 6, 0, 1);
+      for (let i = 0; i <= n; i++) {
+        const t = i / n, x = P.x + (Q.x - P.x) * t, s = P.s + (Q.s - P.s) * t;
+        const y = P.y + (Q.y - P.y) * t - sag * 4 * t * (1 - t);
+        pts.push([x, Math.max(y, yAt(x, s) + 0.08), -s]);
+      }
+    };
+    const a = { x: A.x, s: A.s, y: A.y + 0.75 }, b = { x: B.x, s: B.s, y: B.y + 0.75 };
+    if (link.snag) {
+      const o = link.snag, p = { x: o.x, s: o.s, y: yAt(o.x, o.s) + Math.min(1.1, (o.h || 2) * 0.35) };
+      seg(a, p, 0.2); pts.pop(); seg(p, b, 0.2);
+    } else seg(a, b, 1.3);
+    return pts;
+  },
+};
+
+// Бот-напарник: держит своё место в строю, объезжает препятствия и — главное — не разводит
+// резинку по разные стороны ёлки: объезжает её с той же стороны, что и сосед.
+class TeamBot {
+  constructor(slotX, rnd = Math.random, skill = 0.9) { this.slotX = slotX; this.rnd = rnd; this.skill = skill; this.input = { steer: 0, crouch: false, jump: false, flip: 0 }; this.decided = new Map(); }
+  think(me, mates, world) {
+    // Выбор полосы: перебираем смещения поперёк трассы и берём самую «дешёвую» —
+    // свободную от препятствий впереди, близкую к своему месту в строю и к соседям,
+    // и не разводящую резинку по разные стороны ёлки.
+    const cu = world.center(me.s + 8), lim = TRACK.HALF - 1.2;
+    const cx = mates.length ? mates.reduce((a, m) => a + m.x, 0) / mates.length : cu;
+    const home = cu + this.slotX * 0.7, want = mates.length ? home * 0.5 + (cx + this.slotX * 0.5) * 0.5 : home;
+    const near = [];
+    for (const o of world.obstacles) {
+      if (o.off || o.s < me.s - 1) continue;
+      if (o.s > me.s + 34) break;
+      if (!this.decided.has(o)) this.decided.set(o, this.rnd() < this.skill);
+      if (this.decided.get(o)) near.push(o);
+    }
+    let best = me.x, bestC = Infinity;
+    for (let k = -16; k <= 16; k++) {
+      const x = cu + (k / 16) * lim;
+      let c = Math.abs(x - want) * 0.6 + Math.abs(x - (this.lane ?? me.x)) * 0.25;
+      for (const o of near) {
+        const d = Math.abs(x - o.x), clear = o.r + 1.7, w = 1 + Math.max(0, 30 - (o.s - me.s)) * 0.15;
+        if (d < clear) c += (clear - d) * 12 * w;
+        // ёлка между мной (на этой полосе) и соседом — риск «рогатки»
+        if (ROPE.snagTypes[o.kind]) for (const m of mates) if ((o.x - x) * (o.x - m.x) < 0 && Math.abs(m.s - o.s) < 14) c += 6;
+      }
+      if (c < bestC) { bestC = c; best = x; }
+    }
+    this.lane = best;
+    this.input.steer = clamp((best - me.x) / 1.3 - me.vx * 0.12, -1, 1);
+    this.input.crouch = false; this.input.jump = false;
+    return this.input;
+  }
+}
+
 // --- avalanche.js ---
 // Лавина. Держится позади игрока на «спокойной» дистанции, но время от времени делает рывок:
 // разгоняется быстрее игрока и подбирается вплотную. Уйти можно петардой (гарантированно
@@ -3493,6 +3786,8 @@ class Avalanche {
     if (this.mode === 'calm') {
       // Покачивается около своей дистанции: дальше — догоняет, ближе — притормаживает.
       want = player.v + clamp((gap - this.calmGap) * 0.12, -3, 2.5);
+      // Лавина не «ждёт» медленного: ниже половины крейсерской скорости игрока не сбавляет — стоять нельзя.
+      if (this.t > 4) want = Math.max(want, this._cruise(player) * 0.55);
       if (this.t < 4) want = Math.min(want, 8 + this.t * 4);          // на старте разгоняется вместе с игроком
       if (this.surges && player.alive && player.s > AVAL.surgeMinS) {
         this.timer -= dt;
@@ -4058,7 +4353,17 @@ class Sfx {
 const STRINGS = {
   ru: {
     tapStart: 'Нажми, чтобы начать',
-    backInRace: 'Снова в гонке!', raceNoQuit: 'Это гонка — выйти можно только после финиша!',
+    lobby: 'Лобби', pmRace: 'Гонка', pmRope: 'Связка', pmRopeN: '2–4 игрока', invite: 'Позвать', newTag: 'НОВОЕ', ropeTeam: 'Связка', ropeSub: 'До 4 райдеров на одной резинке. Не разводите её вокруг ёлок!',
+    withBots: 'С ботами', withFriends: 'С друзьями', friends: 'Друзья', yourCode: 'Твой код:', addFriend: 'В друзья', joinBtn: 'Играть', save: 'Сохранить',
+    readyBtn: 'Готов!', notReady: 'Отменить', waitReady: 'Ждём, когда все нажмут «Готов»', inviteMore: 'Позови ещё {n}', tooMany: 'В этом режиме максимум {n}',
+    hostPicks: 'Режим выбирает {name}', youHost: 'Ты хозяин лобби — выбери режим', fOnline: 'в сети', fOffline: 'не в сети', fPlaying: 'играет', fLobby: 'в лобби',
+    invited: 'Приглашение отправлено: {name}', invitesYou: 'зовёт тебя: {m}', declined: '{name} не может сейчас', reqSent: 'Заявка отправлена: {name}', reqFrom: 'хочет дружить',
+    accept: 'Принять', friendAdded: '{name} теперь твой друг!', notOnline: 'Игрок с таким кодом сейчас не в сети', itsYou: 'Это твой код 🙂', already: 'Уже в друзьях',
+    noFriends: 'Пока нет друзей. Скажи другу свой код или добавь соперника после онлайн-гонки!', partyFull: 'Лобби заполнено', copied: 'Код скопирован',
+    lobbyLeft: '{name} вышел из лобби', lobbyJoin: '{name} в лобби!', teamWin: 'Вся связка доехала!', teamLose: 'Связка не доехала', heartsLeft: 'Сердечек осталось: {n}',
+    again: 'Ещё раз', toLobby: 'В лобби', reasonRope: 'Резинка выстрелила рогаткой!', ropeSnag: 'Резинка зацепилась! Съезжайтесь!', ropeFling: 'Рогатка! −1 ❤️', ropeFree: 'Отцепились!',
+    teamBots: 'Связка с ботами', teammate: 'Напарник', heartLost: '−1 ❤️', avTeam: 'Лавина накрыла: {name}',
+    backInRace: 'Снова в гонке!', rivalCaught: 'Лавина накрыла: {name}!', raceNoQuit: 'Это гонка — выйти можно только после финиша!',
     agreeTo: 'Я согласен с', rulesLink: 'правилами',
     msHint: 'Выполняй задания в заездах — получай монеты', msPlay: 'Играть', 
     deals: 'Акции', boostsTab: 'Бусты', oneTime: 'Только один раз', worth: 'Ценность: {n} монет', dealDay: 'Акция дня', bundles: 'Наборы',
@@ -4182,7 +4487,17 @@ const STRINGS = {
   },
   en: {
     tapStart: 'Tap to start',
-    backInRace: 'Back in the race!', raceNoQuit: "It's a race — you can leave only after the finish!",
+    lobby: 'Lobby', pmRace: 'Race', pmRope: 'Rope Team', pmRopeN: '2–4 players', invite: 'Invite', newTag: 'NEW', ropeTeam: 'Rope Team', ropeSub: 'Up to 4 riders on one bungee rope. Don’t split around trees!',
+    withBots: 'With bots', withFriends: 'With friends', friends: 'Friends', yourCode: 'Your code:', addFriend: 'Add friend', joinBtn: 'Play', save: 'Save',
+    readyBtn: 'Ready!', notReady: 'Cancel', waitReady: 'Waiting for everyone to press Ready', inviteMore: 'Invite {n} more', tooMany: 'This mode allows {n} max',
+    hostPicks: '{name} picks the mode', youHost: 'You host the lobby — pick a mode', fOnline: 'online', fOffline: 'offline', fPlaying: 'playing', fLobby: 'in a lobby',
+    invited: 'Invite sent to {name}', invitesYou: 'invites you: {m}', declined: '{name} can’t play now', reqSent: 'Request sent to {name}', reqFrom: 'wants to be friends',
+    accept: 'Accept', friendAdded: '{name} is now your friend!', notOnline: 'No one with this code is online', itsYou: 'That’s your own code 🙂', already: 'Already friends',
+    noFriends: 'No friends yet. Tell a friend your code or add a rival after an online race!', partyFull: 'The lobby is full', copied: 'Code copied',
+    lobbyLeft: '{name} left the lobby', lobbyJoin: '{name} joined!', teamWin: 'The whole team made it!', teamLose: 'The team didn’t make it', heartsLeft: 'Hearts left: {n}',
+    again: 'Again', toLobby: 'Back to lobby', reasonRope: 'The rope slingshotted you!', ropeSnag: 'Rope snagged! Get together!', ropeFling: 'Slingshot! −1 ❤️', ropeFree: 'Rope is free!',
+    teamBots: 'Rope team with bots', teammate: 'Teammate', heartLost: '−1 ❤️', avTeam: 'The avalanche got {name}',
+    backInRace: 'Back in the race!', rivalCaught: 'The avalanche got {name}!', raceNoQuit: "It's a race — you can leave only after the finish!",
     agreeTo: 'I agree to the', rulesLink: 'rules',
     msHint: 'Complete them while riding to earn coins', msPlay: 'Play', 
     deals: 'Deals', boostsTab: 'Boosts', oneTime: 'One-time offer', worth: 'Worth {n} coins', dealDay: 'Deal of the day', bundles: 'Bundles',
@@ -4389,7 +4704,7 @@ const Meta = {
       runs: 0,
       levels: {}, story: [], ended: false, race: { easy: 0, medium: 0, hard: 0 },
       nick: '', dstreak: { last: '', streak: 0, bestStreak: 0 }, dbest: { key: '', r: null }, crew: null, crewBlocked: [], clipHint: false,
-      inv: { boost: 0, shield: 0, magnet: 0, spring: 0 }, bought: [], dealDay: '', adCoins: { day: '', n: 0 },
+      inv: { boost: 0, shield: 0, magnet: 0, spring: 0 }, bought: [], friends: [], dealDay: '', adCoins: { day: '', n: 0 },
     };
   },
 
@@ -4399,6 +4714,7 @@ const Meta = {
     s.daily = Object.assign(this.defaults().daily, s.daily || {});
     s.inv = Object.assign(this.defaults().inv, s.inv || {});
     if (!Array.isArray(s.bought)) s.bought = [];
+    if (!Array.isArray(s.friends)) s.friends = [];
     if (!s.adCoins || typeof s.adCoins !== 'object') s.adCoins = { day: '', n: 0 };
     if (!Array.isArray(s.owned) || !s.owned.includes('tube')) s.owned = ['tube'].concat(Array.isArray(s.owned) ? s.owned : []);
     s.owned = s.owned.filter((id) => RIDES[id]);
@@ -5022,6 +5338,109 @@ class OnlineSession {
   leave() { if (this.lobby) this.lobby.leave(); if (this.room) this.room.leave(); this.lobby = null; this.room = null; }
 }
 
+// ===================== Друзья и лобби =====================
+// Кто в сети: общий канал присутствия. Каждый трекает {oid, nick, ride, st, code}. Сообщения адресные (to = oid):
+// freq — заявка в друзья, facc — заявка принята, invite — приглашение в лобби. Друзья хранятся у каждого локально.
+const PARTY = { online: 'snowpanic-online-v1', modes: { race: 2, rope: 4 }, codeLen: 6 };
+const Friends = {
+  code(oid) { return String(oid || '').slice(0, PARTY.codeLen).toUpperCase(); },
+  clean(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, PARTY.codeLen); },
+  // Список для экрана: сначала в сети, потом по нику.
+  list(friends, online) {
+    return friends.map((f) => ({ ...f, on: online[f.oid] || null }))
+      .sort((a, b) => (!!b.on - !!a.on) || String(a.nick).localeCompare(String(b.nick)));
+  },
+};
+
+class SocialHub {
+  constructor(rt, me, hooks) { this.rt = rt; this.me = me; this.h = hooks; this.ch = null; this.online = {}; this.status = { st: 'menu', code: '' }; }
+  async connect() {
+    const ch = (this.ch = this.rt.channel(PARTY.online, this.me.oid));
+    const mine = (p) => p && p.to === this.me.oid;
+    ch.on('freq', (p) => { if (mine(p)) this.h.freq && this.h.freq(p); });
+    ch.on('facc', (p) => { if (mine(p)) this.h.facc && this.h.facc(p); });
+    ch.on('invite', (p) => { if (mine(p)) this.h.invite && this.h.invite(p); });
+    ch.on('idecline', (p) => { if (mine(p)) this.h.idecline && this.h.idecline(p); });
+    ch.onPresence = (mem) => {
+      const on = {};
+      for (const id in mem) { const m = mem[id]; if (m && m.oid && m.oid !== this.me.oid) on[m.oid] = m; }
+      this.online = on; this.h.presence && this.h.presence(on);
+    };
+    await ch.join();
+    this._track();
+  }
+  _track() { if (this.ch) this.ch.track({ oid: this.me.oid, nick: this.me.nick, ride: this.me.ride, st: this.status.st, code: this.status.code, t: Date.now() }); }
+  setStatus(st, code = '') { if (this.status.st === st && this.status.code === code) return; this.status = { st, code }; this._track(); }
+  updateMe(me) { this.me = { ...this.me, ...me }; this._track(); }
+  byCode(code) { const c = Friends.clean(code); return Object.values(this.online).find((m) => Friends.code(m.oid) === c) || null; }
+  send(event, to, extra = {}) { if (this.ch) this.ch.send(event, { to, from: this.me.oid, nick: this.me.nick, ride: this.me.ride, ...extra }); }
+  leave() { if (this.ch) this.ch.leave(); this.ch = null; this.online = {}; }
+}
+
+// Лобби (пати): до 4 человек в канале с кодом. Хозяин — кто пришёл раньше; он выбирает режим.
+// Все жмут «Готов»; когда готовы все (и людей хватает режиму) — хозяин запускает заезд.
+// Во время игры тот же канал несёт позиции и события. Хуки: members(list, info), mode(m), start(p),
+// pos(p), fin(id, t), hurt(p), hearts(n), tover(p), back(), full(), left(id).
+class PartySession {
+  constructor(rt, me, hooks) { this.rt = rt; this.me = me; this.h = hooks; this.ch = null; this.code = null; this.mode = 'race'; this.members = []; this.ready = false; this.started = false; this.host = false; this.blocked = me.blocked || []; }
+  async join(code) {
+    this.code = code;
+    const ch = (this.ch = this.rt.channel('snowpanic-party-' + code, this.me.oid));
+    ch.on('mode', (p) => { if (!this.host) { this.mode = p.mode; this.h.mode && this.h.mode(p.mode); } });
+    ch.on('start', (p) => this._start(p));
+    ch.on('pos', (p) => this.h.pos && this.h.pos(p));
+    ch.on('fin', (p) => this.h.fin && this.h.fin(p.id, p.t));
+    ch.on('hurt', (p) => this.h.hurt && this.h.hurt(p));
+    ch.on('hearts', (p) => this.h.hearts && this.h.hearts(p.n));
+    ch.on('tover', (p) => this.h.tover && this.h.tover(p));
+    ch.on('back', () => { this.started = false; this.h.back && this.h.back(); });
+    ch.onPresence = (mem) => this._presence(mem);
+    ch.onClose = () => this.h.closed && this.h.closed();
+    await ch.join();
+    this.joinedAt = Date.now();
+    this._track();
+  }
+  _track() { if (this.ch) this.ch.track({ oid: this.me.oid, nick: this.me.nick, ride: this.me.ride, ready: this.ready, t: this.joinedAt || Date.now() }); }
+  get cap() { return PARTY.modes[this.mode] || 2; }
+  _presence(mem) {
+    const list = Object.values(mem).filter((m) => m && m.oid).sort((a, b) => (a.t - b.t) || (a.oid < b.oid ? -1 : 1));
+    const prev = this.members.map((m) => m.oid);
+    const i = list.findIndex((m) => m.oid === this.me.oid);
+    if (i >= 4) { this.h.full && this.h.full(); this.leave(); return; }
+    this.members = list.slice(0, 4);
+    this.host = i === 0;
+    for (const id of prev) if (!this.members.some((m) => m.oid === id)) this.h.left && this.h.left(id);
+    if (this.host) this.ch.send('mode', { mode: this.mode });   // новичку — текущий режим
+    this.h.members && this.h.members(this.members, { host: this.host });
+    this._maybeStart();
+  }
+  setMode(m) {
+    if (!this.host || !PARTY.modes[m]) return false;
+    this.mode = m; this.ch.send('mode', { mode: m }); this.h.mode && this.h.mode(m);
+    this._maybeStart(); return true;
+  }
+  setReady(r) { this.ready = !!r; this._track(); }
+  // Хозяин стартует, когда все готовы, людей ≥ 2 и не больше, чем позволяет режим.
+  _maybeStart() {
+    if (!this.host || this.started || !this.ch) return;
+    const n = this.members.length;
+    if (n < 2 || n > this.cap || !this.members.every((m) => m.ready)) return;
+    const p = { mode: this.mode, seed: (Math.random() * 1e9) | 0, zone: [0, 1, 3, 2, 4][Math.floor(Math.random() * 5)], order: this.members.map((m) => ({ oid: m.oid, nick: m.nick, ride: m.ride })), host: this.me.oid };
+    this.ch.send('start', p); this._start(p);
+  }
+  _start(p) {
+    if (this.started) return;
+    this.started = true; this.ready = false; this._track();
+    const me = p.order.findIndex((m) => m.oid === this.me.oid);
+    this.h.start && this.h.start({ ...p, me });
+  }
+  backToLobby() { this.started = false; if (this.ch) this.ch.send('back', {}); }
+  sendPos(p) { if (this.ch) this.ch.send('pos', { ...p, id: this.me.oid }); }
+  sendFin(t) { if (this.ch) this.ch.send('fin', { id: this.me.oid, t }); }
+  send(ev, p) { if (this.ch) this.ch.send(ev, p); }
+  leave() { if (this.ch) this.ch.leave(); this.ch = null; this.members = []; this.started = false; }
+}
+
 // --- platform.js ---
 // Слой площадки. Игра вызывает только эти методы; что под ними — решает сборка (BUILD, см. build.js):
 //   web          — itch.io / своя ссылка: без SDK и без рекламы;
@@ -5421,7 +5840,7 @@ const Platform = {
     const t = $('toast'); t.textContent = text; t.style.display = 'block';
     clearTimeout(toastT); toastT = setTimeout(() => { t.style.display = 'none'; }, 1800);
   }
-  const SCREENS = ['menu', 'garage', 'missionsScr', 'daily', 'over', 'pause', 'mapScr', 'story', 'win', 'raceScr', 'raceEnd', 'dailyEnd', 'challenge', 'shareScr', 'crewScr', 'onlineScr', 'shopScr', 'modesScr'];
+  const SCREENS = ['menu', 'garage', 'missionsScr', 'daily', 'over', 'pause', 'mapScr', 'story', 'win', 'raceScr', 'raceEnd', 'dailyEnd', 'challenge', 'shareScr', 'crewScr', 'onlineScr', 'shopScr', 'modesScr', 'friendsScr', 'teamEnd'];
   // Экраны появляются и исчезают плавно (CSS: .show — вход, .leaving — выход).
   function show(id) {
     screen = id;
@@ -5434,7 +5853,7 @@ const Platform = {
       }
     });
     $('hud').classList.toggle('show', id === null);
-    if (['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'story', 'raceScr', 'crewScr', 'challenge', 'shopScr', 'modesScr'].includes(id)) sfx.music.play('menu');
+    if (['menu', 'garage', 'missionsScr', 'daily', 'mapScr', 'story', 'raceScr', 'crewScr', 'challenge', 'shopScr', 'modesScr', 'friendsScr'].includes(id)) sfx.music.play('menu');
     $('topbar').style.display = ['menu', 'garage', 'daily', 'mapScr', 'raceScr'].includes(id) ? 'flex' : 'none';
     refreshMeta();
   }
@@ -5515,6 +5934,13 @@ const Platform = {
       $('rivalDot').style.left = `${clamp(rival.s / len, 0, 1) * 100}%`;
       const html = `<div class="g place">${ahead ? '🥇 ' + T('place1') : '🥈 ' + T('place2')}</div><div class="g">${gap >= 0 ? '+' : '−'}${Math.abs(Math.round(gap))} ${T('m')}</div>`;
       if (html !== goalsHtml) { goalsHtml = html; $('goals').innerHTML = html; }
+    } else if (team) {
+      const len = ROPE.len, d = Math.min(Math.floor(player.s), len);
+      $('hudDist').textContent = `${d} / ${len} ${T('m')}`;
+      $('lvlFill').style.width = `${clamp(player.s / len, 0, 1) * 100}%`;
+      const h = Math.max(0, team.hearts), snag = team.links.some((L) => L.snag);
+      const html = `<div class="g hudhearts">${'❤️'.repeat(h)}${'🤍'.repeat(ROPE.hearts - h)}</div><div class="g${snag ? ' bad' : ''}">🪢 ${snag ? '⚠️' : team.members.length - team.gone.size}</div>`;
+      if (html !== goalsHtml) { goalsHtml = html; $('goals').innerHTML = html; }
     } else if (level) {
       const d = Math.min(Math.floor(player.s), level.len);
       $('hudDist').textContent = `${d} / ${level.len} ${T('m')}`;
@@ -5591,7 +6017,8 @@ const Platform = {
     tryRide = null;
     fadeThrough(() => {
       level = lvId === null || lvId === undefined ? null : Levels.info(lvId);
-      race = raceKey === 'online' ? { key: 'online', online: true, side: opts.online.side, cfg: { name: opts.online.opp.nick, reward: 150, boulders: false, world: 0.42 } }
+      team = null;
+      race = raceKey === 'online' ? { key: 'online', online: true, side: opts.online.side, oid: opts.online.opp.oid, cfg: { name: opts.online.opp.nick, reward: 150, boulders: false, world: 0.42 } }
         : raceKey ? { key: raceKey, cfg: RACE.diff[raceKey] } : null;
       daily = opts.daily ? { key: opts.daily, lv: Daily.level(opts.daily) } : null;
       player.setRide(rideId, Meta.upOf(save, rideId));
@@ -5613,8 +6040,11 @@ const Platform = {
         rivalBody.setRide(rival.ride, {});
         rival.syncBody(0);
         $('btnPause').style.display = on ? 'none' : '';
-        aval.surges = false; aval.s = -80;
-      } else { newWorld(daily ? daily.lv : level); aval.surges = true; $('btnPause').style.display = ''; }
+        // Лавина в гонке настоящая: держится сзади, делает рывки и догоняет отстающего (и игрока, и бота).
+        raceAvBase = { easy: 0.22, medium: 0.4, hard: 0.58 }[raceKey] ?? 0.4;
+        aval.surges = true; aval.setIntensity(raceAvBase); aval.reset();
+      } else if (opts.team) teamSetup(opts.team, rideId);
+      else { newWorld(daily ? daily.lv : level); aval.surges = true; $('btnPause').style.display = ''; }
       // Призрак: из ссылки-вызова, иначе свой лучший заезд по этой трассе.
       let gr = opts.ghost ? { run: opts.ghost, own: false } : null;
       if (!gr && daily && ghosts.daily && ghosts.daily.key === daily.key) { const g = ownGhost(ghosts.daily); if (g) gr = { run: g, own: true }; }
@@ -5627,9 +6057,9 @@ const Platform = {
       run = { ride: rideId, trial, flips: 0, snowmen: 0, near: 0, dodges: 0, powers: 0, zoneLevel: 0, zone: world.zoneAt(0),
         banked: { picked: 0, flips: 0, snowmen: 0, near: 0, dodges: 0, powers: 0 }, earned: 0, counted: false, doubled: false };
       boulders.reset();
-      boulders.enabled = race ? race.cfg.boulders : daily ? daily.lv.boulders : (!level || level.boulders);
+      boulders.enabled = team ? false : race ? race.cfg.boulders : daily ? daily.lv.boulders : (!level || level.boulders);
       boulders.stopAt = race ? RACE.len - 160 : level ? level.len - 160 : daily ? daily.lv.len - 160 : Infinity;
-      const track = level || race || daily;
+      const track = level || race || daily || team;
       $('hudLvl').style.display = track ? 'block' : 'none';
       $('lvlTrack').style.display = track ? 'block' : 'none';
       $('goals').style.display = track ? 'flex' : 'none';
@@ -5638,9 +6068,10 @@ const Platform = {
       if (level) $('hudLvl').textContent = T('levelN', { n: level.id + 1 });
       if (race) $('hudLvl').textContent = T('raceLbl', { d: T(race.key) });
       if (daily) $('hudLvl').textContent = T('dailyOf', { d: fmtDay(daily.key) });
+      if (team) $('hudLvl').textContent = `🪢 ${T('ropeTeam')}`;
       show(null);
       const dm = daily && MOUNTAINS.find((m) => m.zone === daily.lv.zone);
-      sfx.music.play(race ? 'race' : level ? MOUNTAINS[level.m].id : dm ? dm.id : 'endless');
+      sfx.music.play(race || team ? 'race' : level ? MOUNTAINS[level.m].id : dm ? dm.id : 'endless');
       // 5 секунд на бусты перед стартом (кроме самого первого заезда новичка).
       if ((save.runs > 0 || !level || level.id > 0) && !window.__noPrep) openPrep(); else goRun();   // __noPrep — для автотестов
       if (trial) popup(T('trying', { r: rideName(rideId) }), 'zone');
@@ -5654,7 +6085,7 @@ const Platform = {
   function goRun() {
     $('prep').classList.remove('on');
     applyBoosts();
-    if (race) { state = 'countdown'; countT = 3; showCount('3'); sfx.count(false); }
+    if (race || team) { state = 'countdown'; countT = 3; showCount('3'); sfx.count(false); }
     else { state = 'play'; runTime = 0; Platform.gameplayStart(); }
   }
   const startEndless = () => startRun(null);
@@ -5735,20 +6166,22 @@ const Platform = {
     lastResult = { finished: r.win, time: r.time, dist: RACE.len, sub: `Race · ${T(race.key)} · vs ${c.name}`, race: r.win ? 'won' : 'lost' };
     $('reOnline').classList.toggle('on', !!race.online);
     $('reDiff').textContent = race.online ? T('leave') : T('difficulty');
-    $('reAgain').disabled = false; $('reAgain').textContent = T('rematch');
+    $('reAgain').disabled = false; $('reAgain').textContent = race.online && party ? T('toLobby') : T('rematch');
+    $('reFriend').style.display = race.online && hub && !save.friends.some((f) => f.oid === race.oid) ? '' : 'none';
     $('reNote').textContent = r.first ? `🏆 ${T('firstWin')} +${c.reward}` : r.win ? `🏁 +${r.reward} ${T('winReward')}` : '';
     show('raceEnd');
   }
   $('reAgain').onclick = async () => {
     sfx.click();
+    if (race && race.online && party && online === party) { party.backToLobby(); backToLobby(); return; }
     if (race && race.online) {
       if (!online || !online.opp) { toast(T('oppLeft', { name: race.cfg.name })); return; }
       online.rematch(); $('reAgain').disabled = true; $('reAgain').textContent = T('waitingRematch', { name: race.cfg.name }); return;
     }
     await Platform.showInterstitial(runTime); startRace(race.key);
   };
-  $('reDiff').onclick = async () => { if (race && race.online) { leaveOnline(); openRace(); return; } await Platform.showInterstitial(runTime); openRace(); };
-  $('reMenu').onclick = async () => { if (race && race.online) { leaveOnline(); toMenu(); return; } await Platform.showInterstitial(runTime); toMenu(); };
+  $('reDiff').onclick = async () => { if (race && race.online && party) { backToLobby(); return; } if (race && race.online) { leaveOnline(); openRace(); return; } await Platform.showInterstitial(runTime); openRace(); };
+  $('reMenu').onclick = async () => { if (race && race.online && party) { backToLobby(); return; } if (race && race.online) { leaveOnline(); toMenu(); return; } await Platform.showInterstitial(runTime); toMenu(); };
 
 
   // Уровень: перед первым уровнем горы — короткая история.
@@ -5966,7 +6399,7 @@ const Platform = {
   // Из заезда — сначала вернуть фон меню.
   function toMenuThen(fn) {
     if (state === 'menu') { fn(); return; }
-    fadeThrough(() => { if (online && !(screen === 'onlineScr')) leaveOnline(); if (state === 'prep') refundPrep(); $('prep').classList.remove('on'); state = 'menu'; level = null; race = null; daily = null; ghostRun = null; recorder = null; ghostRider.stop(); player.setRide(save.ride, Meta.upOf(save, save.ride)); newWorld(null, true); fn(); });
+    fadeThrough(() => { if (online && !(screen === 'onlineScr')) leaveOnline(); if (state === 'prep') refundPrep(); $('prep').classList.remove('on'); state = 'menu'; level = null; race = null; team = null; daily = null; ghostRun = null; if (ropeMesh) { renderer.deleteMesh(ropeMesh); ropeMesh = null; } recorder = null; ghostRider.stop(); player.setRide(save.ride, Meta.upOf(save, save.ride)); newWorld(null, true); fn(); });
   }
   function openMap() { sfx.unlock(); toMenuThen(() => { show('mapScr'); renderMap(); }); }
   $('btnMap').onclick = () => { sfx.click(); openMap(); };
@@ -5977,7 +6410,8 @@ const Platform = {
     $('powers').innerHTML = ''; powersKey = '';
     Platform.gameplayStop();
     $('avWarn').classList.remove('on');
-    const reasons = { tree: 'reasonTree', rock: 'reasonRock', landing: 'reasonLanding', avalanche: 'reasonAvalanche', fence: 'reasonFence', skier: 'reasonSkier', boulder: 'reasonBoulder' };
+    if (team && kind === 'avalanche') teamHurt('aval');
+    const reasons = { rope: 'reasonRope', tree: 'reasonTree', rock: 'reasonRock', landing: 'reasonLanding', avalanche: 'reasonAvalanche', fence: 'reasonFence', skier: 'reasonSkier', boulder: 'reasonBoulder' };
     $('overReason').textContent = T(reasons[kind] || 'reasonTree');
   }
 
@@ -6043,10 +6477,10 @@ const Platform = {
 
   // В онлайн-гонке паузы нет (соперник едет дальше); в любой гонке из паузы нельзя выйти в меню — только доехать.
   function pause() {
-    if (state !== 'play' || (race && race.online)) return;
+    if (state !== 'play' || (race && race.online) || (team && team.online)) return;
     prevState = state; state = 'pause'; sfx.pause(); show('pause');
-    $('btnQuit').style.display = race ? 'none' : '';
-    $('pauseNote').textContent = race ? T('raceNoQuit') : '';
+    $('btnQuit').style.display = race || team ? 'none' : '';
+    $('pauseNote').textContent = race || team ? T('raceNoQuit') : '';
   }
   function resume() {
     if (state !== 'pause') return;
@@ -6078,7 +6512,7 @@ const Platform = {
     player.revive(world);
     aval.pushBack(player, 70);
     state = 'play'; show(null);
-    sfx.music.play(race ? 'race' : level ? MOUNTAINS[level.m].id : 'endless'); Platform.gameplayStart();
+    sfx.music.play(race || team ? 'race' : level ? MOUNTAINS[level.m].id : 'endless'); Platform.gameplayStart();
   };
   $('btnDouble').onclick = async () => {
     $('btnDouble').disabled = true;
@@ -6468,7 +6902,7 @@ const Platform = {
     state = 'play'; show(null); Platform.gameplayStart();
     popup(T('backInRace'), 'near');
   }
-  function leaveOnline() { clearInterval(quickTimer); quickTimer = null; if (online) online.leave(); online = null; }
+  function leaveOnline() { clearInterval(quickTimer); quickTimer = null; if (online && online !== party) online.leave(); online = null; }
   function onStatus(t) { $('onStatus').textContent = t; }
   function onlineHooks() {
     return {
@@ -6581,13 +7015,13 @@ const Platform = {
     } catch (e) { /* отмена */ }
   };
   $('reReport').onclick = async () => {
-    const oid = race && race.online && online && online.opp && online.opp.oid; if (!oid) return;
+    const oid = race && race.online && race.oid; if (!oid) return;
     try { await crew.report('ONLINE', oid, 'name'); toast(T('reported')); } catch (e) { toast(T('crewOff')); }
   };
   $('reBlock').onclick = () => {
-    const oid = online && online.opp && online.opp.oid; if (!oid) return;
+    const oid = race && race.oid; if (!oid) return;
     save.onlineBlocked = (save.onlineBlocked || []).concat(oid); persist(); toast(T('blockedT'));
-    leaveOnline(); toMenu();
+    leaveOnline(); leaveParty(); toMenu();
   };
 
   // Кнопка «‹» в углу карточки на экранах, откуда нужно вернуться: нажимает обычную «назад» экрана.
@@ -6600,6 +7034,402 @@ const Platform = {
 
   // Правила свёрнуты: открываются по ссылке «правила» рядом с галочкой.
   document.querySelectorAll('.rulelink').forEach((a) => { a.onclick = (e) => { e.preventDefault(); e.stopPropagation(); sfx.click(); $(a.dataset.for).classList.toggle('open'); }; });
+
+  // ===================== Режим «Связка» =====================
+  // До 4 райдеров на резинках. С ботами — всё считается тут; онлайн — каждый считает свою физику,
+  // а соседей видит по сети (позиции 10 раз в секунду). Сердечки общие: «рогатка» или лавина — минус одно.
+  let team = null;
+  const teamBodies = [0, 1, 2].map(() => new Player(renderer, 'sled'));
+  const teamRemotes = teamBodies.map((b) => new RemoteRider(b));
+  const BOT_NAMES = ['Frosty Fran', 'Rookie Rudy', 'Snowy Sam'], BOT_RIDES = ['sled', 'board', 'tub'];
+  let ropeMesh = null;
+  const startTeamBots = (n = 4) => startRun(null, null, { team: { bots: n - 1 } });
+  function teamSetup(o, rideId) {
+    const on = o.online || null;
+    const seed = on ? on.seed : (Math.random() * 1e9) | 0, zone = on ? on.zone : RACE_ZONES[Math.floor(Math.random() * RACE_ZONES.length)];
+    aval.rnd = makeRng(seed ^ 0x5bd1e995);
+    newWorld({ seed, zone, diff: ROPE.worldDiff, len: ROPE.len, vBonus: 0, intensity: 0.1 });
+    const order = on ? on.order : [{ oid: 'me', nick: save.nick || 'You', ride: rideId }].concat(BOT_NAMES.slice(0, o.bots).map((n, i) => ({ oid: 'bot' + i, nick: n, ride: BOT_RIDES[i] })));
+    const meIdx = on ? on.me : 0, n = order.length, slots = Rope.slotsFor(n), c = world.center(2);
+    let k = 0;
+    const members = order.map((m, i) => {
+      const x = c + slots[i];
+      if (i === meIdx) { player.x = x; player.y = world.height(x, player.s); cam.x = x; return { ...m, local: true, body: player, dead: 0 }; }
+      const body = teamBodies[k], rem = teamRemotes[k]; k++;
+      body.setRide(RIDES[m.ride] ? m.ride : 'sled', {}); body.reset(x); body.y = world.height(x, body.s); body.pull = null;
+      if (on) { rem.ride = body.rideId; rem.reset(world, 1); rem.x = x; rem.buf = []; return { ...m, remote: rem, body, dead: 0 }; }
+      return { ...m, bot: new TeamBot(slots[i], Math.random, 0.95), body, dead: 0 };
+    });
+    team = { online: !!on, members, me: meIdx, links: members.slice(1).map((_, i) => new RopeLink(i)), hearts: ROPE.hearts, hurtAt: -9, hostHurt: {}, result: null, gone: new Set() };
+    $('btnPause').style.display = on ? 'none' : '';
+    aval.surges = true; aval.setIntensity(0.3); aval.reset();
+  }
+  // Точка резинки для тела участника (бот/локальный — Player, онлайн — RemoteRider).
+  function teamEnd_(m) { const b = m.remote || m.body; return { x: b.x, s: b.s, y: b.y, alive: m.remote ? !m.remote.crashed : m.body.alive }; }
+  function teamPre(dt) {
+    for (const m of team.members) m.body.pull = m.remote ? null : { x: 0, s: 0 };
+    team.links.forEach((L, i) => {
+      const ma = team.members[i], mb = team.members[i + 1];
+      if (team.gone.has(ma.oid) || team.gone.has(mb.oid)) return;
+      const fr = Rope.step(L, teamEnd_(ma), teamEnd_(mb), world.obstacles, dt);
+      if (ma.body.pull) { ma.body.pull.x += fr.a.x; ma.body.pull.s += fr.a.s; }
+      if (mb.body.pull) { mb.body.pull.x += fr.b.x; mb.body.pull.s += fr.b.s; }
+      if (!fr.ev) return;
+      const mine = ma.local || mb.local || ma.bot || mb.bot;
+      if (fr.ev.type === 'snag' && (ma.local || mb.local)) { popup(T('ropeSnag'), 'near'); sfx.near && sfx.near(); }
+      if (fr.ev.type === 'unsnag' && (ma.local || mb.local)) popup(T('ropeFree'), 'gain');
+      if (fr.ev.type === 'fling' && mine) {
+        if (!ma.remote) ma.body.fling(fr.ev.a.x, fr.ev.a.up);
+        if (!mb.remote) mb.body.fling(fr.ev.b.x, fr.ev.b.up);
+        sfx.crash(); cam.shake = 1;
+        teamHurt('fling');
+      }
+    });
+  }
+  function teamPost(dt) {
+    team.members.forEach((m, i) => {
+      if (m.local) return;
+      if (m.remote) { m.remote.update(dt, world, player, true); m.remote.syncBody(dt); return; }
+      const mates = [team.members[i - 1], team.members[i + 1]].filter(Boolean).map(teamEnd_);
+      const b = m.body;
+      b.update(dt, m.bot.think(b, mates, world), world, []);
+      if (b.alive && b.s - aval.s < AVAL.killGap + 1) { b.crash('avalanche', []); popup(T('avTeam', { name: m.nick }), 'near'); teamHurt('aval'); }
+      if (!b.alive) { m.dead += dt; if (m.dead > ROPE.reviveT) { b.revive(world); b.s = Math.max(b.s, aval.s + 25); m.dead = 0; } }
+    });
+    if (state === 'play' && player.alive) {
+      const lead = team.online ? player.s : Math.max(...team.members.map((m) => m.body.s));
+      if (lead >= ROPE.len) { if (team.online && online) online.send('tover', { win: true }); teamFinish(true); }
+    }
+  }
+  // Пока отсчёт/бусты: напарники стоят на старте (онлайн — подтягиваем их позиции).
+  function teamIdle(dt) {
+    for (const m of team.members) {
+      if (m.local) continue;
+      if (m.remote) { m.remote.update(dt, world, player, true); m.remote.syncBody(dt); }
+      else { m.body.y = world.height(m.body.x, m.body.s); m.body._animate(dt, 0); }
+    }
+  }
+  // Лобби в меню: друзья стоят рядом со своим транспортом.
+  const PARTY_X = [2.8, -2.8, 5.6];
+  function partyIdle(dt) {
+    let k = 0;
+    for (const m of party.members) {
+      if (m.oid === meOid() || k > 2) continue;
+      const b = teamBodies[k];
+      if (b.rideId !== m.ride && RIDES[m.ride]) b.setRide(m.ride, {});
+      b.s = 2.6; b.x = player.x + PARTY_X[k]; b.y = world.height(b.x, b.s); b.alive = true; b.grounded = true; b.flung = false;
+      b.yaw = Math.PI + Math.sin(now * 0.7 + k) * 0.3; b._animate(dt, 0);
+      k++;
+    }
+  }
+  // Минус сердечко. Онлайн решает хозяин лобби (чтобы два одновременных сигнала не сняли два сердца).
+  function teamHurt(why) {
+    const now2 = performance.now() / 1000;
+    aval.pushBack(player, 60);
+    if (team.online) { if (online) online.send('hurt', { id: Platform.publicId(), why, t: Date.now() }); if (party && party.host) hostHurt(); return; }
+    if (now2 - team.hurtAt < 1.5) return;
+    team.hurtAt = now2; team.hearts--;
+    popup(T('heartLost'), 'near');
+    if (team.hearts <= 0) teamFinish(false);
+  }
+  function hostHurt() {
+    if (!team || !party || !party.host) return;
+    const t = performance.now() / 1000;
+    if (t - team.hurtAt < 2.5) return;
+    team.hurtAt = t; team.hearts = Math.max(0, team.hearts - 1);
+    party.send('hearts', { n: team.hearts }); popup(T('heartLost'), 'near');
+    if (team.hearts <= 0) { party.send('tover', { win: false }); teamFinish(false); }
+  }
+  function teamFinish(win) {
+    if (!team || team.result) return;
+    state = 'finish'; finishT = 0;
+    aval.stop(); boulders.enabled = false;
+    $('powers').innerHTML = ''; powersKey = ''; Platform.gameplayStop();
+    if (win) { sfx.trick(); sfx.coin(); for (let i = 0; i < 4; i++) emit(player.x + (i - 1.5) * 4, player.y + 5, -(player.s + 3), 20, 9, 6); popup(T('finish'), 'zone'); }
+    bankRun();
+    const reward = win ? 60 + 40 * Math.max(0, team.hearts) : 0;
+    save.coins += reward; persist();
+    team.result = { win, reward, time: runTime, dist: Math.min(ROPE.len, Math.floor(player.s)) };
+  }
+  function showTeamEnd() {
+    state = 'won';
+    const r = team.result;
+    sfx.music.play(r.win ? 'win' : 'lose', 'menu');
+    $('teHearts').textContent = '❤️'.repeat(Math.max(0, team.hearts)) + '🤍'.repeat(Math.max(0, ROPE.hearts - Math.max(0, team.hearts)));
+    $('teTitle').textContent = r.win ? T('teamWin') : T('teamLose');
+    $('teSub').textContent = `${T('ropeTeam')} · ${team.members.length} 👥`;
+    $('teDist').textContent = `${r.dist} ${T('m')}`;
+    $('teTime').textContent = fmtSec(r.time);
+    $('teCoins').textContent = `+${run.earned + r.reward}`;
+    $('teAgain').textContent = team.online ? T('toLobby') : T('again');
+    $('teMenu').style.display = team.online ? 'none' : '';
+    show('teamEnd');
+  }
+  $('teAgain').onclick = () => {
+    sfx.click();
+    if (team && team.online) { if (party) party.backToLobby(); backToLobby(); return; }
+    startTeamBots(team ? team.members.length : 4);
+  };
+  $('teMenu').onclick = () => { sfx.click(); toMenu(); };
+  // Резинки: трубочки по точкам; натянутая краснеет.
+  function drawRopes() {
+    if (ropeMesh) { renderer.deleteMesh(ropeMesh); ropeMesh = null; }
+    if (!team) return;
+    const mb = new MeshBuilder(), w = 0.07;
+    const yAt = (x, s) => world.height(x, s);
+    team.links.forEach((L, i) => {
+      const ma = team.members[i], mbm = team.members[i + 1];
+      if (team.gone.has(ma.oid) || team.gone.has(mbm.oid)) return;
+      const pts = Rope.points(L, teamEnd_(ma), teamEnd_(mbm), yAt);
+      const k = clamp(L.T / 22, 0, 1), col = [1, 0.82 - k * 0.6, 0.2 - k * 0.15];
+      for (let j = 0; j + 1 < pts.length; j++) {
+        const a = pts[j], b = pts[j + 1];
+        const dx = b[0] - a[0], dz = b[2] - a[2], L2 = Math.hypot(dx, dz) || 1;
+        const px = -dz / L2 * w, pz = dx / L2 * w;
+        const A1 = [a[0] + px, a[1] + w, a[2] + pz], A2 = [a[0] - px, a[1] + w, a[2] - pz], A3 = [a[0] - px, a[1] - w, a[2] - pz], A4 = [a[0] + px, a[1] - w, a[2] + pz];
+        const B1 = [b[0] + px, b[1] + w, b[2] + pz], B2 = [b[0] - px, b[1] + w, b[2] - pz], B3 = [b[0] - px, b[1] - w, b[2] - pz], B4 = [b[0] + px, b[1] - w, b[2] + pz];
+        mb.quad(A1, B1, B2, A2, col); mb.quad(A4, A3, B3, B4, col); mb.quad(A1, A4, B4, B1, col); mb.quad(A2, B2, B3, A3, col);
+      }
+    });
+    ropeMesh = renderer.createMesh(mb);
+    renderer.draw(ropeMesh, M4.create());
+  }
+  // Таблички с именами над напарниками.
+  const tagEls = [];
+  function placeTags(list) {
+    const box = $('tags');
+    while (tagEls.length < list.length) { const e = document.createElement('span'); box.appendChild(e); tagEls.push(e); }
+    const v = renderer.vp;
+    tagEls.forEach((e, i) => {
+      const t = list[i];
+      if (!t || screen !== null && screen !== 'menu') { e.style.display = 'none'; return; }
+      const X = t.x, Y = t.y, Z = -t.s;
+      const cx = v[0] * X + v[4] * Y + v[8] * Z + v[12], cy = v[1] * X + v[5] * Y + v[9] * Z + v[13], cw = v[3] * X + v[7] * Y + v[11] * Z + v[15];
+      if (cw < 0.5) { e.style.display = 'none'; return; }
+      e.style.display = 'block'; e.textContent = t.name; e.className = t.cls || '';
+      e.style.transform = `translate(${Math.round((cx / cw * 0.5 + 0.5) * innerWidth)}px, ${Math.round((1 - (cy / cw * 0.5 + 0.5)) * innerHeight)}px) translate(-50%, -100%)`;
+    });
+  }
+
+  // ===================== Друзья и лобби =====================
+  // Друзья хранятся на устройстве; «в сети» — по общему каналу присутствия. Пригласить можно только друга.
+  let hub = null, party = null, friendReqs = [], inviteFrom = null, inviteTimer = null;
+  const socialOk = () => crew.enabled && save.nick && Nick.ok(save.nick) && save.onlineTos;
+  const meOid = () => Platform.publicId();
+  function hubOn() {
+    if (hub || !socialOk()) return;
+    hub = new SocialHub(rt(), { oid: meOid(), nick: save.nick, ride: save.ride }, {
+      presence: () => { friendsBadge(); if (screen === 'friendsScr') renderFriends(); },
+      freq: (p) => {
+        if ((save.onlineBlocked || []).includes(p.from) || !Nick.ok(Nick.clean(p.nick))) return;
+        if (save.friends.some((f) => f.oid === p.from)) { hub.send('facc', p.from); return; }
+        if (!friendReqs.some((r) => r.from === p.from)) friendReqs.push(p);
+        toast(`👥 ${Nick.clean(p.nick)} — ${T('reqFrom')}`); friendsBadge();
+        if (screen === 'friendsScr') renderFriends();
+      },
+      facc: (p) => { addFriend(p.from, p.nick, p.ride); toast(T('friendAdded', { name: Nick.clean(p.nick) })); },
+      invite: (p) => { if (save.friends.some((f) => f.oid === p.from)) showInvite(p); },
+      idecline: (p) => toast(T('declined', { name: Nick.clean(p.nick) })),
+    });
+    hub.connect().catch(() => { hub = null; });
+  }
+  function addFriend(oid, nick, ride) {
+    const n = Nick.clean(nick); if (!oid || !Nick.ok(n)) return;
+    const f = save.friends.find((x) => x.oid === oid);
+    if (f) { f.nick = n; f.ride = ride || f.ride; } else save.friends.push({ oid, nick: n, ride: ride || 'sled' });
+    persist(); friendsBadge(); if (screen === 'friendsScr') renderFriends();
+  }
+  function friendsBadge() {
+    const on = hub ? save.friends.filter((f) => hub.online[f.oid]).length : 0;
+    $('friendsOn').textContent = friendReqs.length ? '!' : on ? on : '';
+    $('btnFriends').style.display = crew.enabled ? '' : 'none';
+  }
+  function openFriends() { sfx.unlock(); sfx.click(); toMenuThen(() => { show('friendsScr'); renderFriends(); }); }
+  $('btnFriends').onclick = openFriends;
+  $('frBack').onclick = () => { sfx.click(); show('menu'); };
+  $('frNickGo').onclick = () => {
+    const n = Nick.clean($('frNickIn').value);
+    if (!Nick.ok(n)) { $('frNickErr').textContent = T('badNick'); return; }
+    if (!$('frAgree').checked) { $('frNickErr').textContent = T('mustAgree'); return; }
+    save.nick = n; save.onlineTos = true; persist(); sfx.click(); hubOn(); renderFriends();
+  };
+  $('frCopy').onclick = async () => { try { await navigator.clipboard.writeText(Friends.code(meOid())); toast(T('copied')); } catch (e) { /* ignore */ } };
+  $('frAdd').onclick = () => {
+    const code = Friends.clean($('frCodeIn').value); $('frErr').textContent = '';
+    if (code.length < PARTY.codeLen) return;
+    if (code === Friends.code(meOid())) { $('frErr').textContent = T('itsYou'); return; }
+    const m = hub && hub.byCode(code);
+    if (!m) { $('frErr').textContent = T('notOnline'); return; }
+    if (save.friends.some((f) => f.oid === m.oid)) { $('frErr').textContent = T('already'); return; }
+    hub.send('freq', m.oid); $('frCodeIn').value = ''; toast(T('reqSent', { name: Nick.clean(m.nick) })); sfx.click();
+  };
+  function renderFriends() {
+    const ok = socialOk();
+    $('frNickRow').style.display = ok ? 'none' : 'flex'; $('frMain').style.display = ok ? '' : 'none';
+    $('frRules').textContent = T('crewRules');
+    if (!ok) { $('frNickIn').value = save.nick || ''; $('frAgree').checked = !!save.onlineTos; $('frOnline').textContent = '–'; return; }
+    hubOn();
+    $('frCode').textContent = Friends.code(meOid());
+    const online = hub ? hub.online : {};
+    $('frOnline').textContent = save.friends.filter((f) => online[f.oid]).length;
+    const req = $('frReq'); req.innerHTML = '';
+    for (const r of friendReqs) {
+      const d = document.createElement('div'); d.className = 'frow req';
+      d.innerHTML = `<span class="fav">${RIDE_ICON[r.ride] || '🛷'}</span><span class="fnm"><b></b><small>${T('reqFrom')}</small></span>`;
+      d.querySelector('b').textContent = Nick.clean(r.nick);
+      const a = document.createElement('button'); a.className = 'pbtn money'; a.textContent = T('accept');
+      a.onclick = () => { addFriend(r.from, r.nick, r.ride); hub && hub.send('facc', r.from); friendReqs = friendReqs.filter((x) => x !== r); toast(T('friendAdded', { name: Nick.clean(r.nick) })); renderFriends(); friendsBadge(); };
+      const x = document.createElement('button'); x.className = 'xbtn'; x.textContent = '✕';
+      x.onclick = () => { friendReqs = friendReqs.filter((q) => q !== r); renderFriends(); friendsBadge(); };
+      d.append(a, x); req.appendChild(d);
+    }
+    const list = $('frList'); list.innerHTML = '';
+    const fl = Friends.list(save.friends, online);
+    if (!fl.length) { list.innerHTML = `<div class="frempty">${T('noFriends')}</div>`; return; }
+    fl.forEach((f, i) => {
+      const st = f.on ? f.on.st : null;
+      const d = document.createElement('div'); d.className = 'frow' + (st === 'menu' ? ' on' : st ? ' busy' : ''); d.style.setProperty('--i', i);
+      d.innerHTML = `<span class="fav">${RIDE_ICON[(f.on && f.on.ride) || f.ride] || '🛷'}<i></i></span><span class="fnm"><b></b><small>${st === 'menu' ? T('fOnline') : st === 'party' ? T('fLobby') : st === 'play' ? T('fPlaying') : T('fOffline')}</small></span>`;
+      d.querySelector('b').textContent = f.nick;
+      const inv = document.createElement('button'); inv.className = 'pbtn inv' + (f.on && st !== 'play' ? '' : ' dis'); inv.textContent = T('invite');
+      inv.onclick = () => inviteFriend(f);
+      const x = document.createElement('button'); x.className = 'xbtn'; x.textContent = '✕';
+      x.onclick = () => { if (x.dataset.arm) { save.friends = save.friends.filter((q) => q.oid !== f.oid); persist(); renderFriends(); } else { x.dataset.arm = 1; x.textContent = '🗑️'; } };
+      d.append(inv, x); list.appendChild(d);
+    });
+  }
+  async function inviteFriend(f) {
+    if (!hub || !hub.online[f.oid] || hub.online[f.oid].st === 'play') { toast(T('fOffline')); return; }
+    if (!party) await openParty();
+    if (!party) return;
+    if (party.members.length >= party.cap) { toast(T('tooMany', { n: party.cap })); return; }
+    hub.send('invite', f.oid, { code: party.code, mode: party.mode }); sfx.click();
+    toast(T('invited', { name: f.nick }));
+  }
+  function showInvite(p) {
+    inviteFrom = p;
+    $('ibIcon').textContent = p.mode === 'rope' ? '🪢' : '🏁';
+    $('ibNick').textContent = Nick.clean(p.nick);
+    $('ibText').textContent = T('invitesYou', { m: T(p.mode === 'rope' ? 'pmRope' : 'pmRace') });
+    $('inviteBox').classList.add('on'); sfx.coin();
+    clearTimeout(inviteTimer); inviteTimer = setTimeout(() => $('inviteBox').classList.remove('on'), 25000);
+  }
+  $('ibJoin').onclick = async () => {
+    const p = inviteFrom; $('inviteBox').classList.remove('on'); if (!p) return;
+    if (state !== 'menu' && (race && race.online || team && team.online)) return;
+    if (party && party.code !== p.code) leaveParty();
+    toMenuThen(() => openParty(p.code));
+  };
+  $('ibNo').onclick = () => { $('inviteBox').classList.remove('on'); if (inviteFrom && hub) hub.send('idecline', inviteFrom.from); inviteFrom = null; };
+
+  // --- Лобби ---
+  async function openParty(code = null, mode = null) {
+    if (!socialOk()) { openFriends(); return null; }
+    hubOn();
+    if (party) return party;
+    party = new PartySession(rt(), { oid: meOid(), nick: save.nick, ride: save.ride, blocked: save.onlineBlocked || [] }, partyHooks());
+    try { await party.join(code || (Match.code() + Match.code()).slice(0, 6)); } catch (e) { party = null; toast(T('onlineOff')); return null; }
+    if (mode) party.setMode(mode);
+    document.body.classList.add('inparty');
+    if (hub) hub.setStatus('party', party.code);
+    if (screen !== 'friendsScr') show('menu');
+    renderParty();
+    return party;
+  }
+  function leaveParty() {
+    if (!party) return;
+    party.leave(); if (online === party) online = null; party = null;
+    document.body.classList.remove('inparty'); $('tags').innerHTML = ''; tagEls.length = 0;
+    if (hub) hub.setStatus('menu');
+  }
+  function partyHooks() {
+    let prev = [];
+    return {
+      members: (list) => {
+        const ids = list.map((m) => m.oid);
+        for (const m of list) if (!prev.includes(m.oid) && m.oid !== meOid() && prev.length) toast(T('lobbyJoin', { name: Nick.clean(m.nick) }));
+        prev = ids;
+        // пришедший в лобби в друзья не добавляется сам, но ник подтягиваем, если он уже друг
+        for (const m of list) if (save.friends.some((f) => f.oid === m.oid)) addFriend(m.oid, m.nick, m.ride);
+        renderParty();
+      },
+      mode: () => renderParty(),
+      start: (p) => partyStart(p),
+      pos: (p) => {
+        if (team && team.online) { const m = team.members.find((x) => x.oid === p.id); if (m && m.remote) m.remote.push(p, performance.now()); }
+        else if (race && race.online) remote.push(p, performance.now());
+      },
+      fin: (id, t) => { if (race && race.online && !remote.finished) { remote.finished = true; remote.finishT = t; } },
+      hurt: () => { if (team && team.online) { aval.pushBack(player, 60); if (party && party.host) hostHurt(); } },
+      hearts: (n) => { if (team && team.online && !party.host) { if (n < team.hearts) popup(T('heartLost'), 'near'); team.hearts = n; } },
+      tover: (p) => { if (team && team.online) teamFinish(!!p.win); },
+      back: () => { if (state !== 'menu' && !['play', 'countdown', 'prep', 'crash'].includes(state)) backToLobby(); },
+      full: () => { toast(T('partyFull')); party = null; document.body.classList.remove('inparty'); },
+      left: (id) => {
+        const m = party && party.members.find((x) => x.oid === id);
+        if (team && team.online) { team.gone.add(id); const tm = team.members.find((x) => x.oid === id); if (tm) popup(T('oppLeft', { name: tm.nick }), 'near'); }
+        else if (race && race.online) { popup(T('oppLeft', { name: race.cfg.name }), 'near'); remote.left = true; }
+        else toast(T('lobbyLeft', { name: m ? Nick.clean(m.nick) : '…' }));
+        renderParty();
+      },
+      closed: () => {},
+    };
+  }
+  function partyStart(p) {
+    $('inviteBox').classList.remove('on');
+    if (hub) hub.setStatus('play', party.code);
+    online = party;
+    if (p.mode === 'race') {
+      const o = p.order[1 - p.me] || { nick: 'Rider', ride: 'sled' };
+      startRun(null, 'online', { online: { seed: p.seed, zone: p.zone, side: p.me === 0 ? -1 : 1, opp: { nick: Nick.ok(Nick.clean(o.nick)) ? Nick.clean(o.nick) : 'Rider', ride: o.ride, oid: o.oid } } });
+    } else startRun(null, null, { team: { online: p } });
+  }
+  function backToLobby() {
+    online = null;
+    toMenuThen(() => { if (party) { party.setReady(false); document.body.classList.add('inparty'); if (hub) hub.setStatus('party', party.code); } show('menu'); renderParty(); });
+  }
+  function renderParty() {
+    if (!party) { document.body.classList.remove('inparty'); return; }
+    const cap = party.cap, list = party.members, host = party.host;
+    $('pCode').textContent = party.code;
+    document.querySelectorAll('#pModes .pmode').forEach((b) => { b.classList.toggle('on', b.dataset.m === party.mode); b.disabled = !host; });
+    const box = $('pMembers'); box.innerHTML = '';
+    for (let i = 0; i < 4; i++) {
+      const m = list[i], d = document.createElement('div');
+      if (m) {
+        d.className = 'pm' + (m.ready ? ' ready' : '');
+        d.innerHTML = `${i === 0 ? '<span class="crown">👑</span>' : ''}<span class="ic">${RIDE_ICON[m.ride] || '🛷'}</span><b></b><span class="rd">${m.ready ? '✓ ' + T('readyBtn') : '…'}</span>`;
+        d.querySelector('b').textContent = m.oid === meOid() ? `${Nick.clean(m.nick)} ★` : Nick.clean(m.nick);
+      } else if (i < cap) { d.className = 'pm empty'; d.innerHTML = '<span class="ic">➕</span>'; d.onclick = openFriends; }
+      else { d.className = 'pm empty locked'; d.innerHTML = '<span class="ic">🔒</span>'; }
+      box.appendChild(d);
+    }
+    const n = list.length;
+    $('pNote').textContent = n < 2 ? T('inviteMore', { n: 1 }) : n > cap ? T('tooMany', { n: cap }) : !host ? T('hostPicks', { name: Nick.clean(list[0] ? list[0].nick : '') }) + ' · ' + T('waitReady') : T('waitReady');
+    $('pReady').textContent = party.ready ? T('notReady') : T('readyBtn');
+    $('pReady').classList.toggle('on', party.ready);
+    $('pInvite').style.display = n < cap ? '' : 'none';
+  }
+  document.querySelectorAll('#pModes .pmode').forEach((b) => { b.onclick = () => { if (party && party.setMode(b.dataset.m)) { sfx.click(); renderParty(); } }; });
+  $('pReady').onclick = () => { if (!party) return; sfx.click(); party.setReady(!party.ready); renderParty(); };
+  $('pInvite').onclick = openFriends;
+  $('pLeave').onclick = () => { sfx.click(); leaveParty(); };
+  $('mRopeBots').onclick = () => startTeamBots(4);
+  $('mRopeFriends').onclick = async () => { sfx.click(); const p = await openParty(null, 'rope'); if (p) { p.setMode('rope'); openFriends(); } };
+  $('reFriend').onclick = () => {
+    const o = race && race.online && race.oid;
+    if (!o || !hub) return;
+    if (save.friends.some((f) => f.oid === o)) { toast(T('already')); return; }
+    hub.send('freq', o); toast(T('reqSent', { name: race.cfg.name }));
+  };
+  // Статус «в сети / в лобби / играет» обновляется сам.
+  setInterval(() => {
+    if (!hub) return;
+    const playing = state !== 'menu';
+    hub.setStatus(playing ? 'play' : party ? 'party' : 'menu', party ? party.code : '');
+    if (hub.me.nick !== save.nick || hub.me.ride !== save.ride) hub.updateMe({ nick: save.nick, ride: save.ride });
+    if (party && !party.started && party.ch && party.me.ride !== save.ride) { party.me.ride = save.ride; party._track(); }
+  }, 3000);
 
   // ===================== Выбор режима =====================
   function openModes() {
@@ -6641,6 +7471,7 @@ const Platform = {
   };
   const PREP_TIME = 5;
   // prepSel[k]: 'coin' — оплачено монетами, 'inv' — взято из запаса (куплено в магазине заранее).
+  let raceAvBase = 0.4;
   let prepT = 0, prepPaused = false, prepSel = {}, prepFree = null;
   function openPrep() {
     state = 'prep'; prepT = PREP_TIME; prepSel = {}; prepFree = null; prepPaused = false;
@@ -7110,13 +7941,20 @@ const Platform = {
       runTime += dt;
       const events = [];
       player.avalancheGap = player.s - aval.s;
+      if (team) teamPre(dt);
       player.update(dt, input, world, events);
+      if (team) teamPost(dt);
       if (recorder) recorder.update(dt, world, player);
       if (ghostRun) ghostRider.update(dt, world);
       boulders.update(dt, player, world, events);
       if (boulders.b && !boulders.b.hit && Math.random() < 0.4) emit(boulders.b.x, boulders.b.y - BOULDER.r, -boulders.b.s, 1, 3, 2);
       world.update(player.s);
-      if (!level && !daily) aval.setIntensity(0.15 + player.s / 4500);   // бесконечный: лавина злее с дистанцией
+      if (!level && !daily) aval.setIntensity((race ? raceAvBase : 0.15) + player.s / 4500);   // лавина злее с дистанцией
+      // Бот, которого догнала лавина, падает и теряет время (как игрок после возрождения).
+      if (race && !race.online && !rival.finished && rival.s - aval.s < AVAL.killGap + 1) {
+        rival.stumble = 2.2; rival.v *= 0.25; rival.bump = 1; rival.s = Math.max(rival.s, aval.s + 22);
+        popup(T('rivalCaught', { name: race.cfg.name }), 'gain');
+      }
       aval.update(dt, player, events);
       if (player.power.boost > 0) emit(player.x, player.y + 0.6, -(player.s - 1.3), 3, 3, 1.5);
       handle(events);
@@ -7128,6 +7966,7 @@ const Platform = {
         raceEvents();
         if (player.alive && state === 'play' && player.s >= RACE.len) finishRace();
       }
+      if (team && team.online) netTick(dt);
       // смена зоны
       const z = world.zoneAt(player.s);
       if (z !== run.zone) { run.zone = z; run.zoneLevel++; popup(T('zone_' + ZONES[z].id), 'zone'); }
@@ -7143,14 +7982,16 @@ const Platform = {
       boulders.update(dt, player, world, []);
       aval.s += aval.v * dt;
       if (race) { rival.update(dt, world, player, true); rival.syncBody(dt); if (race.online) netTick(dt); }
+      if (team) { teamPre(dt); teamPost(dt); if (team.online) netTick(dt); }
       if (ghostRun) ghostRider.update(dt, world);
       updateHud();
-      if (crashTimer > (race ? 1.0 : 1.3)) { if (race) respawnOnline(); else if (daily) showDailyEnd(false); else showOver(); }
+      if (state === 'crash' && crashTimer > (race || team ? 1.0 : 1.3)) { if (race || team) respawnOnline(); else if (daily) showDailyEnd(false); else showOver(); }
     } else if (state === 'prep') {
       if (!prepPaused) { prepT -= rawDt; updatePrepRing(); if (prepT <= 0) goRun(); }
       player._animate(dt, 0);
       if (race && race.online) { rival.update(dt, world, player, true); netTick(dt); }
       if (race) rival.syncBody(dt);
+      if (team) teamIdle(dt);
       updateHud();
     } else if (state === 'countdown') {
       const prev = Math.ceil(countT);
@@ -7160,7 +8001,8 @@ const Platform = {
       if (countT <= 0) { showCount(T('goGo')); sfx.count(true); state = 'play'; runTime = 0; input.clearActions(); Platform.gameplayStart(); }
       player._animate(dt, 0);
       if (race && race.online) { rival.update(dt, world, player, true); netTick(dt); }
-      rival.syncBody(dt);
+      if (race) rival.syncBody(dt);
+      if (team) teamIdle(dt);
       updateHud();
     } else if (state === 'finish') {
       finishT += dt;
@@ -7168,13 +8010,15 @@ const Platform = {
       world.update(player.s);
       aval.update(dt, player, []);
       if (race) { rival.update(dt, world, player, true); rival.syncBody(dt); if (race.online) netTick(dt); }
+      if (team) { teamPre(dt); teamPost(dt); if (team.online) netTick(dt); }
       if (ghostRun) ghostRider.update(dt, world);
       updateHud();
-      if (finishT > 1.7) { if (race) showRaceEnd(); else if (daily) showDailyEnd(true); else showWin(); }
+      if (finishT > 1.7) { if (team) showTeamEnd(); else if (race) showRaceEnd(); else if (daily) showDailyEnd(true); else showWin(); }
     } else if (state === 'menu') {
       player.s = 2; player.y = world.height(player.x, player.s);
-      player.yaw += dt * 0.6;
+      if (party && screen === 'menu') player.yaw = Math.PI + Math.sin(now * 0.6) * 0.25; else player.yaw += dt * 0.6;
       player._animate(dt, 0);
+      if (party) partyIdle(dt);
     }
 
     world.target.x = player.x; world.target.y = player.y; world.target.s = player.s;
@@ -7214,6 +8058,12 @@ const Platform = {
         // Витрина: камера неподвижна, транспорт крутится. На ПК он слева от карточки, на телефоне — над ней.
         if (portrait) { eye = [player.x, player.y + 2.6, -(ps - 6.2)]; target = [player.x, player.y - 1.7, -ps]; fov = 64; }
         else { eye = [player.x - 1.0, player.y + 2.4, -(ps - 5.6)]; target = [player.x + 1.9, player.y + 0.6, -ps]; fov = 50; }
+      } else if (party && screen === 'menu') {
+        // Лобби: камера спереди на всю компанию — все стоят рядом и смотрят на тебя.
+        const n = Math.min(4, party.members.length), cx = player.x + [0, 0, 1.4, 0, 1.4][n];
+        eye = [cx, player.y + (portrait ? 1.9 : 1.6), -(ps + (portrait ? 10.5 : 9))];
+        target = [cx + (portrait ? 0 : -2.5), player.y + (portrait ? 4.6 : 1.7), -ps];
+        fov = portrait ? 66 : 50;
       } else {
         const a = now * 0.15;
         eye = [player.x + Math.sin(a) * 7, player.y + 3.2, -(ps - 7 * Math.cos(a))];
@@ -7247,7 +8097,18 @@ const Platform = {
         tag.style.transform = `translate(${Math.round(sx)}px, ${Math.round(sy)}px) translate(-50%, -100%)`;
       } else tag.style.display = 'none';
     };
-    if (race && inRun) { rivalBody.draw(renderer, world, now); placeTag(rival.x, rival.y + 2.6, rival.s, race.cfg.name, ''); }
+    const tagList = [];
+    if (team && inRun) {
+      for (const m of team.members) if (!m.local && !team.gone.has(m.oid)) { m.body.draw(renderer, world, now); tagList.push({ x: m.body.x, y: m.body.y + 2.6, s: m.body.s, name: m.nick, cls: (m.bot ? 'bot' : '') + (m.body.alive ? '' : ' down') }); }
+      drawRopes();
+    } else if (state === 'menu' && party && screen === 'menu') {
+      let k = 0;
+      for (const m of party.members) { if (m.oid === meOid() || k > 2) continue; const b = teamBodies[k++]; b.draw(renderer, world, now); tagList.push({ x: b.x, y: b.y - 0.1, s: b.s, name: Nick.clean(m.nick) + (m.ready ? ' ✓' : ''), cls: '' }); }
+      tagList.push({ x: player.x, y: player.y - 0.1, s: player.s, name: (save.nick || 'You') + (party.ready ? ' ✓' : ''), cls: 'bot' });
+    }
+    placeTags(tagList);
+    if (team && inRun) tag.style.display = 'none';
+    else if (race && inRun) { rivalBody.draw(renderer, world, now); placeTag(rival.x, rival.y + 2.6, rival.s, race.cfg.name, ''); }
     else if (ghostRun && inRun) {
       ghostBody.draw(renderer, world, now);
       placeTag(ghostRider.x, ghostRider.y + 2.6, ghostRider.s, ghostRun.own ? T('ghostYou') : ghostRun.run.nick, 'ghost');
@@ -7293,6 +8154,7 @@ const Platform = {
     const newPlayer = !save.runs && !Object.keys(save.levels).length;
     show('menu');
     Platform.restorePurchases(creditPack);
+    friendsBadge(); hubOn();
     const afterSplash = () => {
       const roomLink = Platform.challengeParam('room');
       if (roomLink && crew.enabled) openOnline('friend', Match.cleanCode(roomLink));
@@ -7330,6 +8192,7 @@ const Platform = {
     get score() { return score(); }, get save() { return save; }, get run() { return run; }, boulders,
     get daily() { return daily; }, startDaily, ghostRider, get ghostRun() { return ghostRun; }, get ghosts() { return ghosts; }, setClip, get clip() { return clip; },
     get timeScale() { return timeScale; }, openShop, openModes, get prepT() { return prepT; }, openShare, openCrew, crew, get lastResult() { return lastResult; },
+    get team() { return team; }, startTeamBots, openParty, leaveParty, get party() { return party; }, get hub() { return hub; }, openFriends, addFriend,
   };
 })();
 
