@@ -4412,7 +4412,9 @@ class Sfx {
     this.noise = buf;
     this.wind = this._loopNoise('lowpass', 500, 0);
     this.rumble = this._loopNoise('lowpass', 120, 0);
-    this.music.attach(ctx, this.master);
+    // Музыка идёт мимо общего звука эффектов: кнопка 🔊 выключает эффекты, 🎵 — музыку (раньше 🔊 глушила и музыку).
+    this.musicGain = ctx.createGain(); this.musicGain.gain.value = 0.8; this.musicGain.connect(ctx.destination);
+    this.music.attach(ctx, this.musicGain);
   }
 
   _loopNoise(type, freq, gain) {
@@ -8460,7 +8462,7 @@ const Platform = {
     get score() { return score(); }, get save() { return save; }, get run() { return run; }, boulders,
     get daily() { return daily; }, startDaily, ghostRider, get ghostRun() { return ghostRun; }, get ghosts() { return ghosts; }, setClip, get clip() { return clip; },
     get timeScale() { return timeScale; }, openShop, openModes, get prepT() { return prepT; }, openShare, openCrew, crew, get lastResult() { return lastResult; },
-    get team() { return team; }, startTeamBots, openParty, leaveParty, get party() { return party; }, get hub() { return hub; }, openFriends, addFriend,
+    sfx, get team() { return team; }, startTeamBots, openParty, leaveParty, get party() { return party; }, get hub() { return hub; }, openFriends, addFriend,
   };
 })();
 
